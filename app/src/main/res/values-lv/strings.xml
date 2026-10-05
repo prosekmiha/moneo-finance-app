@@ -248,6 +248,7 @@
     <string name="error_prefix">Kļūda: %1$s</string>
     <string name="csv_exported">Eksportēti darījumi: %1$d.</string>
     <string name="backup_saved">Dublējums saglabāts.</string>
+    <string name="sqlite_exported">Datubāze eksportēta (rindas: %1$d).</string>
     <string name="restore_result">Atjaunots: %1$d jauni, %2$d atjaunināti, %3$d nemainīti.</string>
     <string name="auto_backup_enabled">Automātiskā dublēšana ieslēgta. Pirmais dublējums: %1$s</string>
     <string name="settings">Iestatījumi</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Slēpt bilanci</string>
     <string name="hide_balance_sub">Summas tiek rādītas kā •••• (arī logrīkā)</string>
     <string name="group_backup">Dublēšana un eksports</string>
-    <string name="group_backup_kw">csv excel dublējums atjaunošana drive eksports</string>
+    <string name="group_backup_kw">csv excel dublējums atjaunošana drive eksports sqlite db</string>
     <string name="export_csv">Eksportēt CSV formātā</string>
     <string name="export_csv_sub">Programmai Excel vai Google izklājlapām</string>
+    <string name="export_sqlite">Eksportēt SQLite datubāzi</string>
+    <string name="export_sqlite_sub">Visa datubāze (.db) — to var arī atjaunot</string>
     <string name="create_backup">Izveidot dublējumu</string>
     <string name="create_backup_sub">Visi dati vienā failā (.json)</string>
     <string name="restore_backup">Atjaunot no dublējuma</string>

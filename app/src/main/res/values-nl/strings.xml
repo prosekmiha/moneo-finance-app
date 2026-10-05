@@ -248,6 +248,7 @@
     <string name="error_prefix">Fout: %1$s</string>
     <string name="csv_exported">%1$d transacties geëxporteerd.</string>
     <string name="backup_saved">Back-up opgeslagen.</string>
+    <string name="sqlite_exported">Database geëxporteerd (rijen: %1$d).</string>
     <string name="restore_result">Hersteld: %1$d nieuw, %2$d bijgewerkt, %3$d ongewijzigd.</string>
     <string name="auto_backup_enabled">Automatische back-up ingeschakeld. Eerste back-up: %1$s</string>
     <string name="settings">Instellingen</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Saldo verbergen</string>
     <string name="hide_balance_sub">Bedragen worden getoond als •••• (ook in de widget)</string>
     <string name="group_backup">Back-up en export</string>
-    <string name="group_backup_kw">csv excel back-up herstellen drive export</string>
+    <string name="group_backup_kw">csv excel back-up herstellen drive export sqlite db</string>
     <string name="export_csv">Exporteren naar CSV</string>
     <string name="export_csv_sub">Voor Excel of Google Spreadsheets</string>
+    <string name="export_sqlite">SQLite-database exporteren</string>
+    <string name="export_sqlite_sub">Volledige database (.db) — ook te herstellen</string>
     <string name="create_backup">Back-up maken</string>
     <string name="create_backup_sub">Alle gegevens in één bestand (.json)</string>
     <string name="restore_backup">Herstellen uit back-up</string>

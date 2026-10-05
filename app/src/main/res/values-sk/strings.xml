@@ -248,6 +248,7 @@
     <string name="error_prefix">Chyba: %1$s</string>
     <string name="csv_exported">Exportované transakcie: %1$d.</string>
     <string name="backup_saved">Záloha uložená.</string>
+    <string name="sqlite_exported">Databáza exportovaná (riadkov: %1$d).</string>
     <string name="restore_result">Obnovené: %1$d nových, %2$d aktualizovaných, %3$d bez zmeny.</string>
     <string name="auto_backup_enabled">Automatická záloha zapnutá. Prvá záloha: %1$s</string>
     <string name="settings">Nastavenia</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Skryť zostatok</string>
     <string name="hide_balance_sub">Sumy sa zobrazujú ako •••• (aj vo widgete)</string>
     <string name="group_backup">Záloha a export</string>
-    <string name="group_backup_kw">csv excel záloha obnovenie drive export</string>
+    <string name="group_backup_kw">csv excel záloha obnovenie drive export sqlite db</string>
     <string name="export_csv">Export do CSV</string>
     <string name="export_csv_sub">Pre Excel alebo Tabuľky Google</string>
+    <string name="export_sqlite">Export databázy SQLite</string>
+    <string name="export_sqlite_sub">Celá databáza (.db) — dá sa aj obnoviť</string>
     <string name="create_backup">Vytvoriť zálohu</string>
     <string name="create_backup_sub">Všetky údaje v jednom súbore (.json)</string>
     <string name="restore_backup">Obnoviť zo zálohy</string>

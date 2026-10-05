@@ -248,6 +248,7 @@
     <string name="error_prefix">Fel: %1$s</string>
     <string name="csv_exported">%1$d transaktioner exporterade.</string>
     <string name="backup_saved">Säkerhetskopian sparad.</string>
+    <string name="sqlite_exported">Databasen exporterad (rader: %1$d).</string>
     <string name="restore_result">Återställt: %1$d nya, %2$d uppdaterade, %3$d oförändrade.</string>
     <string name="auto_backup_enabled">Automatisk säkerhetskopiering aktiverad. Första kopian: %1$s</string>
     <string name="settings">Inställningar</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Dölj saldo</string>
     <string name="hide_balance_sub">Belopp visas som •••• (även i widgeten)</string>
     <string name="group_backup">Säkerhetskopiering och export</string>
-    <string name="group_backup_kw">csv excel säkerhetskopia återställ drive export</string>
+    <string name="group_backup_kw">csv excel säkerhetskopia återställ drive export sqlite db</string>
     <string name="export_csv">Exportera till CSV</string>
     <string name="export_csv_sub">För Excel eller Google Kalkylark</string>
+    <string name="export_sqlite">Exportera SQLite-databas</string>
+    <string name="export_sqlite_sub">Hela databasen (.db) — kan även återställas</string>
     <string name="create_backup">Skapa säkerhetskopia</string>
     <string name="create_backup_sub">All data i en fil (.json)</string>
     <string name="restore_backup">Återställ från säkerhetskopia</string>

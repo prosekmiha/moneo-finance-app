@@ -248,6 +248,7 @@
     <string name="error_prefix">Errore: %1$s</string>
     <string name="csv_exported">Esportate %1$d transazioni.</string>
     <string name="backup_saved">Backup salvato.</string>
+    <string name="sqlite_exported">Database esportato (righe: %1$d).</string>
     <string name="restore_result">Ripristinato: %1$d nuove, %2$d aggiornate, %3$d invariate.</string>
     <string name="auto_backup_enabled">Backup automatico attivato. Primo backup: %1$s</string>
     <string name="settings">Impostazioni</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Nascondi saldo</string>
     <string name="hide_balance_sub">Gli importi vengono mostrati come •••• (anche nel widget)</string>
     <string name="group_backup">Backup ed esportazione</string>
-    <string name="group_backup_kw">csv excel backup ripristino drive esporta</string>
+    <string name="group_backup_kw">csv excel backup ripristino drive esporta sqlite db</string>
     <string name="export_csv">Esporta in CSV</string>
     <string name="export_csv_sub">Per Excel o Fogli Google</string>
+    <string name="export_sqlite">Esporta database SQLite</string>
+    <string name="export_sqlite_sub">Intero database (.db) — si può anche ripristinare</string>
     <string name="create_backup">Crea backup</string>
     <string name="create_backup_sub">Tutti i dati in un file (.json)</string>
     <string name="restore_backup">Ripristina da backup</string>

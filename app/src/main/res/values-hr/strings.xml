@@ -248,6 +248,7 @@
     <string name="error_prefix">Pogreška: %1$s</string>
     <string name="csv_exported">Izvezeno transakcija: %1$d.</string>
     <string name="backup_saved">Sigurnosna kopija spremljena.</string>
+    <string name="sqlite_exported">Baza izvezena (redaka: %1$d).</string>
     <string name="restore_result">Vraćeno: %1$d novih, %2$d ažuriranih, %3$d nepromijenjenih.</string>
     <string name="auto_backup_enabled">Automatska kopija uključena. Prva kopija: %1$s</string>
     <string name="settings">Postavke</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Sakrij stanje</string>
     <string name="hide_balance_sub">Iznosi stanja prikazuju se kao •••• (i u widgetu)</string>
     <string name="group_backup">Sigurnosna kopija i izvoz</string>
-    <string name="group_backup_kw">csv excel kopija vraćanje drive izvoz</string>
+    <string name="group_backup_kw">csv excel kopija vraćanje drive izvoz sqlite db</string>
     <string name="export_csv">Izvoz u CSV</string>
     <string name="export_csv_sub">Za Excel ili Google tablice</string>
+    <string name="export_sqlite">Izvoz SQLite baze</string>
+    <string name="export_sqlite_sub">Cijela baza (.db) — može se i vratiti</string>
     <string name="create_backup">Izradi sigurnosnu kopiju</string>
     <string name="create_backup_sub">Svi podaci u jednoj datoteci (.json)</string>
     <string name="restore_backup">Vrati iz kopije</string>

@@ -248,6 +248,7 @@
     <string name="error_prefix">Fejl: %1$s</string>
     <string name="csv_exported">%1$d transaktioner eksporteret.</string>
     <string name="backup_saved">Sikkerhedskopien er gemt.</string>
+    <string name="sqlite_exported">Database eksporteret (rækker: %1$d).</string>
     <string name="restore_result">Gendannet: %1$d nye, %2$d opdaterede, %3$d uændrede.</string>
     <string name="auto_backup_enabled">Automatisk sikkerhedskopiering er slået til. Første kopi: %1$s</string>
     <string name="settings">Indstillinger</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Skjul saldo</string>
     <string name="hide_balance_sub">Beløb vises som •••• (også i widgetten)</string>
     <string name="group_backup">Sikkerhedskopi og eksport</string>
-    <string name="group_backup_kw">csv excel sikkerhedskopi gendan drive eksport</string>
+    <string name="group_backup_kw">csv excel sikkerhedskopi gendan drive eksport sqlite db</string>
     <string name="export_csv">Eksportér til CSV</string>
     <string name="export_csv_sub">Til Excel eller Google Sheets</string>
+    <string name="export_sqlite">Eksportér SQLite-database</string>
+    <string name="export_sqlite_sub">Hele databasen (.db) — kan også gendannes</string>
     <string name="create_backup">Opret sikkerhedskopi</string>
     <string name="create_backup_sub">Alle data i én fil (.json)</string>
     <string name="restore_backup">Gendan fra sikkerhedskopi</string>

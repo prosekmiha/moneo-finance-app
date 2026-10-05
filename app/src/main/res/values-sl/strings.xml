@@ -254,6 +254,7 @@
     <string name="error_prefix">Napaka: %1$s</string>
     <string name="csv_exported">Izvoženih %1$d transakcij.</string>
     <string name="backup_saved">Varnostna kopija shranjena.</string>
+    <string name="sqlite_exported">Baza izvožena (vrstic: %1$d).</string>
     <string name="restore_result">Obnovljeno: %1$d novih, %2$d posodobljenih, %3$d nespremenjenih.</string>
     <string name="auto_backup_enabled">Samodejna kopija vklopljena. Prva kopija: %1$s</string>
     <string name="settings">Nastavitve</string>
@@ -299,9 +300,11 @@
     <string name="hide_balance_title">Skrij stanje</string>
     <string name="hide_balance_sub">Zneski stanja se prikažejo kot •••• (tudi v widgetu)</string>
     <string name="group_backup">Varnostna kopija in izvoz</string>
-    <string name="group_backup_kw">csv excel kopija obnovi backup drive izvoz</string>
+    <string name="group_backup_kw">csv excel kopija obnovi backup drive izvoz sqlite db</string>
     <string name="export_csv">Izvozi v CSV</string>
     <string name="export_csv_sub">Za Excel ali Google Preglednice</string>
+    <string name="export_sqlite">Izvozi bazo SQLite</string>
+    <string name="export_sqlite_sub">Celotna baza (.db) — lahko jo tudi obnoviš</string>
     <string name="create_backup">Ustvari varnostno kopijo</string>
     <string name="create_backup_sub">Vsi podatki v eni datoteki (.json)</string>
     <string name="restore_backup">Obnovi iz kopije</string>

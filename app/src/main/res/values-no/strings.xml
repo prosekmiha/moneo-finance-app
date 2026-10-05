@@ -248,6 +248,7 @@
     <string name="error_prefix">Feil: %1$s</string>
     <string name="csv_exported">%1$d transaksjoner eksportert.</string>
     <string name="backup_saved">Sikkerhetskopien er lagret.</string>
+    <string name="sqlite_exported">Database eksportert (rader: %1$d).</string>
     <string name="restore_result">Gjenopprettet: %1$d nye, %2$d oppdaterte, %3$d uendret.</string>
     <string name="auto_backup_enabled">Automatisk sikkerhetskopiering er slått på. Første kopi: %1$s</string>
     <string name="settings">Innstillinger</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Skjul saldo</string>
     <string name="hide_balance_sub">Beløp vises som •••• (også i modulen)</string>
     <string name="group_backup">Sikkerhetskopi og eksport</string>
-    <string name="group_backup_kw">csv excel sikkerhetskopi gjenopprett drive eksport</string>
+    <string name="group_backup_kw">csv excel sikkerhetskopi gjenopprett drive eksport sqlite db</string>
     <string name="export_csv">Eksporter til CSV</string>
     <string name="export_csv_sub">For Excel eller Google Regneark</string>
+    <string name="export_sqlite">Eksporter SQLite-database</string>
+    <string name="export_sqlite_sub">Hele databasen (.db) — kan også gjenopprettes</string>
     <string name="create_backup">Lag sikkerhetskopi</string>
     <string name="create_backup_sub">Alle data i én fil (.json)</string>
     <string name="restore_backup">Gjenopprett fra sikkerhetskopi</string>

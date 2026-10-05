@@ -249,6 +249,7 @@
     <string name="error_prefix">Hiba: %1$s</string>
     <string name="csv_exported">%1$d tranzakció exportálva.</string>
     <string name="backup_saved">Biztonsági mentés elmentve.</string>
+    <string name="sqlite_exported">Adatbázis exportálva (sorok: %1$d).</string>
     <string name="restore_result">Visszaállítva: %1$d új, %2$d frissített, %3$d változatlan.</string>
     <string name="auto_backup_enabled">Automatikus mentés bekapcsolva. Első mentés: %1$s</string>
     <string name="settings">Beállítások</string>
@@ -294,9 +295,11 @@
     <string name="hide_balance_title">Egyenleg elrejtése</string>
     <string name="hide_balance_sub">Az összegek •••• formában jelennek meg (a widgetben is)</string>
     <string name="group_backup">Mentés és exportálás</string>
-    <string name="group_backup_kw">csv excel mentés visszaállítás drive exportálás</string>
+    <string name="group_backup_kw">csv excel mentés visszaállítás drive exportálás sqlite db</string>
     <string name="export_csv">Exportálás CSV-be</string>
     <string name="export_csv_sub">Excelhez vagy Google Táblázatokhoz</string>
+    <string name="export_sqlite">SQLite-adatbázis exportálása</string>
+    <string name="export_sqlite_sub">A teljes adatbázis (.db) — vissza is állítható</string>
     <string name="create_backup">Biztonsági mentés készítése</string>
     <string name="create_backup_sub">Minden adat egy fájlban (.json)</string>
     <string name="restore_backup">Visszaállítás mentésből</string>

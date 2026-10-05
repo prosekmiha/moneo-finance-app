@@ -248,6 +248,7 @@
     <string name="error_prefix">Eroare: %1$s</string>
     <string name="csv_exported">S-au exportat %1$d tranzacții.</string>
     <string name="backup_saved">Copia de rezervă a fost salvată.</string>
+    <string name="sqlite_exported">Bază de date exportată (rânduri: %1$d).</string>
     <string name="restore_result">Restaurat: %1$d noi, %2$d actualizate, %3$d neschimbate.</string>
     <string name="auto_backup_enabled">Copia automată este activată. Prima copie: %1$s</string>
     <string name="settings">Setări</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Ascunde soldul</string>
     <string name="hide_balance_sub">Sumele sunt afișate ca •••• (și în widget)</string>
     <string name="group_backup">Copie de rezervă și export</string>
-    <string name="group_backup_kw">csv excel copie restaurare drive export</string>
+    <string name="group_backup_kw">csv excel copie restaurare drive export sqlite db</string>
     <string name="export_csv">Export în CSV</string>
     <string name="export_csv_sub">Pentru Excel sau Foi de calcul Google</string>
+    <string name="export_sqlite">Export bază de date SQLite</string>
+    <string name="export_sqlite_sub">Întreaga bază de date (.db) — poate fi și restaurată</string>
     <string name="create_backup">Creează o copie de rezervă</string>
     <string name="create_backup_sub">Toate datele într-un fișier (.json)</string>
     <string name="restore_backup">Restaurează din copie</string>

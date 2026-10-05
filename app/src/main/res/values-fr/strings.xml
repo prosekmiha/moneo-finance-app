@@ -248,6 +248,7 @@
     <string name="error_prefix">Erreur : %1$s</string>
     <string name="csv_exported">%1$d transactions exportées.</string>
     <string name="backup_saved">Sauvegarde enregistrée.</string>
+    <string name="sqlite_exported">Base exportée (lignes : %1$d).</string>
     <string name="restore_result">Restauré : %1$d nouvelles, %2$d mises à jour, %3$d inchangées.</string>
     <string name="auto_backup_enabled">Sauvegarde automatique activée. Première sauvegarde : %1$s</string>
     <string name="settings">Paramètres</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Masquer le solde</string>
     <string name="hide_balance_sub">Les montants sont affichés comme •••• (aussi dans le widget)</string>
     <string name="group_backup">Sauvegarde et export</string>
-    <string name="group_backup_kw">csv excel sauvegarde restaurer drive export</string>
+    <string name="group_backup_kw">csv excel sauvegarde restaurer drive export sqlite db</string>
     <string name="export_csv">Exporter en CSV</string>
     <string name="export_csv_sub">Pour Excel ou Google Sheets</string>
+    <string name="export_sqlite">Exporter la base SQLite</string>
+    <string name="export_sqlite_sub">Base de données complète (.db) — peut aussi être restaurée</string>
     <string name="create_backup">Créer une sauvegarde</string>
     <string name="create_backup_sub">Toutes les données dans un fichier (.json)</string>
     <string name="restore_backup">Restaurer une sauvegarde</string>

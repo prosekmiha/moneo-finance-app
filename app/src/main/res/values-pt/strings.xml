@@ -248,6 +248,7 @@
     <string name="error_prefix">Erro: %1$s</string>
     <string name="csv_exported">%1$d transações exportadas.</string>
     <string name="backup_saved">Cópia de segurança guardada.</string>
+    <string name="sqlite_exported">Base de dados exportada (linhas: %1$d).</string>
     <string name="restore_result">Restaurado: %1$d novas, %2$d atualizadas, %3$d inalteradas.</string>
     <string name="auto_backup_enabled">Cópia automática ativada. Primeira cópia: %1$s</string>
     <string name="settings">Definições</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Ocultar saldo</string>
     <string name="hide_balance_sub">Os valores são mostrados como •••• (também no widget)</string>
     <string name="group_backup">Cópia de segurança e exportação</string>
-    <string name="group_backup_kw">csv excel cópia restaurar drive exportar</string>
+    <string name="group_backup_kw">csv excel cópia restaurar drive exportar sqlite db</string>
     <string name="export_csv">Exportar para CSV</string>
     <string name="export_csv_sub">Para Excel ou Google Sheets</string>
+    <string name="export_sqlite">Exportar base de dados SQLite</string>
+    <string name="export_sqlite_sub">Base de dados completa (.db) — também pode ser restaurada</string>
     <string name="create_backup">Criar cópia de segurança</string>
     <string name="create_backup_sub">Todos os dados num ficheiro (.json)</string>
     <string name="restore_backup">Restaurar cópia de segurança</string>

@@ -72,6 +72,7 @@ import androidx.compose.material.icons.rounded.Subscriptions
 import androidx.compose.material.icons.rounded.Summarize
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Storage
 import androidx.compose.material.icons.rounded.Wallpaper
 import androidx.compose.material.icons.rounded.TableChart
 import androidx.compose.animation.AnimatedVisibility
@@ -219,10 +220,13 @@ fun MoreScreen(
             }
         }
     }
-    val restoreLauncher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+    val sqliteLauncher = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/octet-stream")) { uri ->
+        uri?.let { runTask { str(R.string.sqlite_exported, backup.writeSqlite(it)) } }
+    }
+    val restoreLauncher =rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         uri?.let {
             runTask {
-                val r = backup.restoreJson(it)
+                val r = backup.restore(it)
                 str(R.string.restore_result, r.inserted, r.updated, r.skipped)
             }
         }
@@ -366,6 +370,10 @@ fun MoreScreen(
             Divider()
             SettingsRow(Icons.Rounded.Backup, primary, stringResource(R.string.create_backup), stringResource(R.string.create_backup_sub)) {
                 if (!busy) jsonLauncher.launch("moneo-${LocalDate.now()}.json")
+            }
+            Divider()
+            SettingsRow(Icons.Rounded.Storage, MaterialTheme.colorScheme.tertiary, stringResource(R.string.export_sqlite), stringResource(R.string.export_sqlite_sub)) {
+                if (!busy) sqliteLauncher.launch("moneo-${LocalDate.now()}.db")
             }
             Divider()
             SettingsRow(Icons.Rounded.Restore, colors.warning, stringResource(R.string.restore_backup), stringResource(R.string.restore_backup_sub)) {
