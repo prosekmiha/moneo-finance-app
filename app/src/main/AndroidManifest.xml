@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.any" android:required="false" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:name=".MoneoApp"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:theme="@style/Theme.Moneo"
+        android:localeConfig="@xml/locales_config"
+        android:supportsRtl="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- Bližnjica: dolgi pritisk na ikono aplikacije -->
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+
+        <!-- Glasovni vnos: odpre se iz widgeta, QS tile-a, ali shortcuta -->
+        <activity
+            android:name=".feature.voice.VoiceInputActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Moneo.Translucent"
+            android:launchMode="singleTask" />
+
+        <!-- OCR računov -->
+        <activity
+            android:name=".feature.ocr.ReceiptScanActivity"
+            android:exported="false" />
+
+        <!-- Quick Settings tile (dostopen tudi z zaklenjenega zaslona) -->
+        <service
+            android:name=".feature.quickadd.QuickAddTileService"
+            android:exported="true"
+            android:label="@string/tile_label"
+            android:icon="@drawable/ic_mic"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <!-- Poslušalec bančnih obvestil -->
+        <service
+            android:name=".feature.notifications.BankNotificationListenerService"
+            android:exported="true"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!-- FileProvider za OCR slike računov -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- Widget za hiter vnos -->
+        <receiver
+            android:name=".feature.widget.QuickAddWidgetProvider"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/quick_add_widget_info" />
+        </receiver>
+
+        <!-- Widget s priljubljenimi vnosi (mreža gumbov, tap zapiše vnos) -->
+        <receiver
+            android:name=".feature.widget.FavoritesWidgetProvider"
+            android:exported="false"
+            android:label="@string/widget_favorites_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/favorites_widget_info" />
+        </receiver>
+
+        <!-- Gumb "Potrdi" v obvestilu ponavljajoče transakcije -->
+        <receiver
+            android:name=".feature.recurring.ConfirmRecurringReceiver"
+            android:exported="false" />
+
+        <service
+            android:name=".feature.widget.FavoritesWidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+    </application>
+</manifest>

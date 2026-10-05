@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Jeziki, ki jih Android 13+ ponudi v sistemskih nastavitvah aplikacije. -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="en" />
+    <locale android:name="sl" />
+    <locale android:name="de" />
+    <locale android:name="hr" />
+    <locale android:name="sr-Latn" />
+    <locale android:name="it" />
+    <locale android:name="fr" />
+    <locale android:name="es" />
+    <locale android:name="pt" />
+    <locale android:name="nl" />
+    <locale android:name="pl" />
+    <locale android:name="cs" />
+    <locale android:name="sk" />
+    <locale android:name="hu" />
+    <locale android:name="ro" />
+    <locale android:name="bg" />
+    <locale android:name="el" />
+    <locale android:name="ru" />
+    <locale android:name="uk" />
+    <locale android:name="sv" />
+    <locale android:name="da" />
+    <locale android:name="nb" />
+    <locale android:name="fi" />
+    <locale android:name="et" />
+    <locale android:name="lv" />
+    <locale android:name="lt" />
+</locale-config>

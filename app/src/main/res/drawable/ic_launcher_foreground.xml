@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ospredje ikone: stolpci grafa + trend črta (znotraj varnega območja 66 dp) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path android:fillColor="#B3FFFFFF" android:pathData="M38.0,62.3 h0.0 a5.5,5.5 0 0 1 5.5,5.5 v5.0 a5.5,5.5 0 0 1 -5.5,5.5 h-0.0 a5.5,5.5 0 0 1 -5.5,-5.5 v-5.0 a5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <path android:fillColor="#D9FFFFFF" android:pathData="M54.0,51.3 h0.0 a5.5,5.5 0 0 1 5.5,5.5 v16.0 a5.5,5.5 0 0 1 -5.5,5.5 h-0.0 a5.5,5.5 0 0 1 -5.5,-5.5 v-16.0 a5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <path android:fillColor="#FFFFFFFF" android:pathData="M70.0,42.3 h0.0 a5.5,5.5 0 0 1 5.5,5.5 v25.0 a5.5,5.5 0 0 1 -5.5,5.5 h-0.0 a5.5,5.5 0 0 1 -5.5,-5.5 v-25.0 a5.5,5.5 0 0 1 5.5,-5.5 z" />
+    <path
+        android:pathData="M33,52.3 L46,43.3 L57,46.3 L70,33.3"
+        android:strokeColor="#FFFFE08A"
+        android:strokeWidth="3.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path android:fillColor="#FFFFE08A" android:pathData="M70,33.3 m-3.6,0 a3.6,3.6 0 1,0 7.2,0 a3.6,3.6 0 1,0 -7.2,0" />
+</vector>

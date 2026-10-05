@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="widget_bg">#FF18201C</color>
+    <color name="widget_track">#FF222C27</color>
+    <color name="widget_text">#FFE6EDEA</color>
+    <color name="widget_subtext">#FF8C9892</color>
+    <color name="widget_accent">#FF34D399</color>
+    <color name="widget_accent_bg">#FF0D3B2D</color>
+    <color name="widget_income">#FF34D399</color>
+    <color name="widget_income_bg">#FF0F3327</color>
+    <color name="widget_expense">#FFF87171</color>
+    <color name="widget_expense_bg">#FF3A1A1A</color>
+</resources>

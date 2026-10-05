@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ozadja so bele oblike v ImageView, ki jih widget obarva z barvami teme. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/widget_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:importantForAccessibility="no"
+        android:scaleType="fitXY"
+        android:src="@drawable/widget_fill_24"
+        android:tint="@color/widget_bg" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <!-- Taba Odhodki | Prihodki (kot na kartici stanja v aplikaciji) + glasovni vnos -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/tabs_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/widget_fill_16"
+                    android:tint="@color/widget_track" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="3dp">
+
+                    <FrameLayout
+                        android:id="@+id/tab_expense"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:id="@+id/tab_expense_bg"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:importantForAccessibility="no"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/widget_fill_16"
+                            android:tint="@color/widget_expense" />
+
+                        <TextView
+                            android:id="@+id/tab_expense_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/widget_tab_expense"
+                            android:textColor="#FFFFFFFF"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/tab_income"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:id="@+id/tab_income_bg"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:importantForAccessibility="no"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/widget_fill_16"
+                            android:tint="@color/widget_expense_bg"
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:id="@+id/tab_income_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text="@string/widget_tab_income"
+                            android:textColor="@color/widget_subtext"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+                    </FrameLayout>
+                </LinearLayout>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/btn_voice"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/tile_label">
+
+                <ImageView
+                    android:id="@+id/btn_voice_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/widget_fill_oval"
+                    android:tint="@color/widget_accent" />
+
+                <ImageView
+                    android:id="@+id/btn_voice_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_mic" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Vsota izbrane vrste za tekoči mesec (brez predznaka) -->
+        <LinearLayout
+            android:id="@+id/widget_summary"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widget_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/widget_month"
+                android:textColor="@color/widget_subtext"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/widget_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="0,00 €"
+                android:textColor="@color/widget_text"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/btn_expense"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/btn_expense_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/widget_fill_16"
+                    android:tint="@color/widget_expense_bg" />
+
+                <TextView
+                    android:id="@+id/btn_expense_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/widget_btn_expense"
+                    android:textColor="@color/widget_expense"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/btn_income"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/btn_income_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/widget_fill_16"
+                    android:tint="@color/widget_income_bg" />
+
+                <TextView
+                    android:id="@+id/btn_income_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/widget_btn_income"
+                    android:textColor="@color/widget_income"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Privzete barve widgetov (predogled); ob osvežitvi jih widget zamenja z barvami izbrane teme. -->
+<resources>
+    <color name="widget_bg">#FFFFFFFF</color>
+    <color name="widget_track">#FFEEF2F0</color>
+    <color name="widget_text">#FF0E1B16</color>
+    <color name="widget_subtext">#FF8A938F</color>
+    <color name="widget_accent">#FF16B17E</color>
+    <color name="widget_accent_bg">#FFD7F5EA</color>
+    <color name="widget_income">#FF16B17E</color>
+    <color name="widget_income_bg">#FFE3F7EF</color>
+    <color name="widget_expense">#FFEF4444</color>
+    <color name="widget_expense_bg">#FFFDE8E8</color>
+</resources>
