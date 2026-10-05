@@ -248,6 +248,7 @@
     <string name="error_prefix">Error: %1$s</string>
     <string name="csv_exported">%1$d transacciones exportadas.</string>
     <string name="backup_saved">Copia de seguridad guardada.</string>
+    <string name="sqlite_exported">Base de datos exportada (filas: %1$d).</string>
     <string name="restore_result">Restaurado: %1$d nuevas, %2$d actualizadas, %3$d sin cambios.</string>
     <string name="auto_backup_enabled">Copia automática activada. Primera copia: %1$s</string>
     <string name="settings">Ajustes</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Ocultar saldo</string>
     <string name="hide_balance_sub">Los importes se muestran como •••• (también en el widget)</string>
     <string name="group_backup">Copia de seguridad y exportación</string>
-    <string name="group_backup_kw">csv excel copia restaurar drive exportar</string>
+    <string name="group_backup_kw">csv excel copia restaurar drive exportar sqlite db</string>
     <string name="export_csv">Exportar a CSV</string>
     <string name="export_csv_sub">Para Excel o Hojas de cálculo de Google</string>
+    <string name="export_sqlite">Exportar base de datos SQLite</string>
+    <string name="export_sqlite_sub">Base de datos completa (.db) — también se puede restaurar</string>
     <string name="create_backup">Crear copia de seguridad</string>
     <string name="create_backup_sub">Todos los datos en un archivo (.json)</string>
     <string name="restore_backup">Restaurar copia de seguridad</string>
@@ -322,6 +325,7 @@
     <string name="accent_pink">Rosa</string>
     <string name="accent_orange">Naranja</string>
     <string name="accent_graphite">Grafito</string>
+    <string name="accent_system">Fondo</string>
     <string name="section_budgets">Avisos de presupuesto</string>
     <string name="section_budgets_desc" formatted="false">Cuando gastas el 80 % de un presupuesto</string>
     <string name="section_favorites_desc">Botones rápidos para entradas frecuentes</string>

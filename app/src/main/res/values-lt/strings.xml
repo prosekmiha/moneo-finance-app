@@ -249,6 +249,7 @@
     <string name="error_prefix">Klaida: %1$s</string>
     <string name="csv_exported">Eksportuota operacijų: %1$d.</string>
     <string name="backup_saved">Atsarginė kopija išsaugota.</string>
+    <string name="sqlite_exported">Duomenų bazė eksportuota (eilučių: %1$d).</string>
     <string name="restore_result">Atkurta: %1$d naujų, %2$d atnaujintų, %3$d nepakeistų.</string>
     <string name="auto_backup_enabled">Automatinis atsarginis kopijavimas įjungtas. Pirmoji kopija: %1$s</string>
     <string name="settings">Nustatymai</string>
@@ -294,9 +295,11 @@
     <string name="hide_balance_title">Slėpti balansą</string>
     <string name="hide_balance_sub">Sumos rodomos kaip •••• (ir valdiklyje)</string>
     <string name="group_backup">Atsarginės kopijos ir eksportas</string>
-    <string name="group_backup_kw">csv excel kopija atkūrimas drive eksportas</string>
+    <string name="group_backup_kw">csv excel kopija atkūrimas drive eksportas sqlite db</string>
     <string name="export_csv">Eksportuoti į CSV</string>
     <string name="export_csv_sub">„Excel“ arba „Google“ skaičiuoklėms</string>
+    <string name="export_sqlite">Eksportuoti SQLite duomenų bazę</string>
+    <string name="export_sqlite_sub">Visa duomenų bazė (.db) — galima ir atkurti</string>
     <string name="create_backup">Sukurti atsarginę kopiją</string>
     <string name="create_backup_sub">Visi duomenys viename faile (.json)</string>
     <string name="restore_backup">Atkurti iš kopijos</string>
@@ -323,6 +326,7 @@
     <string name="accent_pink">Rožinė</string>
     <string name="accent_orange">Oranžinė</string>
     <string name="accent_graphite">Grafito</string>
+    <string name="accent_system">Ekrano fonas</string>
     <string name="section_budgets">Biudžeto įspėjimai</string>
     <string name="section_budgets_desc" formatted="false">Kai išleidžiate 80 % biudžeto</string>
     <string name="section_favorites_desc">Greiti mygtukai dažniems įrašams</string>

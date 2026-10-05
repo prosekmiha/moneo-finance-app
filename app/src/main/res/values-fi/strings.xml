@@ -248,6 +248,7 @@
     <string name="error_prefix">Virhe: %1$s</string>
     <string name="csv_exported">%1$d tapahtumaa viety.</string>
     <string name="backup_saved">Varmuuskopio tallennettu.</string>
+    <string name="sqlite_exported">Tietokanta viety (rivejä: %1$d).</string>
     <string name="restore_result">Palautettu: %1$d uutta, %2$d päivitetty, %3$d ennallaan.</string>
     <string name="auto_backup_enabled">Automaattinen varmuuskopiointi käytössä. Ensimmäinen kopio: %1$s</string>
     <string name="settings">Asetukset</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Piilota saldo</string>
     <string name="hide_balance_sub">Summat näytetään muodossa •••• (myös widgetissä)</string>
     <string name="group_backup">Varmuuskopiointi ja vienti</string>
-    <string name="group_backup_kw">csv excel varmuuskopio palautus drive vienti</string>
+    <string name="group_backup_kw">csv excel varmuuskopio palautus drive vienti sqlite db</string>
     <string name="export_csv">Vie CSV-tiedostoon</string>
     <string name="export_csv_sub">Exceliin tai Google Sheetsiin</string>
+    <string name="export_sqlite">Vie SQLite-tietokanta</string>
+    <string name="export_sqlite_sub">Koko tietokanta (.db) — voidaan myös palauttaa</string>
     <string name="create_backup">Luo varmuuskopio</string>
     <string name="create_backup_sub">Kaikki tiedot yhdessä tiedostossa (.json)</string>
     <string name="restore_backup">Palauta varmuuskopiosta</string>
@@ -322,6 +325,7 @@
     <string name="accent_pink">Pinkki</string>
     <string name="accent_orange">Oranssi</string>
     <string name="accent_graphite">Grafiitti</string>
+    <string name="accent_system">Taustakuva</string>
     <string name="section_budgets">Budjettivaroitukset</string>
     <string name="section_budgets_desc" formatted="false">Kun olet käyttänyt 80 % budjetista</string>
     <string name="section_favorites_desc">Pikapainikkeet toistuville kirjauksille</string>

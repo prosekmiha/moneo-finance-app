@@ -248,6 +248,7 @@
     <string name="error_prefix">Σφάλμα: %1$s</string>
     <string name="csv_exported">Εξήχθησαν %1$d συναλλαγές.</string>
     <string name="backup_saved">Το αντίγραφο ασφαλείας αποθηκεύτηκε.</string>
+    <string name="sqlite_exported">Η βάση εξήχθη (γραμμές: %1$d).</string>
     <string name="restore_result">Επαναφέρθηκαν: %1$d νέες, %2$d ενημερωμένες, %3$d αμετάβλητες.</string>
     <string name="auto_backup_enabled">Το αυτόματο αντίγραφο ενεργοποιήθηκε. Πρώτο αντίγραφο: %1$s</string>
     <string name="settings">Ρυθμίσεις</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Απόκρυψη υπολοίπου</string>
     <string name="hide_balance_sub">Τα ποσά εμφανίζονται ως •••• (και στο widget)</string>
     <string name="group_backup">Αντίγραφα ασφαλείας και εξαγωγή</string>
-    <string name="group_backup_kw">csv excel αντίγραφο επαναφορά drive εξαγωγή</string>
+    <string name="group_backup_kw">csv excel αντίγραφο επαναφορά drive εξαγωγή sqlite db</string>
     <string name="export_csv">Εξαγωγή σε CSV</string>
     <string name="export_csv_sub">Για Excel ή Υπολογιστικά φύλλα Google</string>
+    <string name="export_sqlite">Εξαγωγή βάσης SQLite</string>
+    <string name="export_sqlite_sub">Ολόκληρη η βάση (.db) — μπορεί και να επαναφερθεί</string>
     <string name="create_backup">Δημιουργία αντιγράφου ασφαλείας</string>
     <string name="create_backup_sub">Όλα τα δεδομένα σε ένα αρχείο (.json)</string>
     <string name="restore_backup">Επαναφορά από αντίγραφο</string>
@@ -322,6 +325,7 @@
     <string name="accent_pink">Ροζ</string>
     <string name="accent_orange">Πορτοκαλί</string>
     <string name="accent_graphite">Γραφίτης</string>
+    <string name="accent_system">Ταπετσαρία</string>
     <string name="section_budgets">Ειδοποιήσεις προϋπολογισμού</string>
     <string name="section_budgets_desc" formatted="false">Όταν ξοδέψετε το 80% ενός προϋπολογισμού</string>
     <string name="section_favorites_desc">Γρήγορα κουμπιά για συχνές καταχωρίσεις</string>

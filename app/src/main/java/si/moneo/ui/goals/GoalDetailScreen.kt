@@ -1,5 +1,7 @@
 package si.moneo.ui.goals
 
+import si.moneo.ui.theme.asGraphic
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
@@ -92,7 +94,7 @@ fun GoalDetailScreen(vm: MainViewModel, goalUid: String, onBack: () -> Unit, onE
             item {
                 Column(Modifier.fillMaxWidth().padding(horizontal = Spacing.screen), horizontalAlignment = Alignment.CenterHorizontally) {
                     Spacer(Modifier.height(Spacing.md))
-                    ProgressRing(g.progress, size = 180.dp, thickness = 12.dp, color = accent, modifier = Modifier.sharedElementKey("goal-" + g.goal.uid)) {
+                    ProgressRing(g.progress, size = 180.dp, thickness = 12.dp, color = accent.asGraphic(), modifier = Modifier.sharedElementKey("goal-" + g.goal.uid)) {
                         Text(g.goal.emoji, style = MaterialTheme.typography.displayLarge)
                     }
                     Spacer(Modifier.height(Spacing.lg))
@@ -118,7 +120,7 @@ fun GoalDetailScreen(vm: MainViewModel, goalUid: String, onBack: () -> Unit, onE
             item {
                 Surface(
                     color = MaterialTheme.colorScheme.surface,
-                    shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+                    shape = RoundedCornerShape(topStart = Radius.xl, topEnd = Radius.xl),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Column(Modifier.padding(top = 10.dp)) {
@@ -193,7 +195,7 @@ private fun GoalFacts(deadline: Long?, projected: LocalDate?, remainingCents: Lo
 /** Zaokroževanje stroškov navzgor na cel evro - razlika gre v ta cilj. */
 @Composable
 private fun RoundUpToggle(enabled: Boolean, otherGoal: String?, onChange: (Boolean) -> Unit) {
-    Surface(shape = RoundedCornerShape(20.dp), color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxWidth()) {
+    Surface(shape = RoundedCornerShape(Radius.lg), color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxWidth()) {
         Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
             IconBadge(Icons.Rounded.Savings, Finance.colors.income, size = 36.dp)
             Spacer(Modifier.width(Spacing.md))
@@ -216,7 +218,7 @@ private fun RoundUpToggle(enabled: Boolean, otherGoal: String?, onChange: (Boole
 
 @Composable
 private fun Fact(icon: ImageVector, title: String, subtitle: String) {
-    Surface(shape = RoundedCornerShape(20.dp), color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxWidth()) {
+    Surface(shape = RoundedCornerShape(Radius.lg), color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxWidth()) {
         Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
             IconBadge(icon, MaterialTheme.colorScheme.primary, size = 36.dp)
             Spacer(Modifier.width(Spacing.md))
@@ -290,7 +292,7 @@ fun AmountSheet(
                 note, { note = it },
                 placeholder = { Text(stringResource(R.string.note_optional)) },
                 singleLine = true,
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(Radius.md),
                 modifier = Modifier.fillMaxWidth(),
             )
             NumPad(expr, { expr = it })

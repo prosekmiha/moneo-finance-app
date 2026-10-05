@@ -1,5 +1,7 @@
 package si.moneo.ui.year
 
+import si.moneo.ui.theme.asGraphic
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
@@ -99,7 +101,7 @@ fun YearReviewScreen(vm: MainViewModel, initialYear: Int, onBack: () -> Unit) {
                 return@LazyColumn
             }
             item {
-                SoftCard(Modifier.fillMaxWidth(), shape = RoundedCornerShape(28.dp), contentPadding = PaddingValues(20.dp)) {
+                SoftCard(Modifier.fillMaxWidth(), shape = RoundedCornerShape(Radius.xl), contentPadding = PaddingValues(20.dp)) {
                     Text(
                         if (r.netCents >= 0) stringResource(R.string.saved_in_year, year) else stringResource(R.string.spent_more_than_received),
                         style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -182,7 +184,7 @@ fun YearReviewScreen(vm: MainViewModel, initialYear: Int, onBack: () -> Unit) {
                                         Text(formatCents(s.totalCents), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                                     }
                                     Spacer(Modifier.height(4.dp))
-                                    SlimProgress(s.share, accentFor(s.category.title, s.category.color))
+                                    SlimProgress(s.share, accentFor(s.category.title, s.category.color).asGraphic())
                                     Text(
                                         stringResource(R.string.per_month_suffix, stringResource(R.string.percent, (s.share * 100).roundToInt()), formatCents(s.totalCents / r.monthTotals.size.coerceAtLeast(1))),
                                         style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant,

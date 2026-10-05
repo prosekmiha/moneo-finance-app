@@ -1,5 +1,7 @@
 package si.moneo.ui.category
 
+import si.moneo.ui.theme.underWhiteText
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.background
@@ -72,9 +74,9 @@ fun AccountsScreen(vm: MainViewModel, onBack: () -> Unit, onTransfer: () -> Unit
                 }
             }
             items(balances, key = { it.account.uid }) { b ->
-                val base = accentFor(b.account.title, b.account.color)
+                val base = accentFor(b.account.title, b.account.color).underWhiteText()
                 Box(
-                    Modifier.fillMaxWidth().height(110.dp).clip(RoundedCornerShape(24.dp))
+                    Modifier.fillMaxWidth().height(110.dp).clip(RoundedCornerShape(Radius.lg))
                         .background(Brush.linearGradient(listOf(base, base.copy(alpha = 0.7f))))
                         .clickable { editing = b.account },
                 ) {

@@ -248,6 +248,7 @@
     <string name="error_prefix">Erreur : %1$s</string>
     <string name="csv_exported">%1$d transactions exportées.</string>
     <string name="backup_saved">Sauvegarde enregistrée.</string>
+    <string name="sqlite_exported">Base exportée (lignes : %1$d).</string>
     <string name="restore_result">Restauré : %1$d nouvelles, %2$d mises à jour, %3$d inchangées.</string>
     <string name="auto_backup_enabled">Sauvegarde automatique activée. Première sauvegarde : %1$s</string>
     <string name="settings">Paramètres</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Masquer le solde</string>
     <string name="hide_balance_sub">Les montants sont affichés comme •••• (aussi dans le widget)</string>
     <string name="group_backup">Sauvegarde et export</string>
-    <string name="group_backup_kw">csv excel sauvegarde restaurer drive export</string>
+    <string name="group_backup_kw">csv excel sauvegarde restaurer drive export sqlite db</string>
     <string name="export_csv">Exporter en CSV</string>
     <string name="export_csv_sub">Pour Excel ou Google Sheets</string>
+    <string name="export_sqlite">Exporter la base SQLite</string>
+    <string name="export_sqlite_sub">Base de données complète (.db) — peut aussi être restaurée</string>
     <string name="create_backup">Créer une sauvegarde</string>
     <string name="create_backup_sub">Toutes les données dans un fichier (.json)</string>
     <string name="restore_backup">Restaurer une sauvegarde</string>
@@ -322,6 +325,7 @@
     <string name="accent_pink">Rose</string>
     <string name="accent_orange">Orange</string>
     <string name="accent_graphite">Graphite</string>
+    <string name="accent_system">Fond d\'écran</string>
     <string name="section_budgets">Alertes de budget</string>
     <string name="section_budgets_desc" formatted="false">Quand vous avez dépensé 80 % d\'un budget</string>
     <string name="section_favorites_desc">Boutons rapides pour les saisies fréquentes</string>
@@ -448,7 +452,7 @@
     <string name="opening_balance">Solde initial (%1$s)</string>
     <string name="opening_balance_hint">Le montant sur le compte quand vous avez commencé à le suivre. Ne compte pas comme revenu.</string>
     <string name="account_current_balance">Solde actuel (%1$s)</string>
-    <string name="account_balance_correction_hint">Corrigez-le pour qu'il corresponde à votre banque. Les transactions restent inchangées : seul le solde initial est ajusté.</string>
+    <string name="account_balance_correction_hint">Corrigez-le pour qu\'il corresponde à votre banque. Les transactions restent inchangées : seul le solde initial est ajusté.</string>
     <string name="total_balance">Solde total</string>
     <string name="plan">Plan</string>
     <string name="plan_subtitle">Objectifs, abonnements, paiements récurrents, dettes et budgets</string>

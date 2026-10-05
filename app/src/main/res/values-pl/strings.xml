@@ -248,6 +248,7 @@
     <string name="error_prefix">Błąd: %1$s</string>
     <string name="csv_exported">Wyeksportowano transakcje: %1$d.</string>
     <string name="backup_saved">Kopia zapasowa zapisana.</string>
+    <string name="sqlite_exported">Baza wyeksportowana (wiersze: %1$d).</string>
     <string name="restore_result">Przywrócono: %1$d nowych, %2$d zaktualizowanych, %3$d bez zmian.</string>
     <string name="auto_backup_enabled">Włączono automatyczną kopię. Pierwsza kopia: %1$s</string>
     <string name="settings">Ustawienia</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Ukryj saldo</string>
     <string name="hide_balance_sub">Kwoty są wyświetlane jako •••• (także w widżecie)</string>
     <string name="group_backup">Kopia zapasowa i eksport</string>
-    <string name="group_backup_kw">csv excel kopia przywracanie drive eksport</string>
+    <string name="group_backup_kw">csv excel kopia przywracanie drive eksport sqlite db</string>
     <string name="export_csv">Eksport do CSV</string>
     <string name="export_csv_sub">Do Excela lub Arkuszy Google</string>
+    <string name="export_sqlite">Eksport bazy SQLite</string>
+    <string name="export_sqlite_sub">Cała baza danych (.db) — można ją też przywrócić</string>
     <string name="create_backup">Utwórz kopię zapasową</string>
     <string name="create_backup_sub">Wszystkie dane w jednym pliku (.json)</string>
     <string name="restore_backup">Przywróć z kopii</string>
@@ -322,6 +325,7 @@
     <string name="accent_pink">Różowy</string>
     <string name="accent_orange">Pomarańczowy</string>
     <string name="accent_graphite">Grafitowy</string>
+    <string name="accent_system">Tapeta</string>
     <string name="section_budgets">Ostrzeżenia budżetowe</string>
     <string name="section_budgets_desc" formatted="false">Gdy wydasz 80% budżetu</string>
     <string name="section_favorites_desc">Szybkie przyciski dla częstych wpisów</string>

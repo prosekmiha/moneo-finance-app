@@ -1,5 +1,6 @@
 package si.moneo.ui.subscriptions
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import si.moneo.ui.qty
@@ -188,7 +189,7 @@ fun SubscriptionsScreen(vm: MainViewModel, onBack: () -> Unit) {
 private fun SummaryCard(running: List<SubscriptionEntity>) {
     val monthly = running.sumOf { it.monthlyCents }
     val next = running.minByOrNull { it.nextPaymentDate }
-    SoftCard(Modifier.fillMaxWidth(), shape = RoundedCornerShape(28.dp), contentPadding = PaddingValues(20.dp)) {
+    SoftCard(Modifier.fillMaxWidth(), shape = RoundedCornerShape(Radius.xl), contentPadding = PaddingValues(20.dp)) {
         Text(stringResource(R.string.subscriptions_per_month), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text(formatCents(monthly), style = MaterialTheme.typography.displaySmall)
         Spacer(Modifier.height(Spacing.sm))
@@ -354,14 +355,14 @@ private fun SubscriptionEditorSheet(
             Text(stringResource(if (subscription == null) R.string.new_subscription else R.string.edit_subscription), style = MaterialTheme.typography.titleLarge)
             OutlinedTextField(
                 title, { title = it }, label = { Text(stringResource(R.string.name_hint_netflix)) },
-                singleLine = true, shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth(),
+                singleLine = true, shape = RoundedCornerShape(Radius.md), modifier = Modifier.fillMaxWidth(),
             )
             OutlinedTextField(
                 amount, { v -> if (v.all { it.isDigit() || it == ',' || it == '.' }) amount = v },
                 label = { Text(stringResource(R.string.amount_per_payment)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(Radius.md),
                 modifier = Modifier.fillMaxWidth(),
             )
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
@@ -402,12 +403,12 @@ private fun SubscriptionEditorSheet(
                         runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(full))) }
                     }) { Icon(Icons.AutoMirrored.Rounded.OpenInNew, stringResource(R.string.open_link)) }
                 },
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(Radius.md),
                 modifier = Modifier.fillMaxWidth(),
             )
             OutlinedTextField(
                 note, { note = it }, label = { Text(stringResource(R.string.note_family_plan)) },
-                shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(Radius.md), modifier = Modifier.fillMaxWidth(),
             )
 
             if (cents > 0) {

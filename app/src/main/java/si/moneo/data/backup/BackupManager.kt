@@ -2,7 +2,10 @@ package si.moneo.data.backup
 
 import si.moneo.R
 import si.moneo.ui.str
+import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.provider.DocumentsContract
 import androidx.room.withTransaction
@@ -24,15 +27,17 @@ import si.moneo.data.db.entity.TransactionEntity
 import si.moneo.data.db.entity.TransactionSource
 import si.moneo.data.db.entity.TransactionType
 import si.moneo.data.db.entity.TransferEntity
+import java.io.File
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 
 /**
  * Varnostna kopija vseh podatkov v JSON (vključno z izbrisanimi zapisi - soft delete - da se
- * brisanja pravilno prenesejo) in izvoz transakcij v CSV za Excel.
+ * brisanja pravilno prenesejo), izvoz celotne baze v SQLite in izvoz transakcij v CSV za Excel.
  *
- * Obnovitev združuje po uid: zmaga zapis z novejšim updatedAt, zato je ponovna obnovitev varna.
+ * Obnovitev (iz JSON ali SQLite) združuje po uid: zmaga zapis z novejšim updatedAt, zato je
+ * ponovna obnovitev varna.
  */
 class BackupManager(private val context: Context, private val db: AppDatabase) {
 
@@ -64,9 +69,17 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
         context.contentResolver.openOutputStream(uri, "wt")!!.use { it.write(json.toByteArray(Charsets.UTF_8)) }
     }
 
-    suspend fun restoreJson(uri: Uri): RestoreResult {
-        val text = context.contentResolver.openInputStream(uri)!!.use { it.readBytes().toString(Charsets.UTF_8) }
-        val root = JSONObject(text)
+    /** Obnovi iz JSON kopije ali SQLite izvoza - format se prepozna po vsebini datoteke. */
+    suspend fun restore(uri: Uri): RestoreResult {
+        val bytes = context.contentResolver.openInputStream(uri)!!.use { it.readBytes() }
+        return if (bytes.size >= SQLITE_HEADER.size && bytes.copyOf(SQLITE_HEADER.size).contentEquals(SQLITE_HEADER)) {
+            restoreJson(readSqlite(bytes))
+        } else {
+            restoreJson(JSONObject(bytes.toString(Charsets.UTF_8)))
+        }
+    }
+
+    private suspend fun restoreJson(root: JSONObject): RestoreResult {
         require(root.optString("format") == FORMAT) { str(R.string.not_a_backup) }
 
         var inserted = 0; var updated = 0; var skipped = 0
@@ -119,6 +132,100 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
         return name
     }
 
+    // ---------------- SQLite ----------------
+
+    /**
+     * Samostojna SQLite datoteka z vsemi tabelami in indeksi (za DB Browser, Python ...), ki jo zna
+     * [restore] tudi uvoziti. Prebere en posnetek baze v transakciji. Vrne število vrstic.
+     */
+    suspend fun writeSqlite(uri: Uri): Int {
+        val file = File(context.cacheDir, "moneo-export.db")
+        SQLiteDatabase.deleteDatabase(file)
+        var rows = 0
+        try {
+            SQLiteDatabase.openOrCreateDatabase(file, null).use { out ->
+                val src = db.openHelper.writableDatabase
+                db.withTransaction {
+                    out.beginTransaction()
+                    try {
+                        val schema = src.query(
+                            "SELECT type, name, sql FROM sqlite_master WHERE sql IS NOT NULL " +
+                                "AND name NOT LIKE 'sqlite_%' AND name != 'android_metadata' ORDER BY type DESC",
+                        ).use { c -> buildList { while (c.moveToNext()) add(Triple(c.getString(0), c.getString(1), c.getString(2))) } }
+                        // najprej tabele (z vrsticami), nato indeksi
+                        schema.forEach { (type, name, sql) ->
+                            out.execSQL(sql)
+                            if (type != "table") return@forEach
+                            src.query("SELECT * FROM `$name`").use { c ->
+                                while (c.moveToNext()) {
+                                    out.insertOrThrow(name, null, c.toContentValues())
+                                    rows++
+                                }
+                            }
+                        }
+                        out.version = src.version
+                        out.setTransactionSuccessful()
+                    } finally {
+                        out.endTransaction()
+                    }
+                }
+            }
+            context.contentResolver.openOutputStream(uri, "wt")!!.use { os -> file.inputStream().use { it.copyTo(os) } }
+        } finally {
+            SQLiteDatabase.deleteDatabase(file)
+        }
+        return rows
+    }
+
+    /** Prebere SQLite izvoz v enako JSON obliko kot [exportJson], da gre skozi isto združevanje. */
+    private fun readSqlite(bytes: ByteArray): JSONObject {
+        val file = File(context.cacheDir, "moneo-import.db")
+        SQLiteDatabase.deleteDatabase(file)
+        file.writeBytes(bytes)
+        try {
+            return SQLiteDatabase.openDatabase(file.path, null, SQLiteDatabase.OPEN_READWRITE).use { src ->
+                val tables = src.rawQuery("SELECT name FROM sqlite_master WHERE type = 'table'", null)
+                    .use { c -> buildSet { while (c.moveToNext()) add(c.getString(0)) } }
+                require("transactions" in tables && "accounts" in tables) { str(R.string.not_a_backup) }
+                JSONObject().put("format", FORMAT).apply {
+                    SQLITE_TABLES.forEach { (table, key) -> if (table in tables) put(key, src.rows(table)) }
+                }
+            }
+        } finally {
+            SQLiteDatabase.deleteDatabase(file)
+        }
+    }
+
+    private fun SQLiteDatabase.rows(table: String): JSONArray = rawQuery("SELECT * FROM `$table`", null).use { c ->
+        JSONArray().apply {
+            while (c.moveToNext()) {
+                put(JSONObject().apply {
+                    for (i in 0 until c.columnCount) {
+                        put(c.getColumnName(i), when (c.getType(i)) {
+                            Cursor.FIELD_TYPE_INTEGER -> c.getLong(i)
+                            Cursor.FIELD_TYPE_FLOAT -> c.getDouble(i)
+                            Cursor.FIELD_TYPE_STRING -> c.getString(i)
+                            else -> JSONObject.NULL
+                        })
+                    }
+                })
+            }
+        }
+    }
+
+    private fun Cursor.toContentValues() = ContentValues(columnCount).also { cv ->
+        for (i in 0 until columnCount) {
+            val col = getColumnName(i)
+            when (getType(i)) {
+                Cursor.FIELD_TYPE_INTEGER -> cv.put(col, getLong(i))
+                Cursor.FIELD_TYPE_FLOAT -> cv.put(col, getDouble(i))
+                Cursor.FIELD_TYPE_STRING -> cv.put(col, getString(i))
+                Cursor.FIELD_TYPE_BLOB -> cv.put(col, getBlob(i))
+                else -> cv.putNull(col)
+            }
+        }
+    }
+
     // ---------------- CSV ----------------
 
     /** Transakcije v CSV s podpičjem in decimalno vejico (slovenski Excel), UTF-8 z BOM za šumnike. */
@@ -166,6 +273,12 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
     private fun JSONObject.optNullableLong(k: String): Long? = if (isNull(k) || !has(k)) null else getLong(k)
     private fun JSONObject.optNullableInt(k: String): Int? = if (isNull(k) || !has(k)) null else getInt(k)
     private fun Any?.orNull(): Any = this ?: JSONObject.NULL
+    /** JSON kopija ima true/false, SQLite pa 0/1. */
+    private fun JSONObject.bool(k: String, default: Boolean = false): Boolean = when (val v = opt(k)) {
+        is Boolean -> v
+        is Number -> v.toLong() != 0L
+        else -> default
+    }
 
     private fun AccountEntity.toJson() = JSONObject()
         .put("uid", uid).put("title", title).put("currencyCode", currencyCode).put("icon", icon.orNull())
@@ -176,8 +289,8 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
     private fun accountFrom(o: JSONObject) = AccountEntity(
         uid = o.getString("uid"), title = o.getString("title"), currencyCode = o.optString("currencyCode", "EUR"),
         icon = o.optNullableString("icon"), color = o.optNullableInt("color"), position = o.optInt("position"),
-        isActive = o.optBoolean("isActive", true), initialBalanceCents = o.optLong("initialBalanceCents", 0),
-        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.optBoolean("deleted"),
+        isActive = o.bool("isActive", true), initialBalanceCents = o.optLong("initialBalanceCents", 0),
+        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.bool("deleted"),
     )
 
     private fun CategoryEntity.toJson() = JSONObject()
@@ -189,7 +302,7 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
         uid = o.getString("uid"), title = o.getString("title"), type = TransactionType.valueOf(o.getString("type")),
         icon = o.optNullableString("icon"), color = o.optNullableInt("color"), position = o.optInt("position"),
         keywords = o.optString("keywords"), monthlyBudgetCents = o.optNullableLong("monthlyBudgetCents"),
-        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.optBoolean("deleted"),
+        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.bool("deleted"),
     )
 
     private fun TransactionEntity.toJson() = JSONObject()
@@ -205,9 +318,9 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
         currencyCode = o.optString("currencyCode", "EUR"), date = o.getLong("date"), comment = o.optString("comment"),
         categoryUid = o.optNullableString("categoryUid"), accountUid = o.optNullableString("accountUid"),
         source = runCatching { TransactionSource.valueOf(o.getString("source")) }.getOrDefault(TransactionSource.IMPORT),
-        confirmed = o.optBoolean("confirmed", true), recurringRuleUid = o.optNullableString("recurringRuleUid"),
+        confirmed = o.bool("confirmed", true), recurringRuleUid = o.optNullableString("recurringRuleUid"),
         subscriptionUid = o.optNullableString("subscriptionUid"), tags = o.optString("tags"),
-        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.optBoolean("deleted"),
+        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.bool("deleted"),
     )
 
     private fun TransferEntity.toJson() = JSONObject()
@@ -220,7 +333,7 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
         uid = o.getString("uid"), fromAccountUid = o.optNullableString("fromAccountUid"), toAccountUid = o.optNullableString("toAccountUid"),
         fromAmountCents = o.getLong("fromAmountCents"), toAmountCents = o.optNullableLong("toAmountCents"),
         currencyCode = o.optString("currencyCode", "EUR"), date = o.getLong("date"), comment = o.optString("comment"),
-        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.optBoolean("deleted"),
+        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.bool("deleted"),
     )
 
     private fun RecurringRuleEntity.toJson() = JSONObject()
@@ -237,8 +350,8 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
         accountUid = o.optNullableString("accountUid"), frequency = RecurrenceFrequency.valueOf(o.getString("frequency")),
         interval = o.optInt("interval", 1), nextDueDate = o.getLong("nextDueDate"), endDate = o.optNullableLong("endDate"),
         billingDay = o.optNullableInt("billingDay"),
-        autoAdd = o.optBoolean("autoAdd"), enabled = o.optBoolean("enabled", true),
-        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.optBoolean("deleted"),
+        autoAdd = o.bool("autoAdd"), enabled = o.bool("enabled", true),
+        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.bool("deleted"),
     )
 
     private fun SubscriptionEntity.toJson() = JSONObject()
@@ -256,8 +369,8 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
         startDate = o.optNullableLong("startDate"), endDate = o.optNullableLong("endDate"),
         categoryUid = o.optNullableString("categoryUid"), accountUid = o.optNullableString("accountUid"),
         remindDaysBefore = o.optNullableInt("remindDaysBefore"), url = o.optString("url"), note = o.optString("note"),
-        active = o.optBoolean("active", true),
-        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.optBoolean("deleted"),
+        active = o.bool("active", true),
+        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.bool("deleted"),
     )
 
     private fun FavoriteEntity.toJson() = JSONObject()
@@ -269,7 +382,7 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
         uid = o.getString("uid"), title = o.getString("title"), type = TransactionType.valueOf(o.getString("type")),
         amountCents = o.getLong("amountCents"), categoryUid = o.optNullableString("categoryUid"),
         accountUid = o.optNullableString("accountUid"), comment = o.optString("comment"), position = o.optInt("position"),
-        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.optBoolean("deleted"),
+        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.bool("deleted"),
     )
 
     private fun DebtEntity.toJson() = JSONObject()
@@ -281,7 +394,7 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
         uid = o.getString("uid"), person = o.getString("person"), direction = DebtDirection.valueOf(o.getString("direction")),
         amountCents = o.getLong("amountCents"), repaidCents = o.optLong("repaidCents"), date = o.getLong("date"),
         dueDate = o.optNullableLong("dueDate"), note = o.optString("note"),
-        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.optBoolean("deleted"),
+        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.bool("deleted"),
     )
 
     private fun SavingsGoalEntity.toJson() = JSONObject()
@@ -295,7 +408,7 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
         targetCents = o.getLong("targetCents"), deadline = o.optNullableLong("deadline"), color = o.optNullableInt("color"),
         monthlyAutoCents = o.optNullableLong("monthlyAutoCents"), autoDay = o.optInt("autoDay", 1),
         lastAutoMonth = o.optNullableString("lastAutoMonth"),
-        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.optBoolean("deleted"),
+        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.bool("deleted"),
     )
 
     private fun GoalContributionEntity.toJson() = JSONObject()
@@ -305,11 +418,27 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
     private fun contributionFrom(o: JSONObject) = GoalContributionEntity(
         uid = o.getString("uid"), goalUid = o.getString("goalUid"), amountCents = o.getLong("amountCents"),
         date = o.getLong("date"), note = o.optString("note"),
-        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.optBoolean("deleted"),
+        createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.bool("deleted"),
     )
 
     companion object {
         const val FORMAT = "moje-finance-backup"
         const val VERSION = 1
+
+        private val SQLITE_HEADER = "SQLite format 3\u0000".toByteArray(Charsets.US_ASCII)
+
+        /** Tabela v bazi -> ključ v JSON kopiji. */
+        private val SQLITE_TABLES = listOf(
+            "accounts" to "accounts",
+            "categories" to "categories",
+            "transactions" to "transactions",
+            "transfers" to "transfers",
+            "recurring_rules" to "recurringRules",
+            "savings_goals" to "goals",
+            "goal_contributions" to "goalContributions",
+            "subscriptions" to "subscriptions",
+            "favorites" to "favorites",
+            "debts" to "debts",
+        )
     }
 }

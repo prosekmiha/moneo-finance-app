@@ -248,6 +248,7 @@
     <string name="error_prefix">Greška: %1$s</string>
     <string name="csv_exported">Izvezeno transakcija: %1$d.</string>
     <string name="backup_saved">Rezervna kopija sačuvana.</string>
+    <string name="sqlite_exported">Baza izvezena (redova: %1$d).</string>
     <string name="restore_result">Vraćeno: %1$d novih, %2$d ažuriranih, %3$d nepromenjenih.</string>
     <string name="auto_backup_enabled">Automatska kopija uključena. Prva kopija: %1$s</string>
     <string name="settings">Podešavanja</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Sakrij stanje</string>
     <string name="hide_balance_sub">Iznosi stanja se prikazuju kao •••• (i u vidžetu)</string>
     <string name="group_backup">Rezervna kopija i izvoz</string>
-    <string name="group_backup_kw">csv excel kopija vraćanje drive izvoz</string>
+    <string name="group_backup_kw">csv excel kopija vraćanje drive izvoz sqlite db</string>
     <string name="export_csv">Izvoz u CSV</string>
     <string name="export_csv_sub">Za Excel ili Google tabele</string>
+    <string name="export_sqlite">Izvoz SQLite baze</string>
+    <string name="export_sqlite_sub">Cela baza (.db) — može se i vratiti</string>
     <string name="create_backup">Napravi rezervnu kopiju</string>
     <string name="create_backup_sub">Svi podaci u jednoj datoteci (.json)</string>
     <string name="restore_backup">Vrati iz kopije</string>
@@ -322,6 +325,7 @@
     <string name="accent_pink">Roze</string>
     <string name="accent_orange">Narandžasta</string>
     <string name="accent_graphite">Grafitna</string>
+    <string name="accent_system">Pozadina</string>
     <string name="section_budgets">Upozorenja budžeta</string>
     <string name="section_budgets_desc" formatted="false">Kada potrošiš 80% budžeta</string>
     <string name="section_favorites_desc">Brza dugmad za česte unose</string>

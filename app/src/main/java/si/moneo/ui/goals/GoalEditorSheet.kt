@@ -1,5 +1,6 @@
 package si.moneo.ui.goals
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
@@ -115,7 +116,7 @@ fun GoalEditorSheet(
                 title, { title = it },
                 label = { Text(stringResource(R.string.name_hint_holiday)) },
                 singleLine = true,
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(Radius.md),
                 modifier = Modifier.fillMaxWidth(),
             )
             OutlinedTextField(
@@ -123,10 +124,10 @@ fun GoalEditorSheet(
                 label = { Text(stringResource(R.string.target_amount)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(Radius.md),
                 modifier = Modifier.fillMaxWidth(),
             )
-            Surface(onClick = { pickDate = true }, shape = RoundedCornerShape(16.dp), color = MaterialTheme.colorScheme.surfaceVariant) {
+            Surface(onClick = { pickDate = true }, shape = RoundedCornerShape(Radius.md), color = MaterialTheme.colorScheme.surfaceVariant) {
                 Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(Icons.Rounded.Event, null, tint = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.size(Spacing.md))
@@ -157,7 +158,7 @@ fun GoalEditorSheet(
                         label = { Text(stringResource(R.string.per_month_eur)) },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(Radius.md),
                         modifier = Modifier.weight(1f),
                     )
                     DropdownField(stringResource(R.string.day_of_month), (1..28).map { it to str(R.string.day_ordinal, it) }, autoDay, { autoDay = it }, Modifier.weight(1f))

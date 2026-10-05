@@ -248,6 +248,7 @@
     <string name="error_prefix">Помилка: %1$s</string>
     <string name="csv_exported">Експортовано операцій: %1$d.</string>
     <string name="backup_saved">Резервну копію збережено.</string>
+    <string name="sqlite_exported">Базу експортовано (рядків: %1$d).</string>
     <string name="restore_result">Відновлено: нових %1$d, оновлено %2$d, без змін %3$d.</string>
     <string name="auto_backup_enabled">Автоматичне копіювання ввімкнено. Перша копія: %1$s</string>
     <string name="settings">Налаштування</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Приховати баланс</string>
     <string name="hide_balance_sub">Суми показуються як •••• (і у віджеті)</string>
     <string name="group_backup">Резервне копіювання та експорт</string>
-    <string name="group_backup_kw">csv excel копія відновлення drive експорт</string>
+    <string name="group_backup_kw">csv excel копія відновлення drive експорт sqlite db</string>
     <string name="export_csv">Експорт у CSV</string>
     <string name="export_csv_sub">Для Excel або Google Таблиць</string>
+    <string name="export_sqlite">Експорт бази SQLite</string>
+    <string name="export_sqlite_sub">Уся база даних (.db) — її можна й відновити</string>
     <string name="create_backup">Створити резервну копію</string>
     <string name="create_backup_sub">Усі дані в одному файлі (.json)</string>
     <string name="restore_backup">Відновити з копії</string>
@@ -322,6 +325,7 @@
     <string name="accent_pink">Рожевий</string>
     <string name="accent_orange">Помаранчевий</string>
     <string name="accent_graphite">Графітовий</string>
+    <string name="accent_system">Шпалери</string>
     <string name="section_budgets">Попередження про бюджет</string>
     <string name="section_budgets_desc" formatted="false">Коли витрачено 80% бюджету</string>
     <string name="section_favorites_desc">Швидкі кнопки для частих записів</string>

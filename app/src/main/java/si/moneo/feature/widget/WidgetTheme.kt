@@ -31,7 +31,7 @@ fun widgetColors(context: Context): WidgetColors {
         ThemeMode.SYSTEM ->
             (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
     }
-    val (scheme, finance) = appColors(ThemePrefs.loadAccent(context), dark)
+    val (scheme, finance) = appColors(ThemePrefs.loadAccent(context), dark, context)
     return WidgetColors(
         background = scheme.surface.toArgb(),
         track = scheme.surfaceVariant.toArgb(),

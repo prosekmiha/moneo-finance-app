@@ -1,5 +1,6 @@
 package si.moneo.ui.stats
 
+import si.moneo.ui.theme.asGraphic
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
@@ -40,6 +41,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import si.moneo.ui.components.rememberStagger
+import si.moneo.ui.components.staggerItem
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -137,6 +140,7 @@ fun StatsScreen(
         }
     }
 
+    val stagger = rememberStagger()
     LazyColumn(
         Modifier.fillMaxSize(),
         contentPadding = PaddingValues(
@@ -145,7 +149,8 @@ fun StatsScreen(
         ),
         verticalArrangement = Arrangement.spacedBy(Spacing.lg),
     ) {
-        item {
+        stagger.reset()
+        staggerItem(stagger) {
             Row(Modifier.statusBarsPadding().padding(top = Spacing.md), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text(stringResource(R.string.statistics), style = MaterialTheme.typography.headlineSmall)
@@ -159,18 +164,18 @@ fun StatsScreen(
             }
         }
         // Pregledi: leto v številkah in poraba po oznakah
-        item {
+        staggerItem(stagger) {
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 ReportButton(Icons.Rounded.Celebration, stringResource(R.string.year_review), onOpenYearReview, Modifier.weight(1f))
                 ReportButton(Icons.AutoMirrored.Rounded.Label, stringResource(R.string.by_tags), onOpenTags, Modifier.weight(1f))
             }
         }
         if (accounts.size > 1) {
-            item {
+            staggerItem(stagger) {
                 AccountFilterRow(accounts, accountFilter, { vm.accountFilter.value = it }, contentPadding = PaddingValues(0.dp))
             }
         }
-        item {
+        staggerItem(stagger) {
             SegmentedTabs(
                 options = si.moneo.ui.STATS_PERIODS,
                 selected = state.period,
@@ -178,7 +183,7 @@ fun StatsScreen(
                 label = { it.label },
             )
         }
-        item {
+        staggerItem(stagger) {
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
                 MoneyInOutTile(
                     stringResource(R.string.income_plural), bucket?.incomeCents ?: 0, income = true, Modifier.weight(1f),
@@ -191,7 +196,7 @@ fun StatsScreen(
             }
         }
         state.lastYear?.let { ly ->
-            item {
+            staggerItem(stagger) {
                 // Primerjava z istim obdobjem lani (pri tekočem obdobju do istega dne)
                 fun delta(cur: Long, prev: Long) = percentDelta(cur, prev)?.let { " (" + (if (it >= 0) "+" else "") + str(R.string.percent, it) + ")" }.orEmpty()
                 Text(
@@ -206,7 +211,7 @@ fun StatsScreen(
                 )
             }
         }
-        item {
+        staggerItem(stagger) {
             SoftCard(Modifier.fillMaxWidth(), contentPadding = PaddingValues(vertical = Spacing.lg, horizontal = Spacing.md)) {
                 IncomeExpenseBarChart(state.buckets, state.selectedIndex, vm::selectBucket)
                 Spacer(Modifier.height(Spacing.md))
@@ -228,15 +233,16 @@ fun StatsScreen(
         }
 
         if (state.insights.isNotEmpty()) {
-            item { SectionHeader(stringResource(R.string.insights)) }
-            item {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
+            staggerItem(stagger) { SectionHeader(stringResource(R.string.insights)) }
+            staggerItem(stagger) {
+                // Navpični odmik, da LazyRow ne odreže sence kartic
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(Spacing.md), contentPadding = PaddingValues(vertical = Spacing.sm)) {
                     items(state.insights) { InsightCard(it) }
                 }
             }
         }
 
-        item {
+        staggerItem(stagger) {
             SegmentedTabs(
                 listOf(TransactionType.EXPENSE, TransactionType.INCOME), spendType, { spendType = it },
                 label = { str(if (it == TransactionType.EXPENSE) R.string.expenses_by_category else R.string.income_by_category) },
@@ -245,7 +251,7 @@ fun StatsScreen(
             )
         }
         if (spends.isEmpty()) {
-            item {
+            staggerItem(stagger) {
                 SoftCard(Modifier.fillMaxWidth()) {
                     EmptyState(
                         Icons.Rounded.PieChart,
@@ -255,9 +261,9 @@ fun StatsScreen(
                 }
             }
         } else {
-            item {
+            staggerItem(stagger) {
                 SoftCard(Modifier.fillMaxWidth()) {
-                    val slices = spends.map { DonutSlice(it.totalCents.toFloat(), accentFor(it.category.title, it.category.color)) }
+                    val slices = spends.map { DonutSlice(it.totalCents.toFloat(), accentFor(it.category.title, it.category.color).asGraphic()) }
                     val focus = selectedSlice?.let { spends.getOrNull(it) }
                     DonutChart(
                         slices, selectedSlice, onSelect = { selectedSlice = it },
@@ -288,7 +294,7 @@ fun StatsScreen(
                     TopThree(spends.take(3), onOpenCategory)
                 }
             }
-            item {
+            staggerItem(stagger) {
                 SoftCard(Modifier.fillMaxWidth(), contentPadding = PaddingValues(vertical = Spacing.sm)) {
                     val budgets = if (isExpense) state.budgets.associateBy { it.category.uid } else emptyMap()
                     spends.forEachIndexed { i, s ->
@@ -358,6 +364,7 @@ private fun TopThree(top: List<CategorySpend>, onOpenCategory: (String) -> Unit)
             SoftCard(
                 Modifier.weight(1f),
                 color = MaterialTheme.colorScheme.surfaceContainerLow,
+                elevated = false,
                 onClick = { if (s.category !== UNCATEGORIZED) onOpenCategory(s.category.uid) },
                 contentPadding = PaddingValues(vertical = 14.dp, horizontal = 8.dp),
             ) {
@@ -396,7 +403,7 @@ private fun CategoryRow(s: CategorySpend, lastYearCents: Long?, budgetCents: Lon
             val fraction = if (budgetCents != null && budgetCents > 0) s.totalCents.toFloat() / budgetCents else s.share
             SlimProgress(
                 fraction,
-                if (budgetCents != null && fraction >= 1f) Finance.colors.expense else accent,
+                if (budgetCents != null && fraction >= 1f) Finance.colors.expense else accent.asGraphic(),
             )
             Spacer(Modifier.height(4.dp))
             Text(

@@ -1,5 +1,7 @@
 package si.moneo.ui.goals
 
+import si.moneo.ui.theme.asText
+import si.moneo.ui.theme.asGraphic
 import si.moneo.R
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
@@ -112,12 +114,12 @@ fun GoalsScreen(
 private fun GoalCard(g: GoalUi, onClick: () -> Unit) {
     val accent = if (g.reached) Finance.colors.income else accentFor(g.goal.title, g.goal.color)
     SoftCard(Modifier.fillMaxWidth(), onClick = onClick) {
-        ProgressRing(g.progress, size = 72.dp, thickness = 6.dp, color = accent, modifier = Modifier.align(Alignment.CenterHorizontally).sharedElementKey("goal-" + g.goal.uid)) {
+        ProgressRing(g.progress, size = 72.dp, thickness = 6.dp, color = accent.asGraphic(), modifier = Modifier.align(Alignment.CenterHorizontally).sharedElementKey("goal-" + g.goal.uid)) {
             Text(g.goal.emoji, style = MaterialTheme.typography.headlineSmall)
         }
         Spacer(Modifier.height(Spacing.md))
         Text(g.goal.title, style = MaterialTheme.typography.titleSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
-        Text(formatCents(g.savedCents), style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = accent)
+        Text(formatCents(g.savedCents), style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = accent.asText())
         Text(stringResource(R.string.of_amount_short, formatCents(g.goal.targetCents)), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(4.dp))
         Text(

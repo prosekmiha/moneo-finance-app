@@ -1,5 +1,6 @@
 package si.moneo.ui.add
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
@@ -112,7 +113,7 @@ fun SplitSheet(
                         part.amount, { v -> if (v.all { it.isDigit() || it == ',' || it == '.' }) part.amount = v },
                         label = { Text("€") }, singleLine = true,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(Radius.md),
                         modifier = Modifier.width(120.dp),
                     )
                     IconButton(onClick = { others.removeAt(index) }, enabled = others.size > 1, modifier = Modifier.width(40.dp)) {

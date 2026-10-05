@@ -248,6 +248,7 @@
     <string name="error_prefix">Viga: %1$s</string>
     <string name="csv_exported">Eksporditud tehinguid: %1$d.</string>
     <string name="backup_saved">Varukoopia salvestatud.</string>
+    <string name="sqlite_exported">Andmebaas eksporditud (ridu: %1$d).</string>
     <string name="restore_result">Taastatud: %1$d uut, %2$d uuendatud, %3$d muutmata.</string>
     <string name="auto_backup_enabled">Automaatne varundus sisse lülitatud. Esimene koopia: %1$s</string>
     <string name="settings">Seaded</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Peida saldo</string>
     <string name="hide_balance_sub">Summad kuvatakse kujul •••• (ka vidinas)</string>
     <string name="group_backup">Varundus ja eksport</string>
-    <string name="group_backup_kw">csv excel varukoopia taastamine drive eksport</string>
+    <string name="group_backup_kw">csv excel varukoopia taastamine drive eksport sqlite db</string>
     <string name="export_csv">Ekspordi CSV-sse</string>
     <string name="export_csv_sub">Excelile või Google\'i arvutustabelitele</string>
+    <string name="export_sqlite">Ekspordi SQLite andmebaas</string>
+    <string name="export_sqlite_sub">Kogu andmebaas (.db) — saab ka taastada</string>
     <string name="create_backup">Loo varukoopia</string>
     <string name="create_backup_sub">Kõik andmed ühes failis (.json)</string>
     <string name="restore_backup">Taasta varukoopiast</string>
@@ -322,6 +325,7 @@
     <string name="accent_pink">Roosa</string>
     <string name="accent_orange">Oranž</string>
     <string name="accent_graphite">Grafiit</string>
+    <string name="accent_system">Taustapilt</string>
     <string name="section_budgets">Eelarvehoiatused</string>
     <string name="section_budgets_desc" formatted="false">Kui oled kulutanud 80% eelarvest</string>
     <string name="section_favorites_desc">Kiirnupud sagedaste kannete jaoks</string>

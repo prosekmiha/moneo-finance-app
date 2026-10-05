@@ -248,6 +248,7 @@
     <string name="error_prefix">Грешка: %1$s</string>
     <string name="csv_exported">Експортирани транзакции: %1$d.</string>
     <string name="backup_saved">Резервното копие е запазено.</string>
+    <string name="sqlite_exported">Базата е експортирана (редове: %1$d).</string>
     <string name="restore_result">Възстановено: %1$d нови, %2$d обновени, %3$d непроменени.</string>
     <string name="auto_backup_enabled">Автоматичното копие е включено. Първо копие: %1$s</string>
     <string name="settings">Настройки</string>
@@ -293,9 +294,11 @@
     <string name="hide_balance_title">Скрий баланса</string>
     <string name="hide_balance_sub">Сумите се показват като •••• (и в уиджета)</string>
     <string name="group_backup">Резервно копие и експорт</string>
-    <string name="group_backup_kw">csv excel копие възстановяване drive експорт</string>
+    <string name="group_backup_kw">csv excel копие възстановяване drive експорт sqlite db</string>
     <string name="export_csv">Експорт в CSV</string>
     <string name="export_csv_sub">За Excel или Google Таблици</string>
+    <string name="export_sqlite">Експорт на SQLite база</string>
+    <string name="export_sqlite_sub">Цялата база (.db) — може и да се възстанови</string>
     <string name="create_backup">Създай резервно копие</string>
     <string name="create_backup_sub">Всички данни в един файл (.json)</string>
     <string name="restore_backup">Възстанови от копие</string>
@@ -322,6 +325,7 @@
     <string name="accent_pink">Розово</string>
     <string name="accent_orange">Оранжево</string>
     <string name="accent_graphite">Графитено</string>
+    <string name="accent_system">Тапет</string>
     <string name="section_budgets">Предупреждения за бюджет</string>
     <string name="section_budgets_desc" formatted="false">Когато похарчите 80% от бюджет</string>
     <string name="section_favorites_desc">Бързи бутони за чести записи</string>

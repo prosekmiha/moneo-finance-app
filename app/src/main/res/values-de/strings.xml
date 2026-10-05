@@ -247,6 +247,7 @@
     <string name="error_prefix">Fehler: %1$s</string>
     <string name="csv_exported">%1$d Buchungen exportiert.</string>
     <string name="backup_saved">Sicherung gespeichert.</string>
+    <string name="sqlite_exported">Datenbank exportiert (Zeilen: %1$d).</string>
     <string name="restore_result">Wiederhergestellt: %1$d neu, %2$d aktualisiert, %3$d unverändert.</string>
     <string name="auto_backup_enabled">Automatische Sicherung aktiviert. Erste Sicherung: %1$s</string>
     <string name="settings">Einstellungen</string>
@@ -292,9 +293,11 @@
     <string name="hide_balance_title">Saldo ausblenden</string>
     <string name="hide_balance_sub">Beträge werden als •••• angezeigt (auch im Widget)</string>
     <string name="group_backup">Sicherung und Export</string>
-    <string name="group_backup_kw">csv excel sicherung wiederherstellen drive export backup</string>
+    <string name="group_backup_kw">csv excel sicherung wiederherstellen drive export backup sqlite db</string>
     <string name="export_csv">Als CSV exportieren</string>
     <string name="export_csv_sub">Für Excel oder Google Tabellen</string>
+    <string name="export_sqlite">SQLite-Datenbank exportieren</string>
+    <string name="export_sqlite_sub">Gesamte Datenbank (.db) — auch wiederherstellbar</string>
     <string name="create_backup">Sicherung erstellen</string>
     <string name="create_backup_sub">Alle Daten in einer Datei (.json)</string>
     <string name="restore_backup">Aus Sicherung wiederherstellen</string>
@@ -321,6 +324,7 @@
     <string name="accent_pink">Rosa</string>
     <string name="accent_orange">Orange</string>
     <string name="accent_graphite">Graphit</string>
+    <string name="accent_system">Hintergrund</string>
     <string name="section_budgets">Budgetwarnungen</string>
     <string name="section_budgets_desc" formatted="false">Wenn du 80 % eines Budgets ausgegeben hast</string>
     <string name="section_favorites_desc">Schnellschaltflächen für häufige Einträge</string>
