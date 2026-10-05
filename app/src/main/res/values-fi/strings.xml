@@ -322,6 +322,7 @@
     <string name="accent_pink">Pinkki</string>
     <string name="accent_orange">Oranssi</string>
     <string name="accent_graphite">Grafiitti</string>
+    <string name="accent_system">Taustakuva</string>
     <string name="section_budgets">Budjettivaroitukset</string>
     <string name="section_budgets_desc" formatted="false">Kun olet käyttänyt 80 % budjetista</string>
     <string name="section_favorites_desc">Pikapainikkeet toistuville kirjauksille</string>

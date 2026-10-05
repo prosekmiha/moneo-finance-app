@@ -322,6 +322,7 @@
     <string name="accent_pink">Rosa</string>
     <string name="accent_orange">Laranja</string>
     <string name="accent_graphite">Grafite</string>
+    <string name="accent_system">Plano de fundo</string>
     <string name="section_budgets">Alertas de orçamento</string>
     <string name="section_budgets_desc" formatted="false">Quando gasta 80% de um orçamento</string>
     <string name="section_favorites_desc">Botões rápidos para registos frequentes</string>

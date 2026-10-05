@@ -328,6 +328,7 @@
     <string name="accent_pink">Roza</string>
     <string name="accent_orange">Oranžna</string>
     <string name="accent_graphite">Grafit</string>
+    <string name="accent_system">Ozadje</string>
     <string name="section_budgets">Opozorila proračuna</string>
     <string name="section_budgets_desc" formatted="false">Ko porabiš 80 % proračuna</string>
     <string name="section_favorites_desc">Hitri gumbi za pogoste vnose</string>

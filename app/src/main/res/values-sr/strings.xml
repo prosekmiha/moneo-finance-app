@@ -322,6 +322,7 @@
     <string name="accent_pink">Roze</string>
     <string name="accent_orange">Narandžasta</string>
     <string name="accent_graphite">Grafitna</string>
+    <string name="accent_system">Позадина</string>
     <string name="section_budgets">Upozorenja budžeta</string>
     <string name="section_budgets_desc" formatted="false">Kada potrošiš 80% budžeta</string>
     <string name="section_favorites_desc">Brza dugmad za česte unose</string>

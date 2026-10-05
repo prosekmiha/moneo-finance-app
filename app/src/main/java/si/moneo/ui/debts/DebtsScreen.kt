@@ -1,5 +1,6 @@
 package si.moneo.ui.debts
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
@@ -225,20 +226,20 @@ private fun DebtEditorSheet(
             )
             OutlinedTextField(
                 person, { person = it }, label = { Text(stringResource(if (direction == DebtDirection.LENT) R.string.to_whom else R.string.from_whom)) },
-                singleLine = true, shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth(),
+                singleLine = true, shape = RoundedCornerShape(Radius.md), modifier = Modifier.fillMaxWidth(),
             )
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
                 OutlinedTextField(
                     amount, { v -> if (v.all { it.isDigit() || it == ',' || it == '.' }) amount = v },
                     label = { Text(stringResource(R.string.amount_eur)) }, singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    shape = RoundedCornerShape(16.dp), modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(Radius.md), modifier = Modifier.weight(1f),
                 )
                 OutlinedTextField(
                     repaid, { v -> if (v.all { it.isDigit() || it == ',' || it == '.' }) repaid = v },
                     label = { Text(stringResource(R.string.already_repaid)) }, singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    shape = RoundedCornerShape(16.dp), modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(Radius.md), modifier = Modifier.weight(1f),
                 )
             }
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
@@ -247,7 +248,7 @@ private fun DebtEditorSheet(
             }
             OutlinedTextField(
                 note, { note = it }, label = { Text(stringResource(R.string.note_debt_hint)) },
-                singleLine = true, shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth(),
+                singleLine = true, shape = RoundedCornerShape(Radius.md), modifier = Modifier.fillMaxWidth(),
             )
             if (dueDate != null) {
                 Text(

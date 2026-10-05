@@ -1,5 +1,6 @@
 package si.moneo
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
@@ -76,6 +77,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.animation.core.Spring
+import androidx.compose.ui.draw.shadow
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.animation.core.tween
+import si.moneo.ui.components.pressScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import si.moneo.ui.theme.Spacing
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -371,7 +380,7 @@ private fun App(
                 contentWindowInsets = WindowInsets(0),
                 snackbarHost = {
                     SnackbarHost(snackbar) {
-                        Snackbar(it, shape = RoundedCornerShape(16.dp), actionColor = Finance.colors.income)
+                        Snackbar(it, shape = RoundedCornerShape(Radius.md), actionColor = Finance.colors.income)
                     }
                 },
                 bottomBar = {
@@ -397,10 +406,14 @@ private fun App(
                     navController = nav,
                     startDestination = Routes.HOME,
                     enterTransition = {
-                        if (targetState.destination.route in Routes.topLevel) fadeIn()
+                        // Med zavihki "fade through" (rahel zoom), podzasloni zdrsnejo z desne
+                        if (targetState.destination.route in Routes.topLevel) fadeIn(tween(220, delayMillis = 60)) + scaleIn(tween(280, delayMillis = 60), initialScale = 0.97f)
                         else slideInHorizontally { it / 4 } + fadeIn()
                     },
-                    exitTransition = { fadeOut() },
+                    exitTransition = {
+                        // Fade through: stari zavihek hitro izgine, preden se pokaže novi
+                        if (targetState.destination.route in Routes.topLevel) fadeOut(tween(90)) else fadeOut()
+                    },
                     popEnterTransition = { fadeIn() },
                     popExitTransition = {
                         if (initialState.destination.route in Routes.topLevel) fadeOut()
@@ -645,20 +658,27 @@ private fun BottomBar(
     val haptic = LocalHapticFeedback.current
     Surface(
         color = MaterialTheme.colorScheme.surface,
-        shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
+        shape = RoundedCornerShape(topStart = Radius.xl, topEnd = Radius.xl),
         shadowElevation = 12.dp,
     ) {
         Row(
-            Modifier.fillMaxWidth().navigationBarsPadding().height(72.dp).padding(horizontal = 12.dp),
+            Modifier.fillMaxWidth().navigationBarsPadding().height(72.dp).padding(horizontal = Spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround,
         ) {
             navItems.take(2).forEach { NavButton(it, current == it.route) { onNavigate(it.route) } }
             val rotation by animateFloatAsState(if (menuOpen) 45f else 0f, spring(dampingRatio = 0.6f), label = "rot")
+            val glow = Finance.colors.heroStart
+            val addInteraction = remember { MutableInteractionSource() }
             Box(
-                Modifier.size(56.dp).clip(CircleShape)
+                Modifier.size(54.dp)
+                    .pressScale(addInteraction, 0.9f)
+                    .shadow(10.dp, CircleShape, ambientColor = glow, spotColor = glow)
+                    .clip(CircleShape)
                     .background(Finance.colors.heroGradient)
                     .combinedClickable(
+                        interactionSource = addInteraction,
+                        indication = LocalIndication.current,
                         onClick = onAdd,
                         onLongClick = {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -678,19 +698,34 @@ private fun BottomBar(
 
 @Composable
 private fun NavButton(item: NavItem, selected: Boolean, onClick: () -> Unit) {
+    val haptic = LocalHapticFeedback.current
+    val scheme = MaterialTheme.colorScheme
     val tint by animateColorAsState(
-        if (selected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-        label = "navtint",
+        if (selected) scheme.onPrimaryContainer else scheme.onSurfaceVariant, label = "navtint",
     )
-    val dot by animateDpAsState(if (selected) 5.dp else 0.dp, label = "dot")
+    val labelColor by animateColorAsState(if (selected) scheme.onSurface else scheme.onSurfaceVariant, label = "navlabel")
+    // Kapsula za ikono izbranega zavihka "zraste" iz sredine
+    val pillWidth by animateDpAsState(if (selected) 52.dp else 28.dp, spring(dampingRatio = 0.7f, stiffness = Spring.StiffnessMediumLow), label = "pill")
+    val pillColor by animateColorAsState(if (selected) scheme.primaryContainer else scheme.primaryContainer.copy(alpha = 0f), label = "pillc")
+    val interaction = remember { MutableInteractionSource() }
     Column(
-        Modifier.width(56.dp).clip(RoundedCornerShape(16.dp))
-            .clickable(onClickLabel = item.label, onClick = onClick).padding(vertical = 8.dp),
+        Modifier.width(64.dp).pressScale(interaction, 0.9f).clip(RoundedCornerShape(Radius.md))
+            .clickable(interaction, LocalIndication.current, onClickLabel = item.label) {
+                if (!selected) haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                onClick()
+            }
+            .padding(vertical = 6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Icon(item.icon, item.label, tint = tint, modifier = Modifier.size(26.dp))
-        Spacer(Modifier.height(4.dp))
-        Box(Modifier.size(dot).clip(CircleShape).background(MaterialTheme.colorScheme.primary))
+        Box(Modifier.height(30.dp).width(pillWidth).clip(CircleShape).background(pillColor), contentAlignment = Alignment.Center) {
+            Icon(item.icon, null, tint = tint, modifier = Modifier.size(22.dp))
+        }
+        Spacer(Modifier.height(3.dp))
+        Text(
+            item.label, color = labelColor, maxLines = 1, overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+        )
     }
 }
 
@@ -791,7 +826,7 @@ private fun QuickMenuHint(onDismiss: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Surface(
             onClick = onDismiss,
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(Radius.md),
             color = Finance.colors.selectedTab,
             shadowElevation = 6.dp,
         ) {

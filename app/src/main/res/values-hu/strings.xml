@@ -323,6 +323,7 @@
     <string name="accent_pink">Rózsaszín</string>
     <string name="accent_orange">Narancs</string>
     <string name="accent_graphite">Grafit</string>
+    <string name="accent_system">Háttérkép</string>
     <string name="section_budgets">Keretfigyelmeztetések</string>
     <string name="section_budgets_desc" formatted="false">Amikor elkölted egy keret 80%-át</string>
     <string name="section_favorites_desc">Gyors gombok a gyakori tételekhez</string>

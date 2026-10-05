@@ -322,6 +322,7 @@
     <string name="accent_pink">Lyserød</string>
     <string name="accent_orange">Orange</string>
     <string name="accent_graphite">Grafit</string>
+    <string name="accent_system">Baggrund</string>
     <string name="section_budgets">Budgetadvarsler</string>
     <string name="section_budgets_desc" formatted="false">Når du har brugt 80 % af et budget</string>
     <string name="section_favorites_desc">Hurtigknapper til hyppige poster</string>

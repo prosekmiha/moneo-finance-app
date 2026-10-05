@@ -209,7 +209,7 @@ fun ProgressRing(
     track: Color = MaterialTheme.colorScheme.surfaceVariant,
     content: @Composable BoxScope.() -> Unit = {},
 ) {
-    val animated by animateFloatAsState(progress.coerceIn(0f, 1f), tween(900, easing = FastOutSlowInEasing), label = "ring")
+    val animated = rememberGrowFrom0(progress.coerceIn(0f, 1f), durationMs = 900)
     Box(
         modifier.size(size).semantics { progressBarRangeInfo = ProgressBarRangeInfo(progress.coerceIn(0f, 1f), 0f..1f) },
         contentAlignment = Alignment.Center,

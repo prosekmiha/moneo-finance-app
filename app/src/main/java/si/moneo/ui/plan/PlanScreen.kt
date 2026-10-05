@@ -1,5 +1,6 @@
 package si.moneo.ui.plan
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import si.moneo.ui.components.rememberStagger
+import si.moneo.ui.components.staggerItem
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
@@ -81,12 +84,14 @@ fun PlanScreen(
     val outlook = remember(subscriptions, rules) { monthOutlook(subscriptions, rules, today) }
     fun money(cents: Long) = if (hidden) "•••• €" else formatCents(cents)
 
+    val stagger = rememberStagger()
     LazyColumn(
         Modifier.fillMaxSize(),
         contentPadding = PaddingValues(start = Spacing.screen, end = Spacing.screen, bottom = contentPadding.calculateBottomPadding() + 24.dp),
         verticalArrangement = Arrangement.spacedBy(Spacing.md),
     ) {
-        item {
+        stagger.reset()
+        staggerItem(stagger) {
             Column(Modifier.statusBarsPadding().padding(top = Spacing.md, bottom = Spacing.sm)) {
                 Text(stringResource(R.string.plan), style = MaterialTheme.typography.headlineSmall)
                 Text(stringResource(R.string.plan_subtitle), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -94,10 +99,10 @@ fun PlanScreen(
         }
 
         // Povzetek: kaj se bo do konca meseca še samodejno zapisalo
-        item {
+        staggerItem(stagger) {
             val owedToMe = debts.filter { !it.settled && it.direction == DebtDirection.LENT }.sumOf { it.remainingCents }
             val iOwe = debts.filter { !it.settled && it.direction == DebtDirection.BORROWED }.sumOf { it.remainingCents }
-            SoftCard(Modifier.fillMaxWidth(), shape = RoundedCornerShape(28.dp), contentPadding = PaddingValues(20.dp)) {
+            SoftCard(Modifier.fillMaxWidth(), shape = RoundedCornerShape(Radius.xl), contentPadding = PaddingValues(20.dp)) {
                 Text(stringResource(R.string.plan_outgoing), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text(money(outlook.outgoingCents), style = MaterialTheme.typography.displaySmall)
                 Text(
@@ -118,7 +123,7 @@ fun PlanScreen(
         }
 
         // Cilji varčevanja
-        item {
+        staggerItem(stagger) {
             val saved = goals.sumOf { it.savedCents }
             val target = goals.sumOf { it.goal.targetCents }
             val nearest = goals.filter { !it.reached }.maxByOrNull { it.progress }
@@ -139,7 +144,7 @@ fun PlanScreen(
         }
 
         // Naročnine
-        item {
+        staggerItem(stagger) {
             val running = subscriptions.filter { it.active && !it.hasEnded }
             val next = running.minByOrNull { it.nextPaymentDate }
             PlanCard(
@@ -154,7 +159,7 @@ fun PlanScreen(
         }
 
         // Ponavljajoča plačila
-        item {
+        staggerItem(stagger) {
             val active = rules.filter { it.enabled }
             val next = active.minByOrNull { it.nextDueDate }
             PlanCard(
@@ -173,7 +178,7 @@ fun PlanScreen(
         }
 
         // Dolgovi
-        item {
+        staggerItem(stagger) {
             val open = debts.filter { !it.settled }
             val overdue = open.count { d -> d.dueDate?.let { millisToLocalDate(it).isBefore(today) } == true }
             PlanCard(
@@ -194,7 +199,7 @@ fun PlanScreen(
         }
 
         // Proračuni
-        item {
+        staggerItem(stagger) {
             val withBudget = categories.count { (it.monthlyBudgetCents ?: 0) > 0 }
             val b = overallBudget
             PlanCard(

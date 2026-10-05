@@ -322,6 +322,7 @@
     <string name="accent_pink">Roz</string>
     <string name="accent_orange">Portocaliu</string>
     <string name="accent_graphite">Grafit</string>
+    <string name="accent_system">Fundal</string>
     <string name="section_budgets">Alerte de buget</string>
     <string name="section_budgets_desc" formatted="false">Când cheltuiești 80% dintr-un buget</string>
     <string name="section_favorites_desc">Butoane rapide pentru intrări frecvente</string>

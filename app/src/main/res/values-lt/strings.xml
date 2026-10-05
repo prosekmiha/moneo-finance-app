@@ -323,6 +323,7 @@
     <string name="accent_pink">Rožinė</string>
     <string name="accent_orange">Oranžinė</string>
     <string name="accent_graphite">Grafito</string>
+    <string name="accent_system">Ekrano fonas</string>
     <string name="section_budgets">Biudžeto įspėjimai</string>
     <string name="section_budgets_desc" formatted="false">Kai išleidžiate 80 % biudžeto</string>
     <string name="section_favorites_desc">Greiti mygtukai dažniems įrašams</string>

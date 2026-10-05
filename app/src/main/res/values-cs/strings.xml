@@ -322,6 +322,7 @@
     <string name="accent_pink">Růžová</string>
     <string name="accent_orange">Oranžová</string>
     <string name="accent_graphite">Grafitová</string>
+    <string name="accent_system">Tapeta</string>
     <string name="section_budgets">Upozornění na rozpočet</string>
     <string name="section_budgets_desc" formatted="false">Když utratíte 80 % rozpočtu</string>
     <string name="section_favorites_desc">Rychlá tlačítka pro časté záznamy</string>

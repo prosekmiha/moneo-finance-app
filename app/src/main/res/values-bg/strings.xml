@@ -322,6 +322,7 @@
     <string name="accent_pink">Розово</string>
     <string name="accent_orange">Оранжево</string>
     <string name="accent_graphite">Графитено</string>
+    <string name="accent_system">Тапет</string>
     <string name="section_budgets">Предупреждения за бюджет</string>
     <string name="section_budgets_desc" formatted="false">Когато похарчите 80% от бюджет</string>
     <string name="section_favorites_desc">Бързи бутони за чести записи</string>

@@ -1,5 +1,6 @@
 package si.moneo.ui.components
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
@@ -13,8 +14,12 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.runtime.remember
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -81,7 +86,11 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -95,26 +104,52 @@ import si.moneo.ui.formatCents
 import si.moneo.ui.theme.Finance
 import si.moneo.ui.theme.Spacing
 import si.moneo.ui.theme.accentFor
+import si.moneo.ui.theme.asGraphic
+import si.moneo.ui.theme.asText
+import androidx.compose.ui.graphics.compositeOver
 
 /** Snackbar, ki ga zagotovi MainActivity - za "Razveljavi" in potrditve. */
 val LocalSnackbar = staticCompositionLocalOf { SnackbarHostState() }
 
-/** Bela zaobljena kartica brez sence (osnovni gradnik dizajna). */
+/**
+ * Zaobljena kartica (osnovni gradnik dizajna). `elevated`: v svetlem načinu mehka senca,
+ * v temnem tanka obroba, da se kartica loči od ozadja; za kartice znotraj kartic `false`.
+ */
 @Composable
 fun SoftCard(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.surface,
-    shape: RoundedCornerShape = RoundedCornerShape(24.dp),
+    shape: RoundedCornerShape = RoundedCornerShape(Radius.lg),
     onClick: (() -> Unit)? = null,
     contentPadding: PaddingValues = PaddingValues(Spacing.lg),
+    elevated: Boolean = color != Color.Transparent,
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    val interaction = remember { MutableInteractionSource() }
     Surface(
-        modifier = modifier.clip(shape).then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
+        modifier = modifier
+            .then(if (onClick != null) Modifier.pressScale(interaction, 0.98f) else Modifier)
+            .softElevation(shape, elevated).clip(shape)
+            .then(if (onClick != null) Modifier.clickable(interaction, LocalIndication.current, onClick = onClick) else Modifier),
         color = color,
         shape = shape,
     ) {
         Column(Modifier.padding(contentPadding), content = content)
+    }
+}
+
+/** Mehka senca (svetlo) oz. tanka obroba (temno) - skupna globina kartic in plavajočih elementov. */
+@Composable
+fun Modifier.softElevation(shape: Shape, enabled: Boolean = true, elevation: Dp = 6.dp): Modifier {
+    if (!enabled) return this
+    return if (Finance.colors.isDark) {
+        border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.07f), shape)
+    } else {
+        shadow(
+            elevation, shape, clip = false,
+            ambientColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.10f),
+            spotColor = Color.Black.copy(alpha = 0.10f),
+        )
     }
 }
 
@@ -173,17 +208,18 @@ fun CategoryIcon(
     emoji: String? = null,
 ) {
     val accent = accentFor(title ?: "?", color)
+    val circle = accent.copy(alpha = 0.14f).compositeOver(MaterialTheme.colorScheme.surface)
     Box(
-        modifier.size(size).clip(CircleShape).background(accent.copy(alpha = 0.14f)),
+        modifier.size(size).clip(CircleShape).background(circle),
         contentAlignment = Alignment.Center,
     ) {
         val icon = if (emoji == null) categoryIconFor(title, type) else null
         when {
             emoji != null -> Text(emoji, style = MaterialTheme.typography.titleMedium)
-            icon != null -> Icon(icon, null, tint = accent, modifier = Modifier.size(size * 0.5f))
+            icon != null -> Icon(icon, null, tint = accent.asGraphic(on = circle), modifier = Modifier.size(size * 0.5f))
             else -> Text(
                 (title?.firstOrNull() ?: '?').uppercase(),
-                color = accent,
+                color = accent.asText(on = circle),
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleMedium,
             )
@@ -194,10 +230,11 @@ fun CategoryIcon(
 /** Majhen krog z ikono (za nastavitve, nasvete ...). */
 @Composable
 fun IconBadge(icon: ImageVector, tint: Color, modifier: Modifier = Modifier, size: Dp = 40.dp) {
+    val circle = tint.copy(alpha = 0.14f).compositeOver(MaterialTheme.colorScheme.surface)
     Box(
-        modifier.size(size).clip(CircleShape).background(tint.copy(alpha = 0.14f)),
+        modifier.size(size).clip(CircleShape).background(circle),
         contentAlignment = Alignment.Center,
-    ) { Icon(icon, null, tint = tint, modifier = Modifier.size(size * 0.5f)) }
+    ) { Icon(icon, null, tint = tint.asGraphic(on = circle), modifier = Modifier.size(size * 0.5f)) }
 }
 
 fun signedAmount(tx: TransactionUi): String =
@@ -273,12 +310,14 @@ fun PillButton(
 ) {
     val bg = if (filled) tint else MaterialTheme.colorScheme.surface
     val fg = if (filled) MaterialTheme.colorScheme.onPrimary else tint
+    val interaction = remember { MutableInteractionSource() }
     Surface(
         onClick = onClick,
         enabled = enabled,
         shape = CircleShape,
         color = if (enabled) bg else MaterialTheme.colorScheme.surfaceVariant,
-        modifier = modifier.height(52.dp),
+        modifier = modifier.height(52.dp).pressScale(interaction),
+        interactionSource = interaction,
     ) {
         Row(
             Modifier.padding(horizontal = 20.dp),
@@ -305,26 +344,32 @@ fun <T> SegmentedTabs(
     modifier: Modifier = Modifier,
     selectedColor: Color = Finance.colors.selectedTab,
     onSelectedColor: Color = Finance.colors.onSelectedTab,
+    trackColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    unselectedTextColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
 ) {
     val index = options.indexOf(selected).coerceAtLeast(0)
+    val haptic = LocalHapticFeedback.current
     BoxWithConstraints(
-        modifier.fillMaxWidth().height(44.dp).clip(RoundedCornerShape(14.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant).padding(4.dp),
+        modifier.fillMaxWidth().height(44.dp).clip(RoundedCornerShape(Radius.sm))
+            .background(trackColor).padding(4.dp),
     ) {
         val segment = maxWidth / options.size
         val offset by animateDpAsState(segment * index, spring(dampingRatio = 0.8f, stiffness = Spring.StiffnessMediumLow), label = "seg")
         val indicatorColor by animateColorAsState(selectedColor, label = "segc")
         Box(
             Modifier.offset(x = offset).width(segment).fillMaxHeight()
-                .clip(RoundedCornerShape(10.dp)).background(indicatorColor),
+                .clip(RoundedCornerShape(Radius.xs)).background(indicatorColor),
         )
         Row(Modifier.fillMaxWidth().fillMaxHeight()) {
             options.forEachIndexed { i, option ->
                 val textColor by animateColorAsState(
-                    if (i == index) onSelectedColor else MaterialTheme.colorScheme.onSurfaceVariant, label = "segt",
+                    if (i == index) onSelectedColor else unselectedTextColor, label = "segt",
                 )
                 Box(
-                    Modifier.weight(1f).fillMaxHeight().clip(RoundedCornerShape(10.dp)).clickable { onSelect(option) },
+                    Modifier.weight(1f).fillMaxHeight().clip(RoundedCornerShape(Radius.xs)).clickable {
+                        if (i != index) haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        onSelect(option)
+                    },
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(label(option), color = textColor, style = MaterialTheme.typography.labelLarge, maxLines = 1)
@@ -423,13 +468,20 @@ fun ScreenTopBar(
     modifier: Modifier = Modifier,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
-    Box(modifier.fillMaxWidth().statusBarsPadding().height(56.dp).padding(horizontal = 4.dp)) {
+    Box(modifier.fillMaxWidth().statusBarsPadding().height(60.dp).padding(horizontal = Spacing.md)) {
         if (onBack != null) {
-            IconButton(onClick = onBack, modifier = Modifier.align(Alignment.CenterStart)) {
-                Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.back))
+            // Krog kot gumb za iskanje na Domov - enoten videz ikonskih gumbov v glavah
+            Surface(
+                onClick = onBack, shape = CircleShape, color = MaterialTheme.colorScheme.surface,
+                modifier = Modifier.align(Alignment.CenterStart).size(44.dp).softElevation(CircleShape, elevation = 3.dp),
+            ) {
+                Box(contentAlignment = Alignment.Center) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, stringResource(R.string.back)) }
             }
         }
-        Text(title, style = MaterialTheme.typography.titleMedium, modifier = Modifier.align(Alignment.Center))
+        Text(
+            title, style = MaterialTheme.typography.titleLarge, maxLines = 1, overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.align(Alignment.Center).padding(horizontal = 56.dp),
+        )
         Row(Modifier.align(Alignment.CenterEnd), content = actions)
     }
 }
@@ -470,7 +522,7 @@ fun SettingsRow(
 @Composable
 fun SlimProgress(fraction: Float, color: Color, modifier: Modifier = Modifier, height: Dp = 6.dp) {
     Box(modifier.fillMaxWidth().height(height).clip(CircleShape).background(MaterialTheme.colorScheme.surfaceVariant)) {
-        val animated by androidx.compose.animation.core.animateFloatAsState(fraction.coerceIn(0f, 1f), label = "slim")
+        val animated = rememberGrowFrom0(fraction.coerceIn(0f, 1f))
         Box(Modifier.fillMaxWidth(animated).fillMaxHeight().clip(CircleShape).background(color))
     }
 }
@@ -478,7 +530,7 @@ fun SlimProgress(fraction: Float, color: Color, modifier: Modifier = Modifier, h
 /** Vrstica prenosa med računi (nevtralna barva - ni prihodek ne strošek). */
 @Composable
 fun TransferItem(t: TransferUi, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
-    val blue = Color(0xFF3B82F6)
+    val blue = Finance.colors.transfer
     Row(
         modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = Spacing.lg, vertical = Spacing.md),
         verticalAlignment = Alignment.CenterVertically,
@@ -528,14 +580,18 @@ fun AccountFilterRow(
 @Composable
 private fun FilterPill(text: String, selected: Boolean, dot: Color? = null, onClick: () -> Unit) {
     val colors = Finance.colors
+    val interaction = remember { MutableInteractionSource() }
     Surface(
         onClick = onClick,
         shape = CircleShape,
         color = if (selected) colors.selectedTab else MaterialTheme.colorScheme.surface,
+        modifier = Modifier.pressScale(interaction, 0.94f),
+        interactionSource = interaction,
     ) {
         Row(Modifier.padding(horizontal = 14.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             if (dot != null) {
-                Box(Modifier.size(8.dp).clip(CircleShape).background(dot))
+                val pill = if (selected) colors.selectedTab else MaterialTheme.colorScheme.surface
+                Box(Modifier.size(8.dp).clip(CircleShape).background(dot.asGraphic(on = pill)))
                 Spacer(Modifier.width(6.dp))
             }
             Text(

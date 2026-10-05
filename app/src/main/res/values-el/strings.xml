@@ -322,6 +322,7 @@
     <string name="accent_pink">Ροζ</string>
     <string name="accent_orange">Πορτοκαλί</string>
     <string name="accent_graphite">Γραφίτης</string>
+    <string name="accent_system">Ταπετσαρία</string>
     <string name="section_budgets">Ειδοποιήσεις προϋπολογισμού</string>
     <string name="section_budgets_desc" formatted="false">Όταν ξοδέψετε το 80% ενός προϋπολογισμού</string>
     <string name="section_favorites_desc">Γρήγορα κουμπιά για συχνές καταχωρίσεις</string>

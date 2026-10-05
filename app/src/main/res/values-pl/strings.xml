@@ -322,6 +322,7 @@
     <string name="accent_pink">Różowy</string>
     <string name="accent_orange">Pomarańczowy</string>
     <string name="accent_graphite">Grafitowy</string>
+    <string name="accent_system">Tapeta</string>
     <string name="section_budgets">Ostrzeżenia budżetowe</string>
     <string name="section_budgets_desc" formatted="false">Gdy wydasz 80% budżetu</string>
     <string name="section_favorites_desc">Szybkie przyciski dla częstych wpisów</string>

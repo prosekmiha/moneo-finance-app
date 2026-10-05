@@ -1,5 +1,6 @@
 package si.moneo.feature.ocr
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
@@ -153,13 +154,13 @@ class ReceiptScanActivity : ComponentActivity() {
                         Text(stringResource(R.string.receipt_scanner), style = MaterialTheme.typography.headlineSmall)
 
                         Surface(
-                            shape = RoundedCornerShape(28.dp), color = MaterialTheme.colorScheme.surface,
+                            shape = RoundedCornerShape(Radius.xl), color = MaterialTheme.colorScheme.surface,
                             modifier = Modifier.fillMaxWidth().height(if (result == null) 320.dp else 200.dp),
                         ) {
                             Box(contentAlignment = Alignment.Center) {
                                 val bmp = preview
                                 if (bmp != null) {
-                                    Image(bmp.asImageBitmap(), stringResource(R.string.receipt_image), Modifier.fillMaxSize().clip(RoundedCornerShape(28.dp)), contentScale = ContentScale.Crop)
+                                    Image(bmp.asImageBitmap(), stringResource(R.string.receipt_image), Modifier.fillMaxSize().clip(RoundedCornerShape(Radius.xl)), contentScale = ContentScale.Crop)
                                 } else {
                                     IconBadge(Icons.Rounded.DocumentScanner, MaterialTheme.colorScheme.primary, size = 88.dp)
                                 }
@@ -204,7 +205,7 @@ class ReceiptScanActivity : ComponentActivity() {
                     label = { Text(stringResource(R.string.amount_eur)) }, singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     textStyle = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(Radius.md), modifier = Modifier.fillMaxWidth(),
                 )
                 if (r.candidates.isNotEmpty()) {
                     Text(stringResource(R.string.other_amounts), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -224,7 +225,7 @@ class ReceiptScanActivity : ComponentActivity() {
                 DateField(stringResource(R.string.receipt_date) + if (r.date == null) stringResource(R.string.not_read) else "", date, { if (it != null) date = it }, Modifier.fillMaxWidth())
                 OutlinedTextField(
                     comment, { comment = it }, label = { Text(stringResource(R.string.shop_note)) }, singleLine = true,
-                    shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(Radius.md), modifier = Modifier.fillMaxWidth(),
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     DropdownField(

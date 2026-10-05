@@ -322,6 +322,7 @@
     <string name="accent_pink">Rozā</string>
     <string name="accent_orange">Oranža</string>
     <string name="accent_graphite">Grafīta</string>
+    <string name="accent_system">Fona attēls</string>
     <string name="section_budgets">Budžeta brīdinājumi</string>
     <string name="section_budgets_desc" formatted="false">Kad iztērēti 80% budžeta</string>
     <string name="section_favorites_desc">Ātrās pogas biežiem ierakstiem</string>

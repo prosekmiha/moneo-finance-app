@@ -322,6 +322,7 @@
     <string name="accent_pink">Roze</string>
     <string name="accent_orange">Oranje</string>
     <string name="accent_graphite">Grafiet</string>
+    <string name="accent_system">Achtergrond</string>
     <string name="section_budgets">Budgetwaarschuwingen</string>
     <string name="section_budgets_desc" formatted="false">Als je 80% van een budget hebt uitgegeven</string>
     <string name="section_favorites_desc">Snelknoppen voor veelgebruikte invoer</string>

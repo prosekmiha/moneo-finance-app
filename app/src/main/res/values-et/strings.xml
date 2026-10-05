@@ -322,6 +322,7 @@
     <string name="accent_pink">Roosa</string>
     <string name="accent_orange">Oranž</string>
     <string name="accent_graphite">Grafiit</string>
+    <string name="accent_system">Taustapilt</string>
     <string name="section_budgets">Eelarvehoiatused</string>
     <string name="section_budgets_desc" formatted="false">Kui oled kulutanud 80% eelarvest</string>
     <string name="section_favorites_desc">Kiirnupud sagedaste kannete jaoks</string>

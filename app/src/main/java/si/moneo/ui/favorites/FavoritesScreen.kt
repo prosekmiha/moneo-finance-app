@@ -1,11 +1,15 @@
 package si.moneo.ui.favorites
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import si.moneo.ui.components.pressScale
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -174,10 +178,13 @@ fun FavoritesRow(
     ) {
         itemsIndexed(favorites, key = { _, f -> f.uid }) { _, f ->
             val cat = categories.firstOrNull { it.uid == f.categoryUid }
-            Surface(shape = CircleShape, color = MaterialTheme.colorScheme.surface) {
+            val interaction = remember { MutableInteractionSource() }
+            Surface(shape = CircleShape, color = MaterialTheme.colorScheme.surface, modifier = Modifier.pressScale(interaction, 0.92f)) {
                 Row(
                     Modifier
                         .combinedClickable(
+                            interactionSource = interaction,
+                            indication = LocalIndication.current,
                             onClickLabel = stringResource(R.string.add_named, f.title),
                             onLongClickLabel = stringResource(R.string.edit),
                             onLongClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); onEdit(f) },
@@ -252,14 +259,14 @@ fun FavoriteEditorSheet(
             )
             OutlinedTextField(
                 title, { title = it }, label = { Text(stringResource(R.string.button_label_hint)) },
-                singleLine = true, shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth(),
+                singleLine = true, shape = RoundedCornerShape(Radius.md), modifier = Modifier.fillMaxWidth(),
             )
             OutlinedTextField(
                 amount, { v -> if (v.all { it.isDigit() || it == ',' || it == '.' }) amount = v },
                 label = { Text(stringResource(R.string.amount_eur)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(Radius.md),
                 modifier = Modifier.fillMaxWidth(),
             )
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
@@ -276,7 +283,7 @@ fun FavoriteEditorSheet(
             }
             OutlinedTextField(
                 comment, { comment = it }, label = { Text(stringResource(R.string.entry_note_optional)) },
-                singleLine = true, shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth(),
+                singleLine = true, shape = RoundedCornerShape(Radius.md), modifier = Modifier.fillMaxWidth(),
             )
             PillButton(
                 stringResource(R.string.save), Icons.Rounded.Check,

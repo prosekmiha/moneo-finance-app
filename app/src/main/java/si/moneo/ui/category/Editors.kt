@@ -1,5 +1,9 @@
 package si.moneo.ui.category
 
+import androidx.compose.ui.graphics.luminance
+import si.moneo.ui.theme.asGraphic
+import si.moneo.ui.theme.underWhiteText
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
@@ -121,7 +125,7 @@ fun CategoryEditorSheet(
             singleLine = true,
             isError = duplicate,
             supportingText = if (duplicate) ({ Text(stringResource(R.string.category_exists)) }) else null,
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(Radius.md),
             modifier = Modifier.fillMaxWidth(),
         )
         ColorPicker(color?.let { Color(it) }, onPick = { color = it.toArgb() })
@@ -129,7 +133,7 @@ fun CategoryEditorSheet(
             keywords, { keywords = it },
             label = { Text(stringResource(R.string.keywords_optional)) },
             supportingText = { Text(stringResource(R.string.keywords_hint)) },
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(Radius.md),
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -179,9 +183,9 @@ fun AccountEditorSheet(
         onDelete = onDelete,
     ) {
         // Predogled kartice
-        val base = accentFor(trimmed.ifEmpty { "Račun" }, color)
+        val base = accentFor(trimmed.ifEmpty { "Račun" }, color).underWhiteText()
         Box(
-            Modifier.fillMaxWidth().height(96.dp).clip(RoundedCornerShape(24.dp))
+            Modifier.fillMaxWidth().height(96.dp).clip(RoundedCornerShape(Radius.lg))
                 .background(Brush.linearGradient(listOf(base, base.copy(alpha = 0.7f)))),
         ) {
             Column(Modifier.padding(18.dp)) {
@@ -196,7 +200,7 @@ fun AccountEditorSheet(
             singleLine = true,
             isError = duplicate,
             supportingText = if (duplicate) ({ Text(stringResource(R.string.account_exists)) }) else null,
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(Radius.md),
             modifier = Modifier.fillMaxWidth(),
         )
         if (movementsCents != null) {
@@ -213,7 +217,7 @@ fun AccountEditorSheet(
                 isError = balanceCents == null,
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(Radius.md),
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -230,7 +234,7 @@ fun AccountEditorSheet(
             isError = initialCents == null,
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(Radius.md),
             modifier = Modifier.fillMaxWidth(),
         )
         SegmentedTabs(listOf("EUR", "USD", "CHF", "GBP"), currency, { currency = it }, label = { it })
@@ -281,13 +285,15 @@ fun ColorPicker(selected: Color?, onPick: (Color) -> Unit) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {
         items(AccentPalette) { c ->
             val isSel = selected == c
+            // Shrani se izvirna barva; prikaže se različica z zadostnim kontrastom do podlage
+            val shown = c.asGraphic()
             Box(
-                Modifier.size(36.dp).clip(CircleShape).background(c)
+                Modifier.size(36.dp).clip(CircleShape).background(shown)
                     .border(3.dp, if (isSel) MaterialTheme.colorScheme.onSurface else Color.Transparent, CircleShape)
                     .clickable { onPick(c) },
                 contentAlignment = Alignment.Center,
             ) {
-                if (isSel) Icon(Icons.Rounded.Check, null, tint = Color.White, modifier = Modifier.size(18.dp))
+                if (isSel) Icon(Icons.Rounded.Check, null, tint = if (shown.luminance() > 0.4f) Color.Black else Color.White, modifier = Modifier.size(18.dp))
             }
         }
     }

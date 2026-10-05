@@ -328,6 +328,7 @@
     <string name="accent_pink">Pink</string>
     <string name="accent_orange">Orange</string>
     <string name="accent_graphite">Graphite</string>
+    <string name="accent_system">Wallpaper</string>
     <string name="section_budgets">Budget alerts</string>
     <string name="section_budgets_desc" formatted="false">When you spend 80% of a budget</string>
     <string name="section_favorites_desc">Quick buttons for frequent entries</string>

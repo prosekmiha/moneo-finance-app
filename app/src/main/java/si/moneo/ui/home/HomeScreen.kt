@@ -1,5 +1,8 @@
 package si.moneo.ui.home
 
+import si.moneo.ui.theme.underWhiteText
+import si.moneo.ui.theme.asGraphic
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import si.moneo.ui.qty
@@ -19,6 +22,11 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.SwapHoriz
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
+import si.moneo.ui.fmt
+import si.moneo.ui.components.softElevation
+import si.moneo.ui.components.rememberStagger
+import si.moneo.ui.components.staggerItem
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
@@ -124,6 +132,7 @@ import si.moneo.ui.components.Sparkline
 import si.moneo.ui.components.TransactionItem
 import si.moneo.ui.formatCents
 import si.moneo.ui.theme.Finance
+import si.moneo.ui.theme.LightFinanceColors
 import si.moneo.ui.theme.Spacing
 import si.moneo.ui.theme.accentFor
 import java.time.LocalDate
@@ -189,12 +198,15 @@ fun HomeScreen(
     var expanded by remember(state.period, state.start, listType, accountFilter) { mutableStateOf(emptySet<String>()) }
     var transfersOpen by remember(state.period, state.start, accountFilter) { mutableStateOf(false) }
 
+    // Kartice ob odprtju zaslona "pridrsijo" ena za drugo
+    val stagger = rememberStagger()
     LazyColumn(
         Modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = contentPadding.calculateBottomPadding() + 24.dp),
     ) {
-        item(key = "header") { Header(onSearch) }
-        item(key = "month") {
+        stagger.reset()
+        staggerItem(stagger, key = "header") { Header(onSearch) }
+        staggerItem(stagger, key = "month") {
             Column(Modifier.padding(horizontal = Spacing.screen)) {
                 SegmentedTabs(
                     options = HOME_PERIODS,
@@ -207,16 +219,16 @@ fun HomeScreen(
             }
         }
         if (accounts.size > 1) {
-            item(key = "account-filter") {
+            staggerItem(stagger, key = "account-filter") {
                 AccountFilterRow(accounts, accountFilter, { vm.accountFilter.value = it }, Modifier.padding(bottom = Spacing.md))
             }
         }
-        item(key = "hero") {
+        staggerItem(stagger, key = "hero") {
             HeroPager(state, hidden, listType, onTypeChange = { listType = it }, onToggleHidden = { vm.setHideBalance(!hidden) })
         }
 
         if (state.unconfirmed.isNotEmpty()) {
-            item(key = "unconfirmed") {
+            staggerItem(stagger, key = "unconfirmed") {
                 UnconfirmedBanner(
                     count = state.unconfirmed.size,
                     onConfirmAll = { state.unconfirmed.forEach { vm.confirm(it.uid) } },
@@ -230,7 +242,7 @@ fun HomeScreen(
             when (entry.section) {
                 HomeSection.BUDGETS -> {
                     overallBudget?.takeIf { it.fraction >= 0.8f }?.let { b ->
-                        item(key = "overall-budget") {
+                        staggerItem(stagger, key = "overall-budget") {
                             OverallBudgetCard(b, onClick = onOpenCategories, Modifier.padding(horizontal = Spacing.screen, vertical = 6.dp))
                         }
                     }
@@ -238,7 +250,7 @@ fun HomeScreen(
                         BudgetAlertCard(alert, onClick = { onOpenCategory(alert.category.uid) }, Modifier.padding(horizontal = Spacing.screen, vertical = 6.dp))
                     }
                 }
-                HomeSection.FAVORITES -> item(key = "favorites") {
+                HomeSection.FAVORITES -> staggerItem(stagger, key = "favorites") {
                     FavoritesRow(
                         favorites, categories,
                         onAdd = ::addFavorite,
@@ -248,7 +260,7 @@ fun HomeScreen(
                     )
                 }
                 HomeSection.UPCOMING -> if (upcoming.isNotEmpty()) {
-                    item(key = "upcoming") {
+                    staggerItem(stagger, key = "upcoming") {
                         UpcomingCard(
                             upcoming, categories, hidden,
                             onOpen = { p ->
@@ -263,11 +275,11 @@ fun HomeScreen(
                     }
                 }
                 HomeSection.YEAR_REVIEW -> yearReviewPromoYear()?.let { year ->
-                    item(key = "year-review") {
+                    staggerItem(stagger, key = "year-review") {
                         YearReviewPromo(year, onClick = { onOpenYearReview(year) }, Modifier.padding(start = Spacing.screen, end = Spacing.screen, top = Spacing.lg))
                     }
                 }
-                HomeSection.GOALS -> item(key = "goals") {
+                HomeSection.GOALS -> staggerItem(stagger, key = "goals") {
                     GoalsStrip(goals, onOpenGoals, onOpenGoal, onNewGoal, Modifier.padding(top = Spacing.lg))
                 }
             }
@@ -276,7 +288,7 @@ fun HomeScreen(
         item(key = "tx-header") {
             Surface(
                 color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+                shape = RoundedCornerShape(topStart = Radius.xl, topEnd = Radius.xl),
                 modifier = Modifier.fillMaxWidth().padding(top = Spacing.xl)
                     .monthSwipe(vm::prevPeriod, vm::nextPeriod, state.isCurrent),
             ) {
@@ -387,9 +399,13 @@ private fun Header(onSearch: () -> Unit) {
         Spacer(Modifier.width(Spacing.md))
         Column(Modifier.weight(1f)) {
             Text("$greeting 👋", style = MaterialTheme.typography.titleMedium)
-            Text(stringResource(R.string.app_name), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                LocalDate.now().fmt(R.string.fmt_day_full_no_year, "EEEE, d. MMMM").replaceFirstChar { it.titlecase() },
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
-        Surface(shape = CircleShape, color = MaterialTheme.colorScheme.surface, onClick = onSearch, modifier = Modifier.size(44.dp)) {
+        Surface(shape = CircleShape, color = MaterialTheme.colorScheme.surface, onClick = onSearch, modifier = Modifier.size(44.dp).softElevation(CircleShape, elevation = 3.dp)) {
             Box(contentAlignment = Alignment.Center) { Icon(Icons.Rounded.Search, stringResource(R.string.search_a11y)) }
         }
         Spacer(Modifier.width(12.dp))
@@ -455,13 +471,14 @@ private fun HeroPager(
     val pager = rememberPagerState { pages }
     Column {
         HorizontalPager(state = pager) { page ->
-            Box(Modifier.padding(horizontal = Spacing.screen)) {
+            // Navpični odmik, da pager ne odreže sence kartice
+            Box(Modifier.padding(horizontal = Spacing.screen, vertical = Spacing.sm)) {
                 if (page == 0) BalanceCard(state, hidden, type, onTypeChange, onToggleHidden) else AccountCard(state.accounts[page - 1], hidden)
             }
         }
         if (pages > 1) {
             Row(
-                Modifier.fillMaxWidth().padding(top = Spacing.md),
+                Modifier.fillMaxWidth().padding(top = Spacing.xs),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -494,24 +511,29 @@ private fun BalanceCard(
 ) {
     val colors = Finance.colors
     val isExpense = type == TransactionType.EXPENSE
-    val typeColor = if (isExpense) colors.expense else colors.income
-    SoftCard(Modifier.fillMaxWidth().heightIn(min = 176.dp), shape = RoundedCornerShape(28.dp), contentPadding = PaddingValues(20.dp)) {
-        // Stanje obdobja: odhodki ali prihodki, brez predznaka in v barvi besedila
+    // Besedilo na belem zavihku: vedno temnejši (svetli) ton, tudi v temnem načinu - zaradi kontrasta
+    val typeColor = if (isExpense) LightFinanceColors.expense else LightFinanceColors.income
+    val onHero = Color.White
+    val onHeroMuted = Color.White.copy(alpha = 0.9f)
+    HeroSurface(colors.heroGradient) {
+        // Stanje obdobja: odhodki ali prihodki, brez predznaka; izbrani zavihek bel z barvo tipa
         SegmentedTabs(
             options = listOf(TransactionType.EXPENSE, TransactionType.INCOME),
             selected = type,
             onSelect = onTypeChange,
             label = { str(if (it == TransactionType.EXPENSE) R.string.expenses else R.string.income_plural) },
-            selectedColor = typeColor,
-            onSelectedColor = Color.White,
+            selectedColor = onHero,
+            onSelectedColor = typeColor,
+            trackColor = Color.White.copy(alpha = 0.16f),
+            unselectedTextColor = onHeroMuted,
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(balanceTitle(state.period), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.weight(1f))
+            Text(balanceTitle(state.period), style = MaterialTheme.typography.labelLarge, color = onHeroMuted, modifier = Modifier.weight(1f))
             IconButton(onClick = onToggleHidden) {
                 Icon(
                     if (hidden) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility,
                     stringResource(if (hidden) R.string.show_balance else R.string.hide_balance),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = onHeroMuted,
                     modifier = Modifier.size(20.dp),
                 )
             }
@@ -519,23 +541,24 @@ private fun BalanceCard(
         AnimatedAmount(
             if (isExpense) state.expenseCents else state.incomeCents,
             style = MaterialTheme.typography.displayMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = onHero,
             masked = hidden,
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             Spacer(Modifier.weight(1f))
             Column(horizontalAlignment = Alignment.End) {
                 if (state.trend.count { it != 0L } >= 3) {
-                    Sparkline(state.trend, colors.income, Modifier.width(120.dp).height(56.dp))
-                    Text(trendLabel(state.period), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Sparkline(state.trend, onHero, Modifier.width(120.dp).height(56.dp))
+                    Text(trendLabel(state.period), style = MaterialTheme.typography.labelSmall, color = onHeroMuted)
                 } else if (state.incomeCents > 0 && !hidden) {
                     // Premalo zgodovine za trend - pokaži, koliko prihodkov je že porabljenih
                     val spent = state.expenseCents.toFloat() / state.incomeCents
                     ProgressRing(
                         spent, size = 56.dp, thickness = 6.dp,
-                        color = if (spent > 1f) colors.expense else if (spent > 0.8f) colors.warning else colors.income,
-                    ) { Text("${(spent * 100).toInt()}%", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold) }
-                    Text(stringResource(R.string.spent_label), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        color = if (spent > 1f) colors.expense else if (spent > 0.8f) colors.warning else onHero,
+                        track = Color.White.copy(alpha = 0.22f),
+                    ) { Text("${(spent * 100).toInt()}%", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, color = onHero) }
+                    Text(stringResource(R.string.spent_label), style = MaterialTheme.typography.labelSmall, color = onHeroMuted)
                 }
             }
         }
@@ -543,24 +566,39 @@ private fun BalanceCard(
     }
 }
 
-/** "Povprečno na dan: ↓ 18,40 €" - povprečje izbranega tipa za izbrano obdobje. */
+/**
+ * Gradientna "hero" kartica z dekorativnima krogoma (stanje obdobja in strani računov).
+ * V svetlem načinu ima obarvano senco, ki sledi barvi gradienta.
+ */
+@Composable
+private fun HeroSurface(brush: Brush, glow: Color = Finance.colors.heroEnd, content: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit) {
+    val shape = RoundedCornerShape(Radius.xl)
+    val shadow = if (Finance.colors.isDark) Modifier else Modifier.shadow(14.dp, shape, ambientColor = glow.copy(alpha = 0.35f), spotColor = glow.copy(alpha = 0.45f))
+    Box(Modifier.fillMaxWidth().heightIn(min = 176.dp).then(shadow).clip(shape).background(brush)) {
+        Box(Modifier.align(Alignment.TopEnd).offset(x = 60.dp, y = (-50).dp).size(180.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.08f)))
+        Box(Modifier.align(Alignment.BottomEnd).offset(x = 20.dp, y = 40.dp).size(120.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.06f)))
+        Column(Modifier.padding(20.dp).fillMaxWidth(), content = content)
+    }
+}
+
+/** "Povprečno na dan: ↓ 18,40 €" - povprečje izbranega tipa za izbrano obdobje (na hero kartici). */
 @Composable
 private fun DailyAverageRow(avg: DailyAverage, type: TransactionType, hidden: Boolean) {
-    val colors = Finance.colors
+    val muted = Color.White.copy(alpha = 0.9f)
     Spacer(Modifier.height(Spacing.md))
-    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+    HorizontalDivider(color = Color.White.copy(alpha = 0.18f))
     Spacer(Modifier.height(Spacing.sm))
     Row(verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
-            Text(stringResource(R.string.avg_per_day), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(R.string.avg_per_day), style = MaterialTheme.typography.labelMedium, color = muted)
             if (avg.note.isNotEmpty()) {
-                Text(avg.note, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f))
+                Text(avg.note, style = MaterialTheme.typography.labelSmall, color = muted.copy(alpha = 0.8f))
             }
         }
         if (type == TransactionType.EXPENSE) {
-            AverageChip(Icons.Rounded.ArrowDropDown, colors.expense, avg.expenseCents, hidden, stringResource(R.string.avg_expense_a11y))
+            AverageChip(Icons.Rounded.ArrowDropDown, Color.White, avg.expenseCents, hidden, stringResource(R.string.avg_expense_a11y))
         } else {
-            AverageChip(Icons.Rounded.ArrowDropUp, colors.income, avg.incomeCents, hidden, stringResource(R.string.avg_income_a11y))
+            AverageChip(Icons.Rounded.ArrowDropUp, Color.White, avg.incomeCents, hidden, stringResource(R.string.avg_income_a11y))
         }
     }
 }
@@ -568,7 +606,7 @@ private fun DailyAverageRow(avg: DailyAverage, type: TransactionType, hidden: Bo
 @Composable
 private fun AverageChip(icon: androidx.compose.ui.graphics.vector.ImageVector, tint: Color, cents: Long, hidden: Boolean, description: String) {
     Row(
-        Modifier.clip(CircleShape).background(tint.copy(alpha = 0.12f)).padding(start = 4.dp, end = 10.dp, top = 4.dp, bottom = 4.dp)
+        Modifier.clip(CircleShape).background(tint.copy(alpha = 0.16f)).padding(start = 4.dp, end = 10.dp, top = 4.dp, bottom = 4.dp)
             .semantics(mergeDescendants = true) { contentDescription = description },
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -584,24 +622,16 @@ private fun AverageChip(icon: androidx.compose.ui.graphics.vector.ImageVector, t
 
 @Composable
 private fun AccountCard(balance: AccountBalance, hidden: Boolean) {
-    val base = accentFor(balance.account.title, balance.account.color)
-    Box(
-        Modifier.fillMaxWidth().heightIn(min = 176.dp).clip(RoundedCornerShape(28.dp))
-            .background(Brush.linearGradient(listOf(base, base.copy(alpha = 0.75f).compositeOverDark()))),
-    ) {
-        // Dekorativna kroga
-        Box(Modifier.align(Alignment.TopEnd).offset(x = 60.dp, y = (-50).dp).size(180.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.08f)))
-        Box(Modifier.align(Alignment.BottomEnd).offset(x = 20.dp, y = 40.dp).size(120.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.06f)))
-        Column(Modifier.padding(20.dp).fillMaxWidth()) {
-            Text(balance.account.title, color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.labelLarge)
-            Spacer(Modifier.height(4.dp))
-            AnimatedAmount(balance.balanceCents, style = MaterialTheme.typography.displayMedium, color = Color.White, masked = hidden)
-            Spacer(Modifier.height(Spacing.xl))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("•••• ${balance.account.currencyCode}", color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.titleMedium)
-                Spacer(Modifier.weight(1f))
-                Text(stringResource(R.string.account_balance), color = Color.White.copy(alpha = 0.7f), style = MaterialTheme.typography.labelMedium)
-            }
+    val base = accentFor(balance.account.title, balance.account.color).underWhiteText()
+    HeroSurface(Brush.linearGradient(listOf(base, base.copy(alpha = 0.75f).compositeOverDark())), glow = base) {
+        Text(balance.account.title, color = Color.White.copy(alpha = 0.92f), style = MaterialTheme.typography.labelLarge)
+        Spacer(Modifier.height(4.dp))
+        AnimatedAmount(balance.balanceCents, style = MaterialTheme.typography.displayMedium, color = Color.White, masked = hidden)
+        Spacer(Modifier.height(Spacing.xl))
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text("•••• ${balance.account.currencyCode}", color = Color.White.copy(alpha = 0.92f), style = MaterialTheme.typography.titleMedium)
+            Spacer(Modifier.weight(1f))
+            Text(stringResource(R.string.account_balance), color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.labelMedium)
         }
     }
 }
@@ -712,14 +742,14 @@ private fun GoalsStrip(
             ) {
                 items(goals, key = { it.goal.uid }) { g ->
                     Column(
-                        Modifier.width(64.dp).clip(RoundedCornerShape(16.dp)).clickable { onOpenGoal(g.goal.uid) },
+                        Modifier.width(64.dp).clip(RoundedCornerShape(Radius.md)).clickable { onOpenGoal(g.goal.uid) },
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         ProgressRing(
                             g.progress,
                             size = 60.dp,
                             thickness = 4.dp,
-                            color = if (g.reached) Finance.colors.income else accentFor(g.goal.title, g.goal.color),
+                            color = if (g.reached) Finance.colors.income else accentFor(g.goal.title, g.goal.color).asGraphic(),
                         ) {
                             Text(g.goal.emoji, style = MaterialTheme.typography.titleLarge)
                         }
@@ -871,7 +901,7 @@ private fun CategoryGroupRow(g: CategoryGroup, open: Boolean, type: TransactionT
                     )
                 }
                 Spacer(Modifier.height(6.dp))
-                SlimProgress(g.share, accent)
+                SlimProgress(g.share, accent.asGraphic())
                 Spacer(Modifier.height(4.dp))
                 Text(
                     buildList {

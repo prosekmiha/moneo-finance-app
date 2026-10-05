@@ -322,6 +322,7 @@
     <string name="accent_pink">Рожевий</string>
     <string name="accent_orange">Помаранчевий</string>
     <string name="accent_graphite">Графітовий</string>
+    <string name="accent_system">Шпалери</string>
     <string name="section_budgets">Попередження про бюджет</string>
     <string name="section_budgets_desc" formatted="false">Коли витрачено 80% бюджету</string>
     <string name="section_favorites_desc">Швидкі кнопки для частих записів</string>

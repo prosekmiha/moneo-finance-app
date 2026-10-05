@@ -1,5 +1,6 @@
 package si.moneo.ui.components
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.Arrangement
@@ -53,7 +54,7 @@ fun NumPad(
                     val isOp = key in setOf("⌫", "+", "−", "=")
                     Surface(
                         onClick = { press(key) },
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(Radius.md),
                         color = if (isOp) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surfaceContainerLow,
                         modifier = Modifier.weight(1f).height(keyHeight),
                     ) {

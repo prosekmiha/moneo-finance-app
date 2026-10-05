@@ -322,6 +322,7 @@
     <string name="accent_pink">Rosa</string>
     <string name="accent_orange">Orange</string>
     <string name="accent_graphite">Grafit</string>
+    <string name="accent_system">Bakgrund</string>
     <string name="section_budgets">Budgetvarningar</string>
     <string name="section_budgets_desc" formatted="false">När du har spenderat 80 % av en budget</string>
     <string name="section_favorites_desc">Snabbknappar för vanliga poster</string>

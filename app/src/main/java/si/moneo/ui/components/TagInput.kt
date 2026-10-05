@@ -1,5 +1,6 @@
 package si.moneo.ui.components
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import androidx.compose.ui.res.stringResource
 import androidx.compose.foundation.layout.Arrangement
@@ -109,7 +110,7 @@ fun TagInput(
                 trailingIcon = {
                     if (text.isNotBlank()) IconButton(onClick = { add(text) }) { Icon(Icons.Rounded.Add, stringResource(R.string.tag_add)) }
                 },
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(Radius.md),
                 colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                     unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,

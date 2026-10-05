@@ -1,5 +1,6 @@
 package si.moneo.ui.onboarding
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
@@ -200,7 +201,7 @@ private fun AccountStep(title: String, onTitle: (String) -> Unit, initial: Strin
     )
     OutlinedTextField(
         title, onTitle, label = { Text(stringResource(R.string.account_name)) }, singleLine = true,
-        shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(Radius.md), modifier = Modifier.fillMaxWidth(),
     )
     Spacer(Modifier.height(Spacing.md))
     OutlinedTextField(
@@ -211,7 +212,7 @@ private fun AccountStep(title: String, onTitle: (String) -> Unit, initial: Strin
         isError = parseCents(initial.replace("−", "-")) == null,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(Radius.md),
         modifier = Modifier.fillMaxWidth(),
     )
 }
@@ -246,7 +247,7 @@ private fun NotificationsStep(onAsked: () -> Unit) {
 @Composable
 private fun PermissionRow(title: String, subtitle: String, done: Boolean, onClick: () -> Unit) {
     androidx.compose.material3.Surface(
-        onClick = onClick, enabled = !done, shape = RoundedCornerShape(20.dp),
+        onClick = onClick, enabled = !done, shape = RoundedCornerShape(Radius.lg),
         color = MaterialTheme.colorScheme.surface, modifier = Modifier.fillMaxWidth(),
     ) {
         Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {

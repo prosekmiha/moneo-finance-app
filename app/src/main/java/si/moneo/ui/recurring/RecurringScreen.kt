@@ -1,5 +1,6 @@
 package si.moneo.ui.recurring
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import si.moneo.ui.qty
@@ -291,14 +292,14 @@ private fun RuleSheet(
             )
             OutlinedTextField(
                 title, { title = it }, label = { Text(stringResource(R.string.name_hint_rent)) },
-                singleLine = true, shape = RoundedCornerShape(16.dp), modifier = Modifier.fillMaxWidth(),
+                singleLine = true, shape = RoundedCornerShape(Radius.md), modifier = Modifier.fillMaxWidth(),
             )
             OutlinedTextField(
                 amount, { v -> if (v.all { it.isDigit() || it == ',' || it == '.' }) amount = v },
                 label = { Text(stringResource(R.string.amount_eur)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(Radius.md),
                 modifier = Modifier.fillMaxWidth(),
             )
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {

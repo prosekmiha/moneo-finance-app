@@ -322,6 +322,7 @@
     <string name="accent_pink">Rose</string>
     <string name="accent_orange">Orange</string>
     <string name="accent_graphite">Graphite</string>
+    <string name="accent_system">Fond d\'écran</string>
     <string name="section_budgets">Alertes de budget</string>
     <string name="section_budgets_desc" formatted="false">Quand vous avez dépensé 80 % d\'un budget</string>
     <string name="section_favorites_desc">Boutons rapides pour les saisies fréquentes</string>
@@ -448,7 +449,7 @@
     <string name="opening_balance">Solde initial (%1$s)</string>
     <string name="opening_balance_hint">Le montant sur le compte quand vous avez commencé à le suivre. Ne compte pas comme revenu.</string>
     <string name="account_current_balance">Solde actuel (%1$s)</string>
-    <string name="account_balance_correction_hint">Corrigez-le pour qu'il corresponde à votre banque. Les transactions restent inchangées : seul le solde initial est ajusté.</string>
+    <string name="account_balance_correction_hint">Corrigez-le pour qu\'il corresponde à votre banque. Les transactions restent inchangées : seul le solde initial est ajusté.</string>
     <string name="total_balance">Solde total</string>
     <string name="plan">Plan</string>
     <string name="plan_subtitle">Objectifs, abonnements, paiements récurrents, dettes et budgets</string>

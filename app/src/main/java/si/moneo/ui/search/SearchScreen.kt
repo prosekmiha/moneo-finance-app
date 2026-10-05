@@ -1,5 +1,6 @@
 package si.moneo.ui.search
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
@@ -246,14 +247,14 @@ private fun AdvancedFilters(
                     { v -> if (amountOk(v)) { minText = v; onChange(filter.copy(minCents = parseCents(v)?.takeIf { v.isNotBlank() })) } },
                     label = { Text(stringResource(R.string.min_eur)) }, singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    shape = RoundedCornerShape(16.dp), modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(Radius.md), modifier = Modifier.weight(1f),
                 )
                 OutlinedTextField(
                     maxText,
                     { v -> if (amountOk(v)) { maxText = v; onChange(filter.copy(maxCents = parseCents(v)?.takeIf { v.isNotBlank() })) } },
                     label = { Text(stringResource(R.string.max_eur)) }, singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    shape = RoundedCornerShape(16.dp), modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(Radius.md), modifier = Modifier.weight(1f),
                 )
             }
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.sm)) {

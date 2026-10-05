@@ -1,5 +1,6 @@
 package si.moneo.ui.tags
 
+import si.moneo.ui.theme.asGraphic
 import si.moneo.R
 import si.moneo.ui.str
 import si.moneo.ui.qty
@@ -147,7 +148,7 @@ fun TagDetailScreen(vm: MainViewModel, tag: String, onBack: () -> Unit, onOpenTr
                                         Text(formatCents(s.totalCents), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
                                     }
                                     Spacer(Modifier.height(4.dp))
-                                    SlimProgress(s.share, accent)
+                                    SlimProgress(s.share, accent.asGraphic())
                                     Text(stringResource(R.string.percent, (s.share * 100).roundToInt()), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 }
                             }

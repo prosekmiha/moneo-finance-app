@@ -322,6 +322,7 @@
     <string name="accent_pink">Розовый</string>
     <string name="accent_orange">Оранжевый</string>
     <string name="accent_graphite">Графитовый</string>
+    <string name="accent_system">Обои</string>
     <string name="section_budgets">Предупреждения о бюджете</string>
     <string name="section_budgets_desc" formatted="false">Когда потрачено 80 % бюджета</string>
     <string name="section_favorites_desc">Быстрые кнопки для частых записей</string>

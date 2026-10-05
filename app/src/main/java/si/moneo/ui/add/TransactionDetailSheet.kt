@@ -1,5 +1,6 @@
 package si.moneo.ui.add
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import androidx.compose.ui.res.stringResource
 import si.moneo.ui.fmt
@@ -115,7 +116,7 @@ fun TransactionDetailSheet(
 
             tx.attachmentPath?.let { path ->
                 Spacer(Modifier.height(Spacing.md))
-                AttachmentThumbnail(path, Modifier.fillMaxWidth().height(180.dp).clip(RoundedCornerShape(20.dp))) { viewImage = true }
+                AttachmentThumbnail(path, Modifier.fillMaxWidth().height(180.dp).clip(RoundedCornerShape(Radius.lg))) { viewImage = true }
                 Text(stringResource(R.string.tap_to_enlarge), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 

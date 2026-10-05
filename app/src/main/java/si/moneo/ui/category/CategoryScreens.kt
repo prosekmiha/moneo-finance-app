@@ -1,5 +1,7 @@
 package si.moneo.ui.category
 
+import si.moneo.ui.theme.asGraphic
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
@@ -119,7 +121,7 @@ fun CategoryDetailScreen(vm: MainViewModel, uid: String, onBack: () -> Unit, onE
                     items(AccentPalette) { c ->
                         val isSel = accent == c
                         Box(
-                            Modifier.size(32.dp).clip(CircleShape).background(c)
+                            Modifier.size(32.dp).clip(CircleShape).background(c.asGraphic())
                                 .border(3.dp, if (isSel) MaterialTheme.colorScheme.onSurface else Color.Transparent, CircleShape)
                                 .clickable { vm.saveCategory(cat.copy(color = c.toArgb())) },
                         )
@@ -264,7 +266,7 @@ private fun BudgetDialog(current: Long?, onDismiss: () -> Unit, onSave: (Long?) 
     var text by remember { mutableStateOf(current?.let(::centsToInput) ?: "") }
     AlertDialog(
         onDismissRequest = onDismiss,
-        shape = RoundedCornerShape(28.dp),
+        shape = RoundedCornerShape(Radius.xl),
         title = { Text(stringResource(R.string.monthly_budget)) },
         text = {
             OutlinedTextField(
@@ -272,7 +274,7 @@ private fun BudgetDialog(current: Long?, onDismiss: () -> Unit, onSave: (Long?) 
                 label = { Text(stringResource(R.string.amount_eur)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(Radius.md),
             )
         },
         confirmButton = {
@@ -423,7 +425,7 @@ private fun OverallBudgetDialog(current: Long?, onDismiss: () -> Unit, onSave: (
                 text, { v -> if (v.all { it.isDigit() || it == ',' || it == '.' }) text = v },
                 label = { Text(stringResource(R.string.amount_per_month)) }, singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(Radius.md),
             )
         },
         confirmButton = { TextButton(onClick = { onSave(cents) }, enabled = cents != null) { Text(stringResource(R.string.save)) } },

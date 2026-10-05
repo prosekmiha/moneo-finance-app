@@ -1,5 +1,6 @@
 package si.moneo.ui.more
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
@@ -71,6 +72,7 @@ import androidx.compose.material.icons.rounded.Subscriptions
 import androidx.compose.material.icons.rounded.Summarize
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Wallpaper
 import androidx.compose.material.icons.rounded.TableChart
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -260,7 +262,7 @@ fun MoreScreen(
                 if (query.isNotEmpty()) IconButton(onClick = { query = "" }) { Icon(Icons.Rounded.Close, stringResource(R.string.clear)) }
             },
             singleLine = true,
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(Radius.md),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
@@ -456,7 +458,7 @@ private fun LanguageDialog(selected: String?, onDismiss: () -> Unit, onSelect: (
                 items(options.size) { i ->
                     val tag = options[i]
                     Row(
-                        Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).clickable { onSelect(tag) }.padding(vertical = 10.dp, horizontal = 4.dp),
+                        Modifier.fillMaxWidth().clip(RoundedCornerShape(Radius.sm)).clickable { onSelect(tag) }.padding(vertical = 10.dp, horizontal = 4.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         androidx.compose.material3.RadioButton(selected = tag == selected, onClick = { onSelect(tag) })
@@ -490,19 +492,33 @@ private fun ReminderTimeDialog(minutes: Int, onDismiss: () -> Unit, onConfirm: (
 @Composable
 private fun AccentPicker(selected: ThemeAccent, onSelect: (ThemeAccent) -> Unit, modifier: Modifier = Modifier) {
     val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-    Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        ThemeAccent.entries.forEach { accent ->
+    val context = LocalContext.current
+    // Material You: krog iz sistemskih barv (primarna, terciarna, sekundarna)
+    val dynamicBrush = remember(context) {
+        if (ThemeAccent.dynamicSupported) {
+            val s = androidx.compose.material3.dynamicLightColorScheme(context)
+            Brush.sweepGradient(listOf(s.primary, s.tertiary, s.secondary, s.primary))
+        } else null
+    }
+    // Vodoravno drsenje, ker 8 krogov na ozkih zaslonih ne gre v eno vrsto
+    androidx.compose.foundation.lazy.LazyRow(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        items(ThemeAccent.available.size) { i ->
+            val accent = ThemeAccent.available[i]
             val spec = if (dark) accent.dark else accent.light
             val isSelected = accent == selected
+            val brush = if (accent == ThemeAccent.DYNAMIC && dynamicBrush != null) dynamicBrush else Brush.linearGradient(listOf(spec.heroStart, spec.heroEnd))
             Box(
                 Modifier.size(40.dp).clip(CircleShape)
-                    .background(Brush.linearGradient(listOf(spec.heroStart, spec.heroEnd)))
+                    .background(brush)
                     .then(if (isSelected) Modifier.border(3.dp, MaterialTheme.colorScheme.onSurface, CircleShape) else Modifier)
                     .clickable(onClickLabel = accent.label) { onSelect(accent) }
                     .semantics { contentDescription = accent.label; this.selected = isSelected },
                 contentAlignment = Alignment.Center,
             ) {
-                if (isSelected) Icon(Icons.Rounded.Check, null, tint = Color.White, modifier = Modifier.size(20.dp))
+                when {
+                    isSelected -> Icon(Icons.Rounded.Check, null, tint = Color.White, modifier = Modifier.size(20.dp))
+                    accent == ThemeAccent.DYNAMIC -> Icon(Icons.Rounded.Wallpaper, null, tint = Color.White, modifier = Modifier.size(18.dp))
+                }
             }
         }
     }
@@ -521,7 +537,7 @@ private fun Group(title: String, query: String, keywords: String, content: @Comp
     val rotation by animateFloatAsState(if (open) 0f else -90f, label = "chevron")
     Column {
         Row(
-            Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp)).clickable { expanded = !expanded }
+            Modifier.fillMaxWidth().clip(RoundedCornerShape(Radius.xs)).clickable { expanded = !expanded }
                 .padding(start = Spacing.sm, bottom = Spacing.sm, top = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {

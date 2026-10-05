@@ -1,5 +1,6 @@
 package si.moneo.data.report
 
+import si.moneo.ui.theme.ensureContrast
 import si.moneo.R
 import si.moneo.ui.str
 import si.moneo.ui.qty
@@ -47,7 +48,7 @@ object PdfReport {
     private const val M = 40f
 
     fun write(context: Context, r: PeriodReport): File {
-        val (scheme, finance) = appColors(ThemePrefs.loadAccent(context), dark = false)
+        val (scheme, finance) = appColors(ThemePrefs.loadAccent(context), dark = false, context = context)
         val accent = scheme.primary.toArgb()
         val income = finance.income.toArgb()
         val expense = finance.expense.toArgb()
@@ -157,7 +158,8 @@ object PdfReport {
         fun categoryTable(list: List<CategorySpend>, total: Long, budgets: Map<String, Long>) {
             list.forEach { s ->
                 need(26f)
-                val color = accentFor(s.category.title, s.category.color).toArgb()
+                // Pika na beli strani: vsaj 3:1 (WCAG za grafične elemente)
+                val color = accentFor(s.category.title, s.category.color).ensureContrast(androidx.compose.ui.graphics.Color.White, 3f).toArgb()
                 c.drawCircle(M + 5f, y - 4f, 4f, fill(color))
                 c.drawText(s.category.title, M + 16f, y, paint(10f, text))
                 c.drawText(formatCents(s.totalCents), W - M, y, paint(10f, text, bold = true, align = Paint.Align.RIGHT))

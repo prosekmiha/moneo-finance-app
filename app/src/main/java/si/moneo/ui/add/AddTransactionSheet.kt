@@ -1,5 +1,6 @@
 package si.moneo.ui.add
 
+import si.moneo.ui.theme.Radius
 import si.moneo.R
 import si.moneo.ui.str
 import si.moneo.ui.qty
@@ -9,6 +10,7 @@ import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -138,7 +140,7 @@ fun AddTransactionSheet(
         onDismissRequest = onDismiss,
         sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.surface,
-        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+        shape = RoundedCornerShape(topStart = Radius.xl, topEnd = Radius.xl),
         // Nižji ročaj od privzetega (48dp), da gre celoten vnos na zaslon brez drsenja
         dragHandle = {
             Box(
@@ -151,7 +153,7 @@ fun AddTransactionSheet(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun AddTransactionContent(vm: MainViewModel, onDone: () -> Unit) {
     val draft by vm.draft.collectAsStateWithLifecycle()
@@ -188,7 +190,7 @@ private fun AddTransactionContent(vm: MainViewModel, onDone: () -> Unit) {
     val isExpense = draft.type == TransactionType.EXPENSE
     val accent by animateColorAsState(
         when {
-            transferMode -> TransferBlue
+            transferMode -> colors.transfer
             isExpense -> colors.expense
             else -> colors.income
         },
@@ -344,7 +346,7 @@ private fun AddTransactionContent(vm: MainViewModel, onDone: () -> Unit) {
                 val selected = draft.categoryUid == cat.uid
                 val ring by animateColorAsState(if (selected) accent else Color.Transparent, label = "ring")
                 Column(
-                    Modifier.height(categoryTileHeight).clip(RoundedCornerShape(16.dp))
+                    Modifier.height(categoryTileHeight).clip(RoundedCornerShape(Radius.md))
                         .combinedClickable(
                             onLongClickLabel = stringResource(R.string.edit_category),
                             // Dolg pritisk: urejanje (preimenovanje, barva, ključne besede)
@@ -380,7 +382,7 @@ private fun AddTransactionContent(vm: MainViewModel, onDone: () -> Unit) {
             }
             item(key = "new-category") {
                 Column(
-                    Modifier.height(categoryTileHeight).clip(RoundedCornerShape(16.dp))
+                    Modifier.height(categoryTileHeight).clip(RoundedCornerShape(Radius.md))
                         .clickable { newCategory = true }
                         .padding(vertical = 4.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -452,7 +454,7 @@ private fun AddTransactionContent(vm: MainViewModel, onDone: () -> Unit) {
             },
             placeholder = { Text(stringResource(if (transferMode) R.string.note_transfer_hint else R.string.note_hint)) },
             singleLine = true,
-            shape = RoundedCornerShape(16.dp),
+            shape = RoundedCornerShape(Radius.md),
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
@@ -484,7 +486,7 @@ private fun AddTransactionContent(vm: MainViewModel, onDone: () -> Unit) {
         val attachment = draft.attachmentPath
         if (!transferMode && attachment != null) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                AttachmentThumbnail(attachment, Modifier.size(56.dp).clip(RoundedCornerShape(12.dp))) { viewAttachment = true }
+                AttachmentThumbnail(attachment, Modifier.size(56.dp).clip(RoundedCornerShape(Radius.sm))) { viewAttachment = true }
                 Spacer(Modifier.width(Spacing.md))
                 Column(Modifier.weight(1f)) {
                     Text(stringResource(R.string.receipt_image), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
@@ -588,7 +590,7 @@ private fun AddTransactionContent(vm: MainViewModel, onDone: () -> Unit) {
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                    OutlinedTextField(title, { title = it }, label = { Text(stringResource(R.string.button_label)) }, singleLine = true, shape = RoundedCornerShape(16.dp))
+                    OutlinedTextField(title, { title = it }, label = { Text(stringResource(R.string.button_label)) }, singleLine = true, shape = RoundedCornerShape(Radius.md))
                 }
             },
             confirmButton = {
@@ -689,8 +691,6 @@ private enum class EntryMode(private val labelRes: Int) {
     val label: String get() = str(labelRes)
 }
 
-private val TransferBlue = Color(0xFF3B82F6)
-
 /** Izbira računov za prenos: "z računa" -> "na račun" z gumbom za zamenjavo. */
 @Composable
 private fun TransferAccounts(
@@ -703,7 +703,7 @@ private fun TransferAccounts(
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         AccountPicker(stringResource(R.string.from_account), accounts, fromUid, onFrom, Modifier.weight(1f))
-        IconButton(onClick = onSwap) { Icon(Icons.Rounded.SwapHoriz, stringResource(R.string.swap), tint = TransferBlue) }
+        IconButton(onClick = onSwap) { Icon(Icons.Rounded.SwapHoriz, stringResource(R.string.swap), tint = Finance.colors.transfer) }
         AccountPicker(stringResource(R.string.to_account), accounts, toUid, onTo, Modifier.weight(1f))
     }
     if (fromUid != null && fromUid == toUid) {
@@ -722,7 +722,7 @@ private fun AccountPicker(
     var open by remember { mutableStateOf(false) }
     val selected = accounts.firstOrNull { it.uid == selectedUid }
     Box(modifier) {
-        Surface(onClick = { open = true }, shape = RoundedCornerShape(16.dp), color = MaterialTheme.colorScheme.surfaceVariant, modifier = Modifier.fillMaxWidth()) {
+        Surface(onClick = { open = true }, shape = RoundedCornerShape(Radius.md), color = MaterialTheme.colorScheme.surfaceVariant, modifier = Modifier.fillMaxWidth()) {
             Column(Modifier.padding(horizontal = 14.dp, vertical = 10.dp)) {
                 Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text(selected?.title ?: stringResource(R.string.choose), style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
