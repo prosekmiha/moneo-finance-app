@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Niepotwierdzona — sprawdź kwotę i potwierdź</string>
     <string name="date">Data</string>
     <string name="default_account">Konto domyślne</string>
+    <string name="default_account_hint">Nowe transakcje, płatności cykliczne i subskrypcje bez wybranego konta trafiają na to konto.</string>
     <string name="note">Notatka</string>
     <string name="tags">Etykiety</string>
     <string name="source">Źródło</string>

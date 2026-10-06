@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import si.moneo.MoneoApp
 import si.moneo.data.db.entity.AccountEntity
+import si.moneo.data.db.entity.defaultAccount
 import si.moneo.data.db.entity.CategoryEntity
 import si.moneo.data.db.entity.DebtEntity
 import si.moneo.data.db.entity.FavoriteEntity
@@ -181,7 +182,7 @@ class MainViewModel(private val repo: FinanceRepository, private val prefs: AppP
     /** Transakcije po filtru računa (transakcija brez računa pripada privzetemu). */
     private val filteredTransactions: StateFlow<List<TransactionUi>> = combine(allTransactions, accountFilter, accounts) { txs, f, accs ->
         if (f == null) txs else {
-            val def = accs.firstOrNull()?.uid
+            val def = accs.defaultAccount()?.uid
             txs.filter { (it.accountUid ?: def) == f }
         }
     }.state(emptyList())
@@ -336,7 +337,7 @@ class MainViewModel(private val repo: FinanceRepository, private val prefs: AppP
         val q = f.query.trim().lowercase()
         if (!f.isActive) return@combine SearchResult()
         val qCents = parseCents(q)?.takeIf { q.any(Char::isDigit) }
-        val defaultAccount = accs.firstOrNull()?.uid
+        val defaultAccount = accs.defaultAccount()?.uid
         val matches = txs.asSequence()
             .filter { f.type == null || it.type == f.type }
             .filter { f.categoryUid == null || it.categoryUid == f.categoryUid }

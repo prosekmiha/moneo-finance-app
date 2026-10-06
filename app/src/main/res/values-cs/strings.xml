@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Nepotvrzeno — zkontrolujte částku a potvrďte</string>
     <string name="date">Datum</string>
     <string name="default_account">Výchozí účet</string>
+    <string name="default_account_hint">Nové transakce, opakované platby a předplatná bez zvoleného účtu se zapíší na tento účet.</string>
     <string name="note">Poznámka</string>
     <string name="tags">Štítky</string>
     <string name="source">Zdroj</string>

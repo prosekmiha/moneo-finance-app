@@ -235,6 +235,7 @@
     <string name="unconfirmed_check">Nincs megerősítve — ellenőrizd az összeget és erősítsd meg</string>
     <string name="date">Dátum</string>
     <string name="default_account">Alapértelmezett számla</string>
+    <string name="default_account_hint">Az új tranzakciók, ismétlődő fizetések és előfizetések kiválasztott számla nélkül erre a számlára kerülnek.</string>
     <string name="note">Megjegyzés</string>
     <string name="tags">Címkék</string>
     <string name="source">Forrás</string>

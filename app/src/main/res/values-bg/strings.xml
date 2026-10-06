@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Непотвърдена — проверете сумата и потвърдете</string>
     <string name="date">Дата</string>
     <string name="default_account">Сметка по подразбиране</string>
+    <string name="default_account_hint">Новите трансакции, повтарящите се плащания и абонаментите без избрана сметка отиват в тази сметка.</string>
     <string name="note">Бележка</string>
     <string name="tags">Етикети</string>
     <string name="source">Източник</string>

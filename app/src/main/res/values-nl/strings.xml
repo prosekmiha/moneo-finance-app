@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Onbevestigd — controleer het bedrag en bevestig</string>
     <string name="date">Datum</string>
     <string name="default_account">Standaardrekening</string>
+    <string name="default_account_hint">Nieuwe transacties, terugkerende betalingen en abonnementen zonder gekozen rekening komen op deze rekening.</string>
     <string name="note">Notitie</string>
     <string name="tags">Labels</string>
     <string name="source">Bron</string>

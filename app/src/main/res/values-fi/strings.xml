@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Vahvistamaton — tarkista summa ja vahvista</string>
     <string name="date">Päivämäärä</string>
     <string name="default_account">Oletustili</string>
+    <string name="default_account_hint">Uudet tapahtumat, toistuvat maksut ja tilaukset ilman valittua tiliä kirjataan tälle tilille.</string>
     <string name="note">Muistiinpano</string>
     <string name="tags">Tunnisteet</string>
     <string name="source">Lähde</string>

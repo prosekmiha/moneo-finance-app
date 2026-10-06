@@ -18,10 +18,12 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import si.moneo.data.db.AppDatabase
+import si.moneo.data.db.entity.AccountEntity
 import si.moneo.data.db.entity.TransactionType
+import si.moneo.data.repo.FinanceRepository
 
 /**
- * Preveri vse nadgradnje baze (1 -> 7) na pravem SQLite: stara baza s podatki se mora odpreti
+ * Preveri vse nadgradnje baze (1 -> 8) na pravem SQLite: stara baza s podatki se mora odpreti
  * s trenutno aplikacijo (Room ob tem preveri, da se shema ujema z entitetami), podatki pa ostanejo.
  */
 @RunWith(RobolectricTestRunner::class)
@@ -61,7 +63,7 @@ class MigrationTest {
         Room.databaseBuilder(context, AppDatabase::class.java, dbName)
             .addMigrations(
                 AppDatabase.MIGRATION_1_2, AppDatabase.MIGRATION_2_3, AppDatabase.MIGRATION_3_4,
-                AppDatabase.MIGRATION_4_5, AppDatabase.MIGRATION_5_6, AppDatabase.MIGRATION_6_7,
+                AppDatabase.MIGRATION_4_5, AppDatabase.MIGRATION_5_6, AppDatabase.MIGRATION_6_7, AppDatabase.MIGRATION_7_8,
             )
             .allowMainThreadQueries()
             .build()
@@ -69,7 +71,7 @@ class MigrationTest {
     @Test fun allMigrationsKeepDataAndMatchSchema() = runBlocking {
         createVersion1()
         val db = openCurrent()
-        // Odpiranje sproži nadgradnje 1 -> 7 in Roomovo preverjanje sheme (vrže napako, če se ne ujema)
+        // Odpiranje sproži nadgradnje 1 -> 8 in Roomovo preverjanje sheme (vrže napako, če se ne ujema)
         db.openHelper.writableDatabase
 
         val tx = db.transactionDao().all().single()
@@ -84,6 +86,8 @@ class MigrationTest {
 
         val account = db.accountDao().all().single()
         assertEquals(0L, account.initialBalanceCents)
+        // "Glavni račun" postane privzeti
+        assertTrue(account.isDefault)
         assertNull(db.categoryDao().all().single().monthlyBudgetCents)
         assertEquals(1, db.transferDao().all().size)
         val rule = db.recurringRuleDao().all().single()
@@ -95,6 +99,23 @@ class MigrationTest {
         assertTrue(db.favoriteDao().all().isEmpty())
         assertTrue(db.debtDao().all().isEmpty())
         assertTrue(db.goalDao().allGoals().isEmpty())
+        db.close()
+    }
+
+    @Test fun onlyOneDefaultAccount() = runBlocking {
+        val db = openCurrent()
+        val repo = FinanceRepository(db)
+        repo.saveAccount(AccountEntity(uid = "main", title = "Glavni račun", isDefault = true))
+        repo.saveAccount(AccountEntity(uid = "cash", title = "Gotovina", position = 1))
+        assertEquals("main", db.accountDao().defaultAccount()?.uid)
+
+        repo.saveAccount(db.accountDao().byUid("cash")!!.copy(isDefault = true))
+        assertEquals("cash", db.accountDao().defaultAccount()?.uid)
+        assertEquals(listOf("cash"), db.accountDao().all().filter { it.isDefault }.map { it.uid })
+
+        // izbrisan privzeti -> prvi po vrstnem redu
+        repo.saveAccount(db.accountDao().byUid("cash")!!.copy(deleted = true))
+        assertEquals("main", db.accountDao().defaultAccount()?.uid)
         db.close()
     }
 

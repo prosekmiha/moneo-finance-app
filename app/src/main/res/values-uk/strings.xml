@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Не підтверджено — перевірте суму й підтвердьте</string>
     <string name="date">Дата</string>
     <string name="default_account">Рахунок за замовчуванням</string>
+    <string name="default_account_hint">Нові операції, регулярні платежі та підписки без вибраного рахунку записуються на цей рахунок.</string>
     <string name="note">Нотатка</string>
     <string name="tags">Мітки</string>
     <string name="source">Джерело</string>

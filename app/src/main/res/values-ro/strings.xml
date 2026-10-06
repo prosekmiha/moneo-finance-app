@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Neconfirmată — verifică suma și confirmă</string>
     <string name="date">Data</string>
     <string name="default_account">Cont implicit</string>
+    <string name="default_account_hint">Tranzacțiile noi, plățile recurente și abonamentele fără cont ales merg în acest cont.</string>
     <string name="note">Notă</string>
     <string name="tags">Etichete</string>
     <string name="source">Sursă</string>
