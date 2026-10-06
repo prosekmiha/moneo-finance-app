@@ -240,6 +240,7 @@
     <string name="unconfirmed_check">Nepotrjeno — preveri znesek in potrdi</string>
     <string name="date">Datum</string>
     <string name="default_account">Privzeti račun</string>
+    <string name="default_account_hint">Nove transakcije, ponavljajoča plačila in naročnine brez izbranega računa gredo na ta račun.</string>
     <string name="note">Opomba</string>
     <string name="tags">Oznake</string>
     <string name="source">Vir</string>

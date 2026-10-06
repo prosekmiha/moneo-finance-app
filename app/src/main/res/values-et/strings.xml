@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Kinnitamata — kontrolli summat ja kinnita</string>
     <string name="date">Kuupäev</string>
     <string name="default_account">Vaikekonto</string>
+    <string name="default_account_hint">Uued tehingud, korduvmaksed ja tellimused ilma valitud kontota lähevad sellele kontole.</string>
     <string name="note">Märkus</string>
     <string name="tags">Sildid</string>
     <string name="source">Allikas</string>

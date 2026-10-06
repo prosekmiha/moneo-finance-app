@@ -35,7 +35,12 @@ data class AccountEntity(
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),
     val deleted: Boolean = false,
+    /** Račun za transakcije, pravila in naročnine brez izbranega računa. */
+    @ColumnInfo(defaultValue = "0") val isDefault: Boolean = false,
 )
+
+/** Privzeti račun med aktivnimi; če ni označen, prvi po vrstnem redu (kot [si.moneo.data.db.AccountDao.defaultAccount]). */
+fun List<AccountEntity>.defaultAccount(): AccountEntity? = firstOrNull { it.isDefault } ?: firstOrNull()
 
 @Entity(tableName = "categories")
 data class CategoryEntity(

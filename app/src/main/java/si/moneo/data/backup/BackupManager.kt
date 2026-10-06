@@ -284,13 +284,14 @@ class BackupManager(private val context: Context, private val db: AppDatabase) {
         .put("uid", uid).put("title", title).put("currencyCode", currencyCode).put("icon", icon.orNull())
         .put("color", color.orNull()).put("position", position).put("isActive", isActive)
         .put("initialBalanceCents", initialBalanceCents)
-        .put("createdAt", createdAt).put("updatedAt", updatedAt).put("deleted", deleted)
+        .put("createdAt", createdAt).put("updatedAt", updatedAt).put("deleted", deleted).put("isDefault", isDefault)
 
     private fun accountFrom(o: JSONObject) = AccountEntity(
         uid = o.getString("uid"), title = o.getString("title"), currencyCode = o.optString("currencyCode", "EUR"),
         icon = o.optNullableString("icon"), color = o.optNullableInt("color"), position = o.optInt("position"),
         isActive = o.bool("isActive", true), initialBalanceCents = o.optLong("initialBalanceCents", 0),
         createdAt = o.getLong("createdAt"), updatedAt = o.getLong("updatedAt"), deleted = o.bool("deleted"),
+        isDefault = o.bool("isDefault"),
     )
 
     private fun CategoryEntity.toJson() = JSONObject()

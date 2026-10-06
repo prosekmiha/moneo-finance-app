@@ -47,7 +47,7 @@ class Converters {
         FavoriteEntity::class,
         DebtEntity::class,
     ],
-    version = 7,
+    version = 8,
     exportSchema = false,
 )
 @TypeConverters(Converters::class)
@@ -63,6 +63,14 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun debtDao(): DebtDao
 
     companion object {
+        /** v8: uporabnik izbere privzeti račun; obstoječim namestitvam je to "Glavni račun". */
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE accounts ADD COLUMN isDefault INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("UPDATE accounts SET isDefault = 1 WHERE uid = 'main' AND deleted = 0")
+            }
+        }
+
         /** v7: dan obračuna pri ponavljajočih pravilih. */
         val MIGRATION_6_7 = object : Migration(6, 7) {
             override fun migrate(db: SupportSQLiteDatabase) {
@@ -148,7 +156,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "moje_finance.db",
-                ).addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7).build().also { instance = it }
+                ).addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8).build().also { instance = it }
             }
     }
 }

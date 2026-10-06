@@ -30,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -37,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import si.moneo.data.db.entity.AccountEntity
+import si.moneo.data.db.entity.defaultAccount
 import si.moneo.ui.MainViewModel
 import si.moneo.ui.components.AnimatedAmount
 import si.moneo.ui.components.PillButton
@@ -53,6 +55,7 @@ fun AccountsScreen(vm: MainViewModel, onBack: () -> Unit, onTransfer: () -> Unit
     // Račun v urejanju (null = urejevalnik zaprt)
     var editing by remember { mutableStateOf<AccountEntity?>(null) }
     var creating by remember { mutableStateOf(false) }
+    val defaultUid = balances.map { it.account }.defaultAccount()?.uid
 
     Column(Modifier.fillMaxSize()) {
         ScreenTopBar(stringResource(R.string.accounts), onBack)
@@ -81,7 +84,18 @@ fun AccountsScreen(vm: MainViewModel, onBack: () -> Unit, onTransfer: () -> Unit
                         .clickable { editing = b.account },
                 ) {
                     Column(Modifier.padding(18.dp)) {
-                        Text(b.account.title, color = Color.White.copy(alpha = 0.9f), style = MaterialTheme.typography.labelLarge)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(b.account.title, color = Color.White.copy(alpha = 0.9f), style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f, fill = false))
+                            if (b.account.uid == defaultUid) {
+                                Text(
+                                    stringResource(R.string.default_short),
+                                    color = Color.White,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    modifier = Modifier.padding(start = Spacing.sm).clip(RoundedCornerShape(Radius.sm))
+                                        .background(Color.White.copy(alpha = 0.22f)).padding(horizontal = 8.dp, vertical = 2.dp),
+                                )
+                            }
+                        }
                         Spacer(Modifier.height(2.dp))
                         Text(if (hidden) "•••• €" else formatCents(b.balanceCents, b.account.currencyCode), color = Color.White, style = MaterialTheme.typography.headlineSmall)
                         Spacer(Modifier.weight(1f))
@@ -116,6 +130,7 @@ fun AccountsScreen(vm: MainViewModel, onBack: () -> Unit, onTransfer: () -> Unit
             account = acc,
             existingTitles = titles,
             currentBalanceCents = balances.firstOrNull { it.account.uid == acc.uid }?.balanceCents,
+            isDefault = acc.uid == defaultUid,
             onDismiss = { editing = null },
             onSave = {
                 vm.saveAccount(it)

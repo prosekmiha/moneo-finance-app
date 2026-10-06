@@ -20,7 +20,7 @@ private val LEGACY_TITLES = mapOf(
 /** Ob prvem zagonu (prazna baza) napolni privzeti račun in osnovne kategorije. */
 suspend fun seedDefaultsIfEmpty(db: AppDatabase) {
     if (db.accountDao().defaultAccount() == null) {
-        db.accountDao().upsert(AccountEntity(uid = "main", title = str(R.string.main_account)))
+        db.accountDao().upsert(AccountEntity(uid = "main", title = str(R.string.main_account), isDefault = true))
     }
     LEGACY_TITLES.forEach { (old, new) -> db.categoryDao().rename(old, new) }
     if (db.categoryDao().allActive().isNotEmpty()) return

@@ -233,6 +233,7 @@
     <string name="unconfirmed_check">Unbestätigt — Betrag prüfen und bestätigen</string>
     <string name="date">Datum</string>
     <string name="default_account">Standardkonto</string>
+    <string name="default_account_hint">Neue Buchungen, wiederkehrende Zahlungen und Abos ohne gewähltes Konto werden diesem Konto zugeordnet.</string>
     <string name="note">Notiz</string>
     <string name="tags">Tags</string>
     <string name="source">Quelle</string>

@@ -13,6 +13,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -34,6 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -150,8 +152,11 @@ fun AccountEditorSheet(
     onDelete: (() -> Unit)? = null,
     /** Trenutno stanje obstoječega računa; ob podanem stanju ga je mogoče ročno popraviti. */
     currentBalanceCents: Long? = null,
+    /** Račun je trenutno privzeti; privzetost se ne izklopi, ampak prenese z izbiro drugega računa. */
+    isDefault: Boolean = false,
 ) {
     var title by remember { mutableStateOf(account?.title ?: "") }
+    var makeDefault by remember { mutableStateOf(isDefault) }
     var color by remember { mutableStateOf(account?.color) }
     var currency by remember { mutableStateOf(account?.currencyCode ?: "EUR") }
     fun signedInput(cents: Long) = (if (cents < 0) "-" else "") + centsToInput(kotlin.math.abs(cents))
@@ -176,6 +181,7 @@ fun AccountEditorSheet(
             onSave(
                 (account ?: AccountEntity(title = trimmed)).copy(
                     title = trimmed, color = color, currencyCode = currency, initialBalanceCents = initialCents ?: 0,
+                    isDefault = makeDefault,
                 ),
             )
         },
@@ -239,6 +245,16 @@ fun AccountEditorSheet(
         )
         SegmentedTabs(listOf("EUR", "USD", "CHF", "GBP"), currency, { currency = it }, label = { it })
         ColorPicker(color?.let { Color(it) }, onPick = { color = it.toArgb() })
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text(stringResource(R.string.default_account), style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    stringResource(R.string.default_account_hint),
+                    style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Switch(checked = makeDefault, onCheckedChange = { makeDefault = it }, enabled = !isDefault, modifier = Modifier.padding(start = 8.dp))
+        }
     }
 }
 

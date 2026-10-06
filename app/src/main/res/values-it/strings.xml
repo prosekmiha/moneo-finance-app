@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Non confermata — controlla l\'importo e conferma</string>
     <string name="date">Data</string>
     <string name="default_account">Conto predefinito</string>
+    <string name="default_account_hint">Nuove transazioni, pagamenti ricorrenti e abbonamenti senza conto scelto vanno su questo conto.</string>
     <string name="note">Nota</string>
     <string name="tags">Etichette</string>
     <string name="source">Origine</string>

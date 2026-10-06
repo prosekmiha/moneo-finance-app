@@ -83,7 +83,11 @@ class FinanceRepository(private val db: AppDatabase) {
     suspend fun addGoalContribution(contribution: GoalContributionEntity) = goals.upsertContribution(contribution)
 
     suspend fun saveCategory(category: CategoryEntity) = categories.upsert(category)
-    suspend fun saveAccount(account: AccountEntity) = accounts.upsert(account)
+    /** Privzeti je lahko le en račun - ob označitvi novega se drugim zastavica odstrani. */
+    suspend fun saveAccount(account: AccountEntity) = db.withTransaction {
+        accounts.upsert(account)
+        if (account.isDefault) accounts.clearDefaultExcept(account.uid, System.currentTimeMillis())
+    }
     suspend fun saveRecurringRule(rule: RecurringRuleEntity) = recurring.upsert(rule)
 
     suspend fun categoryByUid(uid: String?) = uid?.let { categories.byUid(it) }

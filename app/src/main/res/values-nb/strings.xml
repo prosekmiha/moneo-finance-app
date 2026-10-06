@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Ubekreftet — sjekk beløpet og bekreft</string>
     <string name="date">Dato</string>
     <string name="default_account">Standardkonto</string>
+    <string name="default_account_hint">Nye transaksjoner, gjentakende betalinger og abonnementer uten valgt konto føres på denne kontoen.</string>
     <string name="note">Notat</string>
     <string name="tags">Etiketter</string>
     <string name="source">Kilde</string>

@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Obekräftad — kontrollera beloppet och bekräfta</string>
     <string name="date">Datum</string>
     <string name="default_account">Standardkonto</string>
+    <string name="default_account_hint">Nya transaktioner, återkommande betalningar och prenumerationer utan valt konto bokförs på detta konto.</string>
     <string name="note">Anteckning</string>
     <string name="tags">Taggar</string>
     <string name="source">Källa</string>

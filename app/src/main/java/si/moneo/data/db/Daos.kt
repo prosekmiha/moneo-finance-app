@@ -29,8 +29,12 @@ interface AccountDao {
     @Query("SELECT * FROM accounts WHERE uid = :uid")
     suspend fun byUid(uid: String): AccountEntity?
 
-    @Query("SELECT * FROM accounts WHERE deleted = 0 ORDER BY position, title LIMIT 1")
+    /** Označen privzeti račun; če ga ni (ali je izbrisan), prvi po vrstnem redu. */
+    @Query("SELECT * FROM accounts WHERE deleted = 0 ORDER BY isDefault DESC, position, title LIMIT 1")
     suspend fun defaultAccount(): AccountEntity?
+
+    @Query("UPDATE accounts SET isDefault = 0, updatedAt = :now WHERE isDefault = 1 AND uid != :uid")
+    suspend fun clearDefaultExcept(uid: String, now: Long)
 
     @Query("SELECT * FROM accounts")
     suspend fun all(): List<AccountEntity>

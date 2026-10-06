@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Μη επιβεβαιωμένη — ελέγξτε το ποσό και επιβεβαιώστε</string>
     <string name="date">Ημερομηνία</string>
     <string name="default_account">Προεπιλεγμένος λογαριασμός</string>
+    <string name="default_account_hint">Νέες συναλλαγές, επαναλαμβανόμενες πληρωμές και συνδρομές χωρίς επιλεγμένο λογαριασμό καταχωρούνται σε αυτόν τον λογαριασμό.</string>
     <string name="note">Σημείωση</string>
     <string name="tags">Ετικέτες</string>
     <string name="source">Πηγή</string>

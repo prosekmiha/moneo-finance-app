@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Neapstiprināts — pārbaudiet summu un apstipriniet</string>
     <string name="date">Datums</string>
     <string name="default_account">Noklusējuma konts</string>
+    <string name="default_account_hint">Jaunie darījumi, regulārie maksājumi un abonementi bez izvēlēta konta tiek ierakstīti šajā kontā.</string>
     <string name="note">Piezīme</string>
     <string name="tags">Birkas</string>
     <string name="source">Avots</string>

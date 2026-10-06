@@ -95,6 +95,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import si.moneo.data.db.entity.RecurrenceFrequency
 import si.moneo.data.db.entity.TransactionType
+import si.moneo.data.db.entity.defaultAccount
 import si.moneo.ui.recurring.frequencyLabel
 import si.moneo.feature.ocr.ReceiptScanActivity
 import si.moneo.feature.voice.VoiceInputActivity
@@ -418,7 +419,7 @@ private fun AddTransactionContent(vm: MainViewModel, onDone: () -> Unit) {
             if (!transferMode) Box {
                 InfoChip(
                     Icons.Rounded.AccountBalanceWallet,
-                    accounts.firstOrNull { it.uid == draft.accountUid }?.title ?: accounts.firstOrNull()?.title ?: stringResource(R.string.account),
+                    accounts.firstOrNull { it.uid == draft.accountUid }?.title ?: accounts.defaultAccount()?.title ?: stringResource(R.string.account),
                 ) { accountMenu = true }
                 DropdownMenu(expanded = accountMenu, onDismissRequest = { accountMenu = false }) {
                     accounts.forEach { acc ->

@@ -240,6 +240,7 @@
     <string name="unconfirmed_check">Unconfirmed — check the amount and confirm</string>
     <string name="date">Date</string>
     <string name="default_account">Default account</string>
+    <string name="default_account_hint">New transactions, recurring payments and subscriptions without a chosen account go to this account.</string>
     <string name="note">Note</string>
     <string name="tags">Tags</string>
     <string name="source">Source</string>

@@ -234,6 +234,7 @@
     <string name="unconfirmed_check">Nepotvrđeno — proveri iznos i potvrdi</string>
     <string name="date">Datum</string>
     <string name="default_account">Podrazumevani račun</string>
+    <string name="default_account_hint">Nove transakcije, ponavljajuća plaćanja i pretplate bez izabranog računa idu na ovaj račun.</string>
     <string name="note">Beleška</string>
     <string name="tags">Oznake</string>
     <string name="source">Izvor</string>

@@ -2,6 +2,7 @@ package si.moneo.ui
 
 import si.moneo.R
 import si.moneo.data.db.entity.AccountEntity
+import si.moneo.data.db.entity.defaultAccount
 import si.moneo.data.db.entity.CategoryEntity
 import si.moneo.data.db.entity.GoalContributionEntity
 import si.moneo.data.db.entity.RecurringRuleEntity
@@ -233,7 +234,7 @@ fun accountBalances(
     transfers: List<TransferEntity>,
 ): List<AccountBalance> {
     val sums = HashMap<String, Long>()
-    val defaultUid = accounts.firstOrNull()?.uid
+    val defaultUid = accounts.defaultAccount()?.uid
     txs.forEach { tx ->
         if (!tx.confirmed) return@forEach
         val key = tx.accountUid ?: defaultUid ?: return@forEach
