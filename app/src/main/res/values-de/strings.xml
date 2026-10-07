@@ -234,6 +234,16 @@
     <string name="date">Datum</string>
     <string name="default_account">Standardkonto</string>
     <string name="default_account_hint">Neue Buchungen, wiederkehrende Zahlungen und Abos ohne gewähltes Konto werden diesem Konto zugeordnet.</string>
+    <string name="deleted_account">Gelöschtes Konto</string>
+    <string name="accounts_reorder_hint">Karte gedrückt halten und ziehen, um die Reihenfolge zu ändern.</string>
+    <string name="account_month_change">%1$s diesen Monat</string>
+    <string name="delete_account_title">Konto „%1$s“ löschen?</string>
+    <string name="delete_account_usage">Buchungen und Umbuchungen auf diesem Konto: %1$d. Was soll mit ihnen passieren?</string>
+    <string name="delete_account_move">Auf „%1$s“ übertragen</string>
+    <string name="delete_account_drop">Zusammen mit dem Konto löschen</string>
+    <string name="delete_account_move_hint">Anfangssaldo, wiederkehrende Zahlungen, Abos und Favoriten werden ebenfalls übertragen, der Gesamtsaldo bleibt gleich.</string>
+    <string name="delete_account_drop_hint">Sie zählen zu keinem Saldo mehr. Wiederkehrende Zahlungen, Abos und Favoriten gehen auf das Standardkonto.</string>
+    <string name="delete_account_currency_note">Buchungen können nur auf ein Konto in derselben Währung übertragen werden (%1$s).</string>
     <string name="note">Notiz</string>
     <string name="tags">Tags</string>
     <string name="source">Quelle</string>

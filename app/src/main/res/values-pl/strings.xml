@@ -235,6 +235,16 @@
     <string name="date">Data</string>
     <string name="default_account">Konto domyślne</string>
     <string name="default_account_hint">Nowe transakcje, płatności cykliczne i subskrypcje bez wybranego konta trafiają na to konto.</string>
+    <string name="deleted_account">Usunięte konto</string>
+    <string name="accounts_reorder_hint">Przytrzymaj i przeciągnij kartę, aby zmienić kolejność.</string>
+    <string name="account_month_change">%1$s w tym miesiącu</string>
+    <string name="delete_account_title">Usunąć konto „%1$s”?</string>
+    <string name="delete_account_usage">Transakcje i przelewy na tym koncie: %1$d. Co z nimi zrobić?</string>
+    <string name="delete_account_move">Przenieś na „%1$s”</string>
+    <string name="delete_account_drop">Usuń je razem z kontem</string>
+    <string name="delete_account_move_hint">Przenoszone są też saldo początkowe, płatności cykliczne, subskrypcje i ulubione, więc saldo łączne się nie zmienia.</string>
+    <string name="delete_account_drop_hint">Nie będą już wliczane do żadnego salda. Płatności cykliczne, subskrypcje i ulubione trafią na konto domyślne.</string>
+    <string name="delete_account_currency_note">Transakcje można przenieść tylko na konto w tej samej walucie (%1$s).</string>
     <string name="note">Notatka</string>
     <string name="tags">Etykiety</string>
     <string name="source">Źródło</string>

@@ -236,6 +236,16 @@
     <string name="date">Dátum</string>
     <string name="default_account">Alapértelmezett számla</string>
     <string name="default_account_hint">Az új tranzakciók, ismétlődő fizetések és előfizetések kiválasztott számla nélkül erre a számlára kerülnek.</string>
+    <string name="deleted_account">Törölt számla</string>
+    <string name="accounts_reorder_hint">Tartsd lenyomva és húzd a kártyát a sorrend módosításához.</string>
+    <string name="account_month_change">%1$s ebben a hónapban</string>
+    <string name="delete_account_title">Törlöd a(z) „%1$s” számlát?</string>
+    <string name="delete_account_usage">Tranzakciók és átvezetések ezen a számlán: %1$d. Mi legyen velük?</string>
+    <string name="delete_account_move">Áthelyezés ide: „%1$s”</string>
+    <string name="delete_account_drop">Törlés a számlával együtt</string>
+    <string name="delete_account_move_hint">A nyitó egyenleg, az ismétlődő fizetések, előfizetések és kedvencek is átkerülnek, így a teljes egyenleg nem változik.</string>
+    <string name="delete_account_drop_hint">Többé egyik egyenlegbe sem számítanak bele. Az ismétlődő fizetések, előfizetések és kedvencek az alapértelmezett számlára kerülnek.</string>
+    <string name="delete_account_currency_note">A tranzakciók csak azonos pénznemű számlára helyezhetők át (%1$s).</string>
     <string name="note">Megjegyzés</string>
     <string name="tags">Címkék</string>
     <string name="source">Forrás</string>

@@ -235,6 +235,16 @@
     <string name="date">Dato</string>
     <string name="default_account">Standardkonto</string>
     <string name="default_account_hint">Nye transaktioner, tilbagevendende betalinger og abonnementer uden valgt konto bogføres på denne konto.</string>
+    <string name="deleted_account">Slettet konto</string>
+    <string name="accounts_reorder_hint">Hold et kort nede, og træk for at ændre rækkefølgen.</string>
+    <string name="account_month_change">%1$s denne måned</string>
+    <string name="delete_account_title">Slet kontoen “%1$s”?</string>
+    <string name="delete_account_usage">Transaktioner og overførsler på kontoen: %1$d. Hvad skal der ske med dem?</string>
+    <string name="delete_account_move">Flyt til “%1$s”</string>
+    <string name="delete_account_drop">Slet dem sammen med kontoen</string>
+    <string name="delete_account_move_hint">Startsaldo, tilbagevendende betalinger, abonnementer og favoritter flyttes også, så den samlede saldo er uændret.</string>
+    <string name="delete_account_drop_hint">De tæller ikke længere med i nogen saldo. Tilbagevendende betalinger, abonnementer og favoritter flyttes til standardkontoen.</string>
+    <string name="delete_account_currency_note">Transaktioner kan kun flyttes til en konto i samme valuta (%1$s).</string>
     <string name="note">Note</string>
     <string name="tags">Tags</string>
     <string name="source">Kilde</string>

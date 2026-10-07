@@ -72,6 +72,23 @@ import si.moneo.ui.components.ScreenTopBar
 import si.moneo.ui.formatCents
 import si.moneo.ui.theme.Spacing
 import si.moneo.ui.theme.accentFor
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.semantics.Role
+import si.moneo.ui.components.LocalSnackbar
+import si.moneo.ui.str
+import si.moneo.ui.theme.Finance
 
 @Composable
 fun AccountsScreen(vm: MainViewModel, onBack: () -> Unit, onTransfer: () -> Unit) {
@@ -92,6 +109,18 @@ fun AccountsScreen(vm: MainViewModel, onBack: () -> Unit, onTransfer: () -> Unit
     val listState = rememberLazyListState()
     val haptic = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
+    val snackbar = LocalSnackbar.current
+    val showHint by vm.showAccountReorderHint.collectAsStateWithLifecycle()
+    // Račun, ki ga brišemo, in število njegovih transakcij (odprto vprašanje, kam z njimi)
+    var deleting by remember { mutableStateOf<Pair<AccountEntity, Int>?>(null) }
+
+    fun delete(account: AccountEntity, moveTo: String?) {
+        scope.launch {
+            val removal = vm.deleteAccount(account, moveTo)
+            val r = snackbar.showSnackbar(str(R.string.deleted_named, account.title), actionLabel = str(R.string.undo), duration = SnackbarDuration.Long)
+            if (r == SnackbarResult.ActionPerformed) vm.restoreAccount(removal)
+        }
+    }
 
     val shown = dragOrder?.let { order ->
         val byUid = balances.associateBy { it.account.uid }
@@ -131,6 +160,7 @@ fun AccountsScreen(vm: MainViewModel, onBack: () -> Unit, onTransfer: () -> Unit
         val order = dragOrder
         if (order == null || order == currentBalances.map { it.account.uid }) dragOrder = null
         else vm.reorderAccounts(order)
+        if (vm.showAccountReorderHint.value) vm.dismissAccountReorderHint()
         // Kartica gladko pristane na svojem mestu
         settleJob = scope.launch {
             animate(dragOffset, 0f, animationSpec = spring(stiffness = Spring.StiffnessMediumLow)) { v, _ -> dragOffset = v }
@@ -156,13 +186,41 @@ fun AccountsScreen(vm: MainViewModel, onBack: () -> Unit, onTransfer: () -> Unit
             item {
                 Column(Modifier.padding(bottom = Spacing.sm)) {
                     Text(stringResource(R.string.total_balance), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    AnimatedAmount(balances.sumOf { it.balanceCents }, style = MaterialTheme.typography.displaySmall, masked = hidden)
+                    // Različnih valut ne seštevamo: velika številka je v valuti privzetega računa, ostale so pod njo
+                    val mainCurrency = balances.map { it.account }.defaultAccount()?.currencyCode ?: "EUR"
+                    val totals = balances.groupBy { it.account.currencyCode }.mapValues { (_, l) -> l.sumOf { it.balanceCents } }
+                    AnimatedAmount(totals[mainCurrency] ?: 0, style = MaterialTheme.typography.displaySmall, masked = hidden, currency = mainCurrency)
+                    val others = totals.filterKeys { it != mainCurrency }
+                    if (others.isNotEmpty()) {
+                        Text(
+                            others.entries.joinToString("  ·  ") { (currency, cents) -> if (hidden) "•••• $currency" else formatCents(cents, currency) },
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
                 }
             }
             // Prenos sredstev je mogoč šele, ko obstajata vsaj dva računa
             if (balances.size >= 2) {
                 item {
                     PillButton(stringResource(R.string.new_transfer), Icons.Rounded.SwapHoriz, onTransfer, Modifier.fillMaxWidth())
+                }
+            }
+            if (showHint && balances.size >= 2) {
+                item(key = "reorder_hint") {
+                    Surface(
+                        onClick = vm::dismissAccountReorderHint,
+                        shape = RoundedCornerShape(Radius.md),
+                        color = Finance.colors.selectedTab,
+                        modifier = Modifier.fillMaxWidth().animateItem(),
+                    ) {
+                        Row(Modifier.padding(horizontal = 14.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Rounded.DragIndicator, null, tint = Finance.colors.onSelectedTab, modifier = Modifier.size(18.dp))
+                            Spacer(Modifier.width(8.dp))
+                            Text(stringResource(R.string.accounts_reorder_hint), color = Finance.colors.onSelectedTab, style = MaterialTheme.typography.labelMedium, modifier = Modifier.weight(1f))
+                            Icon(Icons.Rounded.Close, stringResource(R.string.close_hint), tint = Finance.colors.onSelectedTab, modifier = Modifier.size(16.dp))
+                        }
+                    }
                 }
             }
             itemsIndexed(shown, key = { _, b -> b.account.uid }) { i, b ->
@@ -173,6 +231,7 @@ fun AccountsScreen(vm: MainViewModel, onBack: () -> Unit, onTransfer: () -> Unit
                 val reorderable = shown.size > 1
                 val moveUp = stringResource(R.string.move_up)
                 val moveDown = stringResource(R.string.move_down)
+                val editLabel = stringResource(R.string.edit)
                 Row(
                     Modifier
                         .zIndex(if (dragged) 1f else 0f)
@@ -201,7 +260,7 @@ fun AccountsScreen(vm: MainViewModel, onBack: () -> Unit, onTransfer: () -> Unit
                             } else Modifier,
                         )
                         // Dolg pritisk brez premika ne odpre urejanja
-                        .clickable { if (draggingUid == null) editing = b.account }
+                        .clickable(onClickLabel = editLabel) { if (draggingUid == null) editing = b.account }
                         .semantics {
                             // TalkBack ne more vleči, zato premik ponudimo kot dejanje
                             if (reorderable) customActions = listOfNotNull(
@@ -227,11 +286,13 @@ fun AccountsScreen(vm: MainViewModel, onBack: () -> Unit, onTransfer: () -> Unit
                         Spacer(Modifier.height(2.dp))
                         Text(if (hidden) "•••• €" else formatCents(b.balanceCents, b.account.currencyCode), color = Color.White, style = MaterialTheme.typography.headlineSmall)
                         Spacer(Modifier.weight(1f))
-                        Row {
-                            Text("•••• ${b.account.currencyCode}", color = Color.White.copy(alpha = 0.8f), style = MaterialTheme.typography.labelMedium)
-                            Spacer(Modifier.weight(1f))
-                            Text(stringResource(R.string.edit), color = Color.White.copy(alpha = 0.8f), style = MaterialTheme.typography.labelMedium)
-                        }
+                        val change = b.monthChangeCents
+                        Text(
+                            if (hidden) "•••• ${b.account.currencyCode}"
+                            else stringResource(R.string.account_month_change, (if (change > 0) "+" else "") + formatCents(change, b.account.currencyCode)),
+                            color = Color.White.copy(alpha = 0.85f),
+                            style = MaterialTheme.typography.labelMedium,
+                        )
                     }
                     // Ročaj: vlečenje takoj, brez dolgega pritiska. Vrstni red računov velja povsod v aplikaciji.
                     if (reorderable) {
@@ -282,9 +343,87 @@ fun AccountsScreen(vm: MainViewModel, onBack: () -> Unit, onTransfer: () -> Unit
             },
             // Zadnjega računa ne dovolimo izbrisati - transakcije potrebujejo privzeti račun
             onDelete = if (balances.size > 1) ({
-                vm.deleteAccount(acc)
                 editing = null
+                scope.launch {
+                    // Prazen račun izbrišemo takoj (z možnostjo razveljavitve), sicer vprašamo, kam s transakcijami
+                    val usage = vm.accountUsage(acc)
+                    if (usage == 0) delete(acc, null) else deleting = acc to usage
+                }
             }) else null,
         )
+    }
+    deleting?.let { (acc, usage) ->
+        DeleteAccountDialog(
+            account = acc,
+            usage = usage,
+            others = balances.map { it.account }.filter { it.uid != acc.uid },
+            preferredUid = defaultUid,
+            onDismiss = { deleting = null },
+            onConfirm = { moveTo ->
+                deleting = null
+                delete(acc, moveTo)
+            },
+        )
+    }
+}
+
+/**
+ * Kam s transakcijami računa, ki ga brišemo: prenos na drug račun v isti valuti (skupaj z začetnim
+ * stanjem, da se skupno stanje ne spremeni) ali brisanje skupaj z računom. [onConfirm] dobi ciljni
+ * račun ali null za brisanje.
+ */
+@Composable
+private fun DeleteAccountDialog(
+    account: AccountEntity,
+    usage: Int,
+    others: List<AccountEntity>,
+    preferredUid: String?,
+    onDismiss: () -> Unit,
+    onConfirm: (String?) -> Unit,
+) {
+    val sameCurrency = others.filter { it.currencyCode == account.currencyCode }
+    var choice by remember { mutableStateOf((sameCurrency.firstOrNull { it.uid == preferredUid } ?: sameCurrency.firstOrNull())?.uid) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.delete_account_title, account.title)) },
+        text = {
+            Column(Modifier.verticalScroll(rememberScrollState()).selectableGroup()) {
+                Text(stringResource(R.string.delete_account_usage, usage))
+                Spacer(Modifier.height(Spacing.sm))
+                sameCurrency.forEach { target ->
+                    DeleteChoice(stringResource(R.string.delete_account_move, target.title), choice == target.uid) { choice = target.uid }
+                }
+                DeleteChoice(stringResource(R.string.delete_account_drop), choice == null) { choice = null }
+                Spacer(Modifier.height(Spacing.xs))
+                Text(
+                    stringResource(if (choice != null) R.string.delete_account_move_hint else R.string.delete_account_drop_hint),
+                    style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                if (sameCurrency.size < others.size) {
+                    Text(
+                        stringResource(R.string.delete_account_currency_note, account.currencyCode),
+                        style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = Spacing.xs),
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { onConfirm(choice) }) { Text(stringResource(R.string.delete), color = MaterialTheme.colorScheme.error) }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
+    )
+}
+
+@Composable
+private fun DeleteChoice(label: String, selected: Boolean, onSelect: () -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().clip(RoundedCornerShape(Radius.xs))
+            .selectable(selected, role = Role.RadioButton, onClick = onSelect).padding(vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        RadioButton(selected = selected, onClick = null)
+        Spacer(Modifier.width(Spacing.sm))
+        Text(label, style = MaterialTheme.typography.bodyMedium)
     }
 }

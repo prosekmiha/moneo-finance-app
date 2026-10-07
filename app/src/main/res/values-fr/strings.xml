@@ -235,6 +235,16 @@
     <string name="date">Date</string>
     <string name="default_account">Compte par défaut</string>
     <string name="default_account_hint">Les nouvelles transactions, paiements récurrents et abonnements sans compte choisi vont sur ce compte.</string>
+    <string name="deleted_account">Compte supprimé</string>
+    <string name="accounts_reorder_hint">Maintenez et faites glisser une carte pour changer l\'ordre.</string>
+    <string name="account_month_change">%1$s ce mois-ci</string>
+    <string name="delete_account_title">Supprimer le compte « %1$s » ?</string>
+    <string name="delete_account_usage">Transactions et virements sur ce compte : %1$d. Que faut-il en faire ?</string>
+    <string name="delete_account_move">Déplacer vers « %1$s »</string>
+    <string name="delete_account_drop">Les supprimer avec le compte</string>
+    <string name="delete_account_move_hint">Le solde initial, les paiements récurrents, les abonnements et les favoris sont aussi déplacés : le solde total reste identique.</string>
+    <string name="delete_account_drop_hint">Elles ne compteront plus dans aucun solde. Les paiements récurrents, abonnements et favoris passent au compte par défaut.</string>
+    <string name="delete_account_currency_note">Les transactions ne peuvent être déplacées que vers un compte dans la même devise (%1$s).</string>
     <string name="note">Note</string>
     <string name="tags">Étiquettes</string>
     <string name="source">Source</string>

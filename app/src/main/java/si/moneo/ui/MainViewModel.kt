@@ -402,9 +402,16 @@ class MainViewModel(private val repo: FinanceRepository, private val prefs: AppP
         repo.saveAccount(account.copy(updatedAt = System.currentTimeMillis()))
     }
 
-    fun deleteAccount(account: AccountEntity) = saveAccount(account.copy(deleted = true)).also {
+    /** Število transakcij in prenosov na računu (pred brisanjem). */
+    suspend fun accountUsage(account: AccountEntity): Int = repo.accountUsage(account.uid)
+
+    /** Izbriše račun in transakcije prenese na [moveTo] (ali jih izbriše); vrne stanje za razveljavitev. */
+    suspend fun deleteAccount(account: AccountEntity, moveTo: String?): FinanceRepository.AccountRemoval {
         if (accountFilter.value == account.uid) accountFilter.value = null
+        return repo.deleteAccount(account.uid, moveTo)
     }
+
+    fun restoreAccount(removal: FinanceRepository.AccountRemoval) = viewModelScope.launch { repo.restoreAccount(removal) }
 
     /** Nov vrstni red računov (uid-ji od prvega do zadnjega); velja povsod (Domov, izbirniki, statistika). */
     fun reorderAccounts(uids: List<String>) = viewModelScope.launch {
@@ -584,6 +591,14 @@ class MainViewModel(private val repo: FinanceRepository, private val prefs: AppP
     fun setHideBalance(hide: Boolean) {
         prefs.hideBalance = hide
         hideBalance.value = hide
+    }
+
+    /** Enkratni namig na zaslonu Računi, da se kartice da vleči. */
+    val showAccountReorderHint = MutableStateFlow(!prefs.accountReorderHintShown)
+
+    fun dismissAccountReorderHint() {
+        prefs.accountReorderHintShown = true
+        showAccountReorderHint.value = false
     }
 
     // ---------- Zaokroževanje v cilj ----------

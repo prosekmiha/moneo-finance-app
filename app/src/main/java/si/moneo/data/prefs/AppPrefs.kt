@@ -40,6 +40,11 @@ class AppPrefs(context: Context) {
         get() = sp.getBoolean("quick_menu_hint", false)
         set(v) = sp.edit { putBoolean("quick_menu_hint", v) }
 
+    /** Namig "pridrži in povleci za vrstni red računov" je bil že prikazan. */
+    var accountReorderHintShown: Boolean
+        get() = sp.getBoolean("account_reorder_hint", false)
+        set(v) = sp.edit { putBoolean("account_reorder_hint", v) }
+
     /** Uvodni vodnik je bil zaključen ali preskočen. */
     var onboardingDone: Boolean
         get() = sp.getBoolean("onboarding_done", false)

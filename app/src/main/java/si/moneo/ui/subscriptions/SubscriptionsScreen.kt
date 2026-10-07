@@ -63,6 +63,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import si.moneo.data.db.entity.AccountEntity
+import si.moneo.data.db.entity.defaultAccount
 import si.moneo.data.db.entity.CategoryEntity
 import si.moneo.data.db.entity.SubscriptionEntity
 import si.moneo.data.db.entity.TransactionType
@@ -384,7 +385,7 @@ private fun SubscriptionEditorSheet(
                 )
                 DropdownField(
                     stringResource(R.string.account),
-                    listOf<Pair<String?, String>>(null to stringResource(R.string.default_short)) + accounts.map { it.uid to it.title },
+                    listOf<Pair<String?, String>>(null to stringResource(R.string.default_short) + accounts.defaultAccount()?.let { " (${it.title})" }.orEmpty()) + accounts.map { it.uid to it.title },
                     accountUid, { accountUid = it }, Modifier.weight(1f),
                 )
             }

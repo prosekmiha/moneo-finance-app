@@ -241,6 +241,16 @@
     <string name="date">Date</string>
     <string name="default_account">Default account</string>
     <string name="default_account_hint">New transactions, recurring payments and subscriptions without a chosen account go to this account.</string>
+    <string name="deleted_account">Deleted account</string>
+    <string name="accounts_reorder_hint">Hold and drag a card to change the order.</string>
+    <string name="account_month_change">%1$s this month</string>
+    <string name="delete_account_title">Delete account “%1$s”?</string>
+    <string name="delete_account_usage">Transactions and transfers in this account: %1$d. What should happen to them?</string>
+    <string name="delete_account_move">Move to “%1$s”</string>
+    <string name="delete_account_drop">Delete them with the account</string>
+    <string name="delete_account_move_hint">The opening balance, recurring payments, subscriptions and favourites move too, so the total balance stays the same.</string>
+    <string name="delete_account_drop_hint">They will no longer count towards any balance. Recurring payments, subscriptions and favourites move to the default account.</string>
+    <string name="delete_account_currency_note">Transactions can only be moved to an account in the same currency (%1$s).</string>
     <string name="note">Note</string>
     <string name="tags">Tags</string>
     <string name="source">Source</string>

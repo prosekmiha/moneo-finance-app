@@ -236,6 +236,16 @@
     <string name="date">Data</string>
     <string name="default_account">Numatytoji sąskaita</string>
     <string name="default_account_hint">Nauji įrašai, pasikartojantys mokėjimai ir prenumeratos be pasirinktos sąskaitos įrašomi į šią sąskaitą.</string>
+    <string name="deleted_account">Ištrinta sąskaita</string>
+    <string name="accounts_reorder_hint">Palaikykite ir vilkite kortelę, kad pakeistumėte tvarką.</string>
+    <string name="account_month_change">%1$s šį mėnesį</string>
+    <string name="delete_account_title">Ištrinti sąskaitą „%1$s“?</string>
+    <string name="delete_account_usage">Operacijos ir pervedimai šioje sąskaitoje: %1$d. Ką su jais daryti?</string>
+    <string name="delete_account_move">Perkelti į „%1$s“</string>
+    <string name="delete_account_drop">Ištrinti juos kartu su sąskaita</string>
+    <string name="delete_account_move_hint">Perkeliamas ir pradinis likutis, pasikartojantys mokėjimai, prenumeratos bei mėgstamiausi, todėl bendras likutis nesikeičia.</string>
+    <string name="delete_account_drop_hint">Jie nebebus įskaičiuojami į jokį likutį. Pasikartojantys mokėjimai, prenumeratos ir mėgstamiausi pereis į numatytąją sąskaitą.</string>
+    <string name="delete_account_currency_note">Operacijas galima perkelti tik į tos pačios valiutos sąskaitą (%1$s).</string>
     <string name="note">Pastaba</string>
     <string name="tags">Žymos</string>
     <string name="source">Šaltinis</string>

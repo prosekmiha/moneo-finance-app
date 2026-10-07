@@ -235,6 +235,16 @@
     <string name="date">Дата</string>
     <string name="default_account">Счёт по умолчанию</string>
     <string name="default_account_hint">Новые операции, регулярные платежи и подписки без выбранного счёта записываются на этот счёт.</string>
+    <string name="deleted_account">Удалённый счёт</string>
+    <string name="accounts_reorder_hint">Удерживайте и перетащите карточку, чтобы изменить порядок.</string>
+    <string name="account_month_change">%1$s в этом месяце</string>
+    <string name="delete_account_title">Удалить счёт «%1$s»?</string>
+    <string name="delete_account_usage">Операции и переводы на этом счёте: %1$d. Что с ними сделать?</string>
+    <string name="delete_account_move">Перенести на «%1$s»</string>
+    <string name="delete_account_drop">Удалить вместе со счётом</string>
+    <string name="delete_account_move_hint">Также переносятся начальный остаток, регулярные платежи, подписки и избранное, поэтому общий баланс не изменится.</string>
+    <string name="delete_account_drop_hint">Они больше не будут учитываться ни в одном балансе. Регулярные платежи, подписки и избранное перейдут на счёт по умолчанию.</string>
+    <string name="delete_account_currency_note">Операции можно перенести только на счёт в той же валюте (%1$s).</string>
     <string name="note">Заметка</string>
     <string name="tags">Метки</string>
     <string name="source">Источник</string>

@@ -106,7 +106,7 @@ fun TransactionDetailSheet(
             Column(Modifier.fillMaxWidth()) {
                 DetailRow(Icons.Rounded.CalendarMonth, stringResource(R.string.date), tx.date.fmt(R.string.fmt_day_full, "EEEE, d. MMMM yyyy").replaceFirstChar { it.uppercase() })
                 DetailRow(Icons.Rounded.Category, stringResource(R.string.category), tx.categoryTitle ?: stringResource(R.string.no_category))
-                DetailRow(Icons.Rounded.AccountBalanceWallet, stringResource(R.string.account), tx.accountTitle ?: stringResource(R.string.default_account))
+                DetailRow(Icons.Rounded.AccountBalanceWallet, stringResource(R.string.account), tx.accountTitle ?: stringResource(if (tx.accountUid == null) R.string.default_account else R.string.deleted_account))
                 if (tx.comment.isNotBlank()) DetailRow(Icons.AutoMirrored.Rounded.Notes, stringResource(R.string.note), tx.comment)
                 if (tx.tags.isNotEmpty()) DetailRow(Icons.AutoMirrored.Rounded.Label, stringResource(R.string.tags), tx.tags.joinToString(", ") { "#$it" })
                 DetailRow(Icons.Rounded.Source, stringResource(R.string.source), sourceLabel(tx.source)?.replaceFirstChar { it.uppercase() } ?: stringResource(R.string.manual_entry))

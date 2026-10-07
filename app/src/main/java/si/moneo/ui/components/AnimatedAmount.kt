@@ -32,6 +32,7 @@ fun AnimatedAmount(
     durationMs: Int = 800,
     /** true = namesto zneska prikaži "•••• €" (skrito stanje). */
     masked: Boolean = false,
+    currency: String = "EUR",
 ) {
     if (masked) {
         Text("•••• €", modifier = modifier, style = style, color = color, fontWeight = fontWeight, maxLines = 1)
@@ -47,5 +48,5 @@ fun AnimatedAmount(
         fraction.animateTo(1f, tween(durationMs, easing = FastOutSlowInEasing))
     }
     val shown = if (fraction.value >= 1f) to else from + ((to - from) * fraction.value).toLong()
-    Text(prefix + formatCents(shown), modifier = modifier, style = style, color = color, fontWeight = fontWeight, maxLines = 1)
+    Text(prefix + formatCents(shown, currency), modifier = modifier, style = style, color = color, fontWeight = fontWeight, maxLines = 1)
 }

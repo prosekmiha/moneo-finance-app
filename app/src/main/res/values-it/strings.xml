@@ -235,6 +235,16 @@
     <string name="date">Data</string>
     <string name="default_account">Conto predefinito</string>
     <string name="default_account_hint">Nuove transazioni, pagamenti ricorrenti e abbonamenti senza conto scelto vanno su questo conto.</string>
+    <string name="deleted_account">Conto eliminato</string>
+    <string name="accounts_reorder_hint">Tieni premuto e trascina una scheda per cambiare l\'ordine.</string>
+    <string name="account_month_change">%1$s questo mese</string>
+    <string name="delete_account_title">Eliminare il conto «%1$s»?</string>
+    <string name="delete_account_usage">Transazioni e trasferimenti su questo conto: %1$d. Cosa farne?</string>
+    <string name="delete_account_move">Sposta su «%1$s»</string>
+    <string name="delete_account_drop">Eliminale insieme al conto</string>
+    <string name="delete_account_move_hint">Vengono spostati anche il saldo iniziale, i pagamenti ricorrenti, gli abbonamenti e i preferiti, quindi il saldo totale resta invariato.</string>
+    <string name="delete_account_drop_hint">Non verranno più conteggiate in alcun saldo. Pagamenti ricorrenti, abbonamenti e preferiti passano al conto predefinito.</string>
+    <string name="delete_account_currency_note">Le transazioni si possono spostare solo su un conto nella stessa valuta (%1$s).</string>
     <string name="note">Nota</string>
     <string name="tags">Etichette</string>
     <string name="source">Origine</string>

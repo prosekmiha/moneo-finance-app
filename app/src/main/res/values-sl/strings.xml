@@ -241,6 +241,16 @@
     <string name="date">Datum</string>
     <string name="default_account">Privzeti račun</string>
     <string name="default_account_hint">Nove transakcije, ponavljajoča plačila in naročnine brez izbranega računa gredo na ta račun.</string>
+    <string name="deleted_account">Izbrisan račun</string>
+    <string name="accounts_reorder_hint">Pridrži in povleci kartico, da spremeniš vrstni red.</string>
+    <string name="account_month_change">%1$s ta mesec</string>
+    <string name="delete_account_title">Izbriši račun „%1$s“?</string>
+    <string name="delete_account_usage">Transakcije in prenosi na računu: %1$d. Kaj naj se zgodi z njimi?</string>
+    <string name="delete_account_move">Prenesi na „%1$s“</string>
+    <string name="delete_account_drop">Izbriši jih skupaj z računom</string>
+    <string name="delete_account_move_hint">Prenesejo se tudi začetno stanje, ponavljajoča plačila, naročnine in priljubljeni vnosi, zato skupno stanje ostane enako.</string>
+    <string name="delete_account_drop_hint">Ne bodo se več šteli v nobeno stanje. Ponavljajoča plačila, naročnine in priljubljeni vnosi gredo na privzeti račun.</string>
+    <string name="delete_account_currency_note">Transakcije lahko preneseš le na račun v isti valuti (%1$s).</string>
     <string name="note">Opomba</string>
     <string name="tags">Oznake</string>
     <string name="source">Vir</string>

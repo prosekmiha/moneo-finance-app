@@ -235,6 +235,16 @@
     <string name="date">Дата</string>
     <string name="default_account">Сметка по подразбиране</string>
     <string name="default_account_hint">Новите трансакции, повтарящите се плащания и абонаментите без избрана сметка отиват в тази сметка.</string>
+    <string name="deleted_account">Изтрита сметка</string>
+    <string name="accounts_reorder_hint">Задръжте и плъзнете карта, за да промените реда.</string>
+    <string name="account_month_change">%1$s този месец</string>
+    <string name="delete_account_title">Да се изтрие ли сметка „%1$s“?</string>
+    <string name="delete_account_usage">Трансакции и преводи в тази сметка: %1$d. Какво да стане с тях?</string>
+    <string name="delete_account_move">Премести в „%1$s“</string>
+    <string name="delete_account_drop">Изтрий ги заедно със сметката</string>
+    <string name="delete_account_move_hint">Преместват се и началното салдо, повтарящите се плащания, абонаментите и любимите, така че общото салдо остава същото.</string>
+    <string name="delete_account_drop_hint">Вече няма да се отчитат в никое салдо. Повтарящите се плащания, абонаментите и любимите отиват в сметката по подразбиране.</string>
+    <string name="delete_account_currency_note">Трансакциите могат да се преместят само в сметка със същата валута (%1$s).</string>
     <string name="note">Бележка</string>
     <string name="tags">Етикети</string>
     <string name="source">Източник</string>
