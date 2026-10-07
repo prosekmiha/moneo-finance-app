@@ -406,6 +406,15 @@ class MainViewModel(private val repo: FinanceRepository, private val prefs: AppP
         if (accountFilter.value == account.uid) accountFilter.value = null
     }
 
+    /** Nov vrstni red računov (uid-ji od prvega do zadnjega); velja povsod (Domov, izbirniki, statistika). */
+    fun reorderAccounts(uids: List<String>) = viewModelScope.launch {
+        val byUid = accounts.value.associateBy { it.uid }
+        // Računi, ki jih seznam ne omenja (npr. dodani med vlečenjem), ostanejo na koncu
+        val reordered = uids.mapNotNull(byUid::get) + accounts.value.filter { it.uid !in uids }
+        val now = System.currentTimeMillis()
+        repo.saveAccountOrder(reordered.mapIndexedNotNull { index, a -> if (a.position != index) a.copy(position = index, updatedAt = now) else null })
+    }
+
     // ---------- Prenosi ----------
 
     /** true, ko je list za vnos v načinu "Prenos". */
