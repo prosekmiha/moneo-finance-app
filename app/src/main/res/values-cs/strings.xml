@@ -524,6 +524,8 @@
     <string name="total_spent">Celkem utraceno</string>
     <string name="income_amount">příjmy %1$s</string>
     <string name="by_category">Podle kategorií</string>
+    <string name="by_date">Podle data</string>
+    <string name="open_category">Otevřít kategorii</string>
     <string name="entries">Záznamy</string>
     <string name="favorites_intro">Časté záznamy přidáte jedním klepnutím: na Domů nebo widgetem „Oblíbené záznamy“ na domovské obrazovce telefonu.</string>
     <string name="no_favorites">Žádné oblíbené záznamy</string>

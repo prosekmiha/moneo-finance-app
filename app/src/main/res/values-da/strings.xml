@@ -524,6 +524,8 @@
     <string name="total_spent">Brugt i alt</string>
     <string name="income_amount">indtægter %1$s</string>
     <string name="by_category">Pr. kategori</string>
+    <string name="by_date">Efter dato</string>
+    <string name="open_category">Åbn kategori</string>
     <string name="entries">Poster</string>
     <string name="favorites_intro">Tilføj hyppige poster med ét tryk: på Hjem eller med widgetten “Favoritposter” på telefonens startskærm.</string>
     <string name="no_favorites">Ingen favoritposter</string>

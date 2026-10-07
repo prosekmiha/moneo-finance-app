@@ -584,6 +584,14 @@ class MainViewModel(private val repo: FinanceRepository, private val prefs: AppP
         homeLayout.value = layout
     }
 
+    /** Seznam na Domov: po datumu (true) ali po kategorijah (false). */
+    val homeListByDate = MutableStateFlow(prefs.homeListByDate)
+
+    fun setHomeListByDate(byDate: Boolean) {
+        prefs.homeListByDate = byDate
+        homeListByDate.value = byDate
+    }
+
     // ---------- Skrivanje stanja ----------
 
     val hideBalance = MutableStateFlow(prefs.hideBalance)
@@ -697,13 +705,12 @@ class MainViewModel(private val repo: FinanceRepository, private val prefs: AppP
         repo.saveFavorite(favorite.copy(deleted = true, updatedAt = System.currentTimeMillis()))
     }
 
-    /** Premakne priljubljen vnos za eno mesto gor/dol. */
-    fun moveFavorite(favorite: FavoriteEntity, up: Boolean) = viewModelScope.launch {
+    /** Nov vrstni red priljubljenih vnosov (uid-ji od prvega do zadnjega). */
+    fun reorderFavorites(uids: List<String>) = viewModelScope.launch {
         val list = favorites.value
-        val i = list.indexOfFirst { it.uid == favorite.uid }
-        val j = if (up) i - 1 else i + 1
-        if (i < 0 || j !in list.indices) return@launch
-        val reordered = list.toMutableList().apply { add(j, removeAt(i)) }
+        val byUid = list.associateBy { it.uid }
+        // Vnosi, ki jih seznam ne omenja (npr. dodani med vlečenjem), ostanejo na koncu
+        val reordered = uids.mapNotNull(byUid::get) + list.filter { it.uid !in uids }
         val now = System.currentTimeMillis()
         reordered.forEachIndexed { index, f -> if (f.position != index) repo.saveFavorite(f.copy(position = index, updatedAt = now)) }
     }

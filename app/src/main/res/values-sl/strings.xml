@@ -531,6 +531,8 @@
     <string name="total_spent">Skupaj porabljeno</string>
     <string name="income_amount">prihodki %1$s</string>
     <string name="by_category">Po kategorijah</string>
+    <string name="by_date">Po datumu</string>
+    <string name="open_category">Odpri kategorijo</string>
     <string name="entries">Vnosi</string>
     <string name="favorites_intro">Pogoste vnose dodaš z enim tapom: na Domov ali z widgetom „Priljubljeni vnosi“ na domačem zaslonu telefona.</string>
     <string name="no_favorites">Ni priljubljenih vnosov</string>

@@ -68,11 +68,13 @@ import si.moneo.ui.SearchFilter
 import si.moneo.ui.TransactionUi
 import si.moneo.ui.components.EmptyState
 import si.moneo.ui.components.SoftCard
+import si.moneo.ui.components.DayHeader
 import si.moneo.ui.components.TransactionItem
 import si.moneo.ui.formatCents
 import si.moneo.ui.theme.Finance
 import si.moneo.ui.theme.Spacing
 
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 fun SearchScreen(vm: MainViewModel, onBack: () -> Unit, onEdit: (TransactionUi) -> Unit) {
     val filter by vm.searchFilter.collectAsStateWithLifecycle()
@@ -167,9 +169,22 @@ fun SearchScreen(vm: MainViewModel, onBack: () -> Unit, onEdit: (TransactionUi) 
                         if (results.expenseCents > 0) Text("−${formatCents(results.expenseCents)}", color = Finance.colors.expense, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.SemiBold)
                     }
                 }
-                items(results.items, key = { it.uid }) { tx ->
-                    Surface(color = MaterialTheme.colorScheme.surface) {
-                        TransactionItem(tx, onClick = { onEdit(tx) }, showDate = true)
+                // Rezultati po dnevih (najnovejši najprej); glava dneva pokaže neto vsoto potrjenih
+                results.items.groupBy { it.date }.toSortedMap(compareByDescending { it }).forEach { (date, list) ->
+                    stickyHeader(key = "day-$date") {
+                        val net = list.filter { it.confirmed }.sumOf { if (it.type == TransactionType.INCOME) it.amountCents else -it.amountCents }
+                        DayHeader(
+                            date,
+                            amount = (if (net >= 0) "+" else "−") + formatCents(kotlin.math.abs(net)),
+                            amountColor = if (net > 0) Finance.colors.income else MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = MaterialTheme.colorScheme.background,
+                            horizontalPadding = 4.dp,
+                        )
+                    }
+                    items(list, key = { it.uid }) { tx ->
+                        Surface(color = MaterialTheme.colorScheme.surface) {
+                            TransactionItem(tx, onClick = { onEdit(tx) })
+                        }
                     }
                 }
                 if (results.total > results.items.size) {

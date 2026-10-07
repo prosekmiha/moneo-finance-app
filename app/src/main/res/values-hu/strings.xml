@@ -525,6 +525,8 @@
     <string name="total_spent">Összesen elköltve</string>
     <string name="income_amount">bevétel %1$s</string>
     <string name="by_category">Kategóriánként</string>
+    <string name="by_date">Dátum szerint</string>
+    <string name="open_category">Kategória megnyitása</string>
     <string name="entries">Tételek</string>
     <string name="favorites_intro">Gyakori tételek egy koppintással: a Kezdőlapon vagy a telefon kezdőképernyőjén a „Kedvenc tételek” widgettel.</string>
     <string name="no_favorites">Nincs kedvenc tétel</string>

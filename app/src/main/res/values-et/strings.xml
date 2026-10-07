@@ -524,6 +524,8 @@
     <string name="total_spent">Kokku kulutatud</string>
     <string name="income_amount">tulud %1$s</string>
     <string name="by_category">Kategooriate kaupa</string>
+    <string name="by_date">Kuupäeva järgi</string>
+    <string name="open_category">Ava kategooria</string>
     <string name="entries">Kanded</string>
     <string name="favorites_intro">Lisa sagedasi kandeid ühe puudutusega: Avalehel või telefoni avaekraani vidinaga „Lemmikkanded“.</string>
     <string name="no_favorites">Lemmikkandeid pole</string>

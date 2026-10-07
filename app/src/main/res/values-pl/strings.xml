@@ -524,6 +524,8 @@
     <string name="total_spent">Łącznie wydano</string>
     <string name="income_amount">przychody %1$s</string>
     <string name="by_category">Według kategorii</string>
+    <string name="by_date">Według daty</string>
+    <string name="open_category">Otwórz kategorię</string>
     <string name="entries">Wpisy</string>
     <string name="favorites_intro">Częste wpisy dodajesz jednym dotknięciem: na ekranie głównym lub widżetem „Ulubione wpisy” na ekranie telefonu.</string>
     <string name="no_favorites">Brak ulubionych wpisów</string>

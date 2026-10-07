@@ -524,6 +524,8 @@
     <string name="total_spent">Totale speso</string>
     <string name="income_amount">entrate %1$s</string>
     <string name="by_category">Per categoria</string>
+    <string name="by_date">Per data</string>
+    <string name="open_category">Apri categoria</string>
     <string name="entries">Voci</string>
     <string name="favorites_intro">Aggiungi le voci frequenti con un tocco: nella Home o con il widget «Voci preferite» sulla schermata principale del telefono.</string>
     <string name="no_favorites">Nessuna voce preferita</string>

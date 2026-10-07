@@ -18,6 +18,7 @@ import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.remember
 import androidx.compose.foundation.layout.Arrangement
@@ -366,10 +367,11 @@ fun <T> SegmentedTabs(
                     if (i == index) onSelectedColor else unselectedTextColor, label = "segt",
                 )
                 Box(
-                    Modifier.weight(1f).fillMaxHeight().clip(RoundedCornerShape(Radius.xs)).clickable {
-                        if (i != index) haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                        onSelect(option)
-                    },
+                    Modifier.weight(1f).fillMaxHeight().clip(RoundedCornerShape(Radius.xs))
+                        .selectable(selected = i == index, role = androidx.compose.ui.semantics.Role.Tab) {
+                            if (i != index) haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            onSelect(option)
+                        },
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(label(option), color = textColor, style = MaterialTheme.typography.labelLarge, maxLines = 1)

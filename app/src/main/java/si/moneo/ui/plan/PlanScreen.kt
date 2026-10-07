@@ -85,8 +85,11 @@ fun PlanScreen(
     fun money(cents: Long) = if (hidden) "•••• €" else formatCents(cents)
 
     val stagger = rememberStagger()
+    val listState = androidx.compose.foundation.lazy.rememberLazyListState()
+    si.moneo.ui.components.ScrollToTopOnReselect(si.moneo.Routes.PLAN, listState)
     LazyColumn(
         Modifier.fillMaxSize(),
+        state = listState,
         contentPadding = PaddingValues(start = Spacing.screen, end = Spacing.screen, bottom = contentPadding.calculateBottomPadding() + 24.dp),
         verticalArrangement = Arrangement.spacedBy(Spacing.md),
     ) {

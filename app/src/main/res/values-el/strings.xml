@@ -524,6 +524,8 @@
     <string name="total_spent">Σύνολο εξόδων</string>
     <string name="income_amount">έσοδα %1$s</string>
     <string name="by_category">Ανά κατηγορία</string>
+    <string name="by_date">Κατά ημερομηνία</string>
+    <string name="open_category">Άνοιγμα κατηγορίας</string>
     <string name="entries">Καταχωρίσεις</string>
     <string name="favorites_intro">Προσθέστε συχνές καταχωρίσεις με ένα πάτημα: στην Αρχική ή με το widget «Αγαπημένες καταχωρίσεις» στην αρχική οθόνη του τηλεφώνου.</string>
     <string name="no_favorites">Δεν υπάρχουν αγαπημένες καταχωρίσεις</string>

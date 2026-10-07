@@ -247,8 +247,10 @@ fun MoreScreen(
         }
     }
 
+    val scrollState = rememberScrollState()
+    si.moneo.ui.components.ScrollToTopOnReselect(si.moneo.Routes.MORE, scrollState)
     Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+        Modifier.fillMaxSize().verticalScroll(scrollState)
             .padding(horizontal = Spacing.screen)
             .padding(bottom = contentPadding.calculateBottomPadding() + 24.dp),
         verticalArrangement = Arrangement.spacedBy(Spacing.lg),

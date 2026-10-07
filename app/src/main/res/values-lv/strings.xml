@@ -524,6 +524,8 @@
     <string name="total_spent">Kopā iztērēts</string>
     <string name="income_amount">ienākumi %1$s</string>
     <string name="by_category">Pa kategorijām</string>
+    <string name="by_date">Pēc datuma</string>
+    <string name="open_category">Atvērt kategoriju</string>
     <string name="entries">Ieraksti</string>
     <string name="favorites_intro">Pievienojiet biežus ierakstus ar vienu pieskārienu: sākumā vai ar logrīku “Iecienītie ieraksti” tālruņa sākuma ekrānā.</string>
     <string name="no_favorites">Nav iecienītu ierakstu</string>

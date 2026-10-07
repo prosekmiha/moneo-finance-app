@@ -524,6 +524,8 @@
     <string name="total_spent">Ukupno potrošeno</string>
     <string name="income_amount">prihodi %1$s</string>
     <string name="by_category">Po kategorijama</string>
+    <string name="by_date">Po datumu</string>
+    <string name="open_category">Otvori kategoriju</string>
     <string name="entries">Unosi</string>
     <string name="favorites_intro">Česte unose dodaješ jednim dodirom: na Početnoj ili vidžetom „Omiljeni unosi“ na početnom ekranu telefona.</string>
     <string name="no_favorites">Nema omiljenih unosa</string>

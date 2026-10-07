@@ -524,6 +524,8 @@
     <string name="total_spent">Total dépensé</string>
     <string name="income_amount">revenus %1$s</string>
     <string name="by_category">Par catégorie</string>
+    <string name="by_date">Par date</string>
+    <string name="open_category">Ouvrir la catégorie</string>
     <string name="entries">Saisies</string>
     <string name="favorites_intro">Ajoutez vos saisies fréquentes en un appui : sur l\'Accueil ou avec le widget « Favoris » sur l\'écran d\'accueil du téléphone.</string>
     <string name="no_favorites">Aucun favori</string>

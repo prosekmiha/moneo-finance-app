@@ -525,6 +525,8 @@
     <string name="total_spent">Iš viso išleista</string>
     <string name="income_amount">pajamos %1$s</string>
     <string name="by_category">Pagal kategorijas</string>
+    <string name="by_date">Pagal datą</string>
+    <string name="open_category">Atidaryti kategoriją</string>
     <string name="entries">Įrašai</string>
     <string name="favorites_intro">Pridėkite dažnus įrašus vienu palietimu: pagrindiniame ekrane arba telefono pradžios ekrano valdikliu „Mėgstami įrašai“.</string>
     <string name="no_favorites">Mėgstamų įrašų nėra</string>

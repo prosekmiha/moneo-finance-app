@@ -524,6 +524,8 @@
     <string name="total_spent">Total gasto</string>
     <string name="income_amount">receitas %1$s</string>
     <string name="by_category">Por categoria</string>
+    <string name="by_date">Por data</string>
+    <string name="open_category">Abrir categoria</string>
     <string name="entries">Registos</string>
     <string name="favorites_intro">Adicione registos frequentes com um toque: no Início ou com o widget «Favoritos» no ecrã inicial do telemóvel.</string>
     <string name="no_favorites">Sem favoritos</string>

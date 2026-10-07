@@ -524,6 +524,8 @@
     <string name="total_spent">Totaal uitgegeven</string>
     <string name="income_amount">inkomsten %1$s</string>
     <string name="by_category">Per categorie</string>
+    <string name="by_date">Op datum</string>
+    <string name="open_category">Categorie openen</string>
     <string name="entries">Invoer</string>
     <string name="favorites_intro">Voeg veelgebruikte invoer toe met één tik: op Start of met de widget ‘Favorieten’ op het startscherm van je telefoon.</string>
     <string name="no_favorites">Geen favorieten</string>

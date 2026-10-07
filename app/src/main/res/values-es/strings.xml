@@ -524,6 +524,8 @@
     <string name="total_spent">Total gastado</string>
     <string name="income_amount">ingresos %1$s</string>
     <string name="by_category">Por categoría</string>
+    <string name="by_date">Por fecha</string>
+    <string name="open_category">Abrir categoría</string>
     <string name="entries">Entradas</string>
     <string name="favorites_intro">Añade entradas frecuentes con un toque: en Inicio o con el widget «Favoritos» en la pantalla de inicio del teléfono.</string>
     <string name="no_favorites">No hay favoritos</string>
