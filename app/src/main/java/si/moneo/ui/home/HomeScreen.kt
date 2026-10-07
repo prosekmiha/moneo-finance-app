@@ -626,7 +626,7 @@ private fun AccountCard(balance: AccountBalance, hidden: Boolean) {
     HeroSurface(Brush.linearGradient(listOf(base, base.copy(alpha = 0.75f).compositeOverDark())), glow = base) {
         Text(balance.account.title, color = Color.White.copy(alpha = 0.92f), style = MaterialTheme.typography.labelLarge)
         Spacer(Modifier.height(4.dp))
-        AnimatedAmount(balance.balanceCents, style = MaterialTheme.typography.displayMedium, color = Color.White, masked = hidden)
+        AnimatedAmount(balance.balanceCents, style = MaterialTheme.typography.displayMedium, color = Color.White, masked = hidden, currency = balance.account.currencyCode)
         Spacer(Modifier.height(Spacing.xl))
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text("•••• ${balance.account.currencyCode}", color = Color.White.copy(alpha = 0.92f), style = MaterialTheme.typography.titleMedium)

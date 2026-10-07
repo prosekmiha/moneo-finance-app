@@ -235,6 +235,16 @@
     <string name="date">Data</string>
     <string name="default_account">Cont implicit</string>
     <string name="default_account_hint">Tranzacțiile noi, plățile recurente și abonamentele fără cont ales merg în acest cont.</string>
+    <string name="deleted_account">Cont șters</string>
+    <string name="accounts_reorder_hint">Ține apăsat și trage un card pentru a schimba ordinea.</string>
+    <string name="account_month_change">%1$s luna aceasta</string>
+    <string name="delete_account_title">Ștergi contul „%1$s”?</string>
+    <string name="delete_account_usage">Tranzacții și transferuri în acest cont: %1$d. Ce să se întâmple cu ele?</string>
+    <string name="delete_account_move">Mută în „%1$s”</string>
+    <string name="delete_account_drop">Șterge-le odată cu contul</string>
+    <string name="delete_account_move_hint">Se mută și soldul inițial, plățile recurente, abonamentele și favoritele, deci soldul total rămâne același.</string>
+    <string name="delete_account_drop_hint">Nu vor mai fi incluse în niciun sold. Plățile recurente, abonamentele și favoritele trec în contul implicit.</string>
+    <string name="delete_account_currency_note">Tranzacțiile pot fi mutate doar într-un cont în aceeași monedă (%1$s).</string>
     <string name="note">Notă</string>
     <string name="tags">Etichete</string>
     <string name="source">Sursă</string>

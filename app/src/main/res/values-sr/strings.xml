@@ -235,6 +235,16 @@
     <string name="date">Datum</string>
     <string name="default_account">Podrazumevani račun</string>
     <string name="default_account_hint">Nove transakcije, ponavljajuća plaćanja i pretplate bez izabranog računa idu na ovaj račun.</string>
+    <string name="deleted_account">Obrisan račun</string>
+    <string name="accounts_reorder_hint">Zadrži i prevuci karticu da promeniš redosled.</string>
+    <string name="account_month_change">%1$s ovog meseca</string>
+    <string name="delete_account_title">Obrisati račun „%1$s“?</string>
+    <string name="delete_account_usage">Transakcije i prenosi na računu: %1$d. Šta da se desi sa njima?</string>
+    <string name="delete_account_move">Prenesi na „%1$s“</string>
+    <string name="delete_account_drop">Obriši ih zajedno sa računom</string>
+    <string name="delete_account_move_hint">Prenose se i početno stanje, ponavljajuća plaćanja, pretplate i omiljeni unosi, pa ukupno stanje ostaje isto.</string>
+    <string name="delete_account_drop_hint">Više se neće računati ni u jedno stanje. Ponavljajuća plaćanja, pretplate i omiljeni unosi prelaze na podrazumevani račun.</string>
+    <string name="delete_account_currency_note">Transakcije se mogu preneti samo na račun u istoj valuti (%1$s).</string>
     <string name="note">Beleška</string>
     <string name="tags">Oznake</string>
     <string name="source">Izvor</string>

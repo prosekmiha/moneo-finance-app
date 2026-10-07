@@ -235,6 +235,16 @@
     <string name="date">Datum</string>
     <string name="default_account">Standaardrekening</string>
     <string name="default_account_hint">Nieuwe transacties, terugkerende betalingen en abonnementen zonder gekozen rekening komen op deze rekening.</string>
+    <string name="deleted_account">Verwijderde rekening</string>
+    <string name="accounts_reorder_hint">Houd een kaart ingedrukt en sleep om de volgorde te wijzigen.</string>
+    <string name="account_month_change">%1$s deze maand</string>
+    <string name="delete_account_title">Rekening ‘%1$s’ verwijderen?</string>
+    <string name="delete_account_usage">Transacties en overboekingen op deze rekening: %1$d. Wat moet ermee gebeuren?</string>
+    <string name="delete_account_move">Verplaatsen naar ‘%1$s’</string>
+    <string name="delete_account_drop">Samen met de rekening verwijderen</string>
+    <string name="delete_account_move_hint">Het beginsaldo, terugkerende betalingen, abonnementen en favorieten gaan mee, dus het totale saldo blijft gelijk.</string>
+    <string name="delete_account_drop_hint">Ze tellen niet meer mee in een saldo. Terugkerende betalingen, abonnementen en favorieten gaan naar de standaardrekening.</string>
+    <string name="delete_account_currency_note">Transacties kunnen alleen naar een rekening in dezelfde valuta (%1$s).</string>
     <string name="note">Notitie</string>
     <string name="tags">Labels</string>
     <string name="source">Bron</string>

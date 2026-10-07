@@ -91,6 +91,70 @@ class FinanceRepository(private val db: AppDatabase) {
 
     /** Nov vrstni red računov naenkrat, da seznami ne utripajo skozi vmesna stanja. */
     suspend fun saveAccountOrder(changed: List<AccountEntity>) = accounts.upsertAll(changed)
+
+    /** Število (neizbrisanih) transakcij in prenosov na računu. */
+    suspend fun accountUsage(uid: String): Int =
+        transactions.all().count { !it.deleted && it.accountUid == uid } +
+            transfers.all().count { !it.deleted && (it.fromAccountUid == uid || it.toAccountUid == uid) }
+
+    /** Vse, kar je brisanje računa spremenilo, v stanju pred brisanjem (za razveljavitev). */
+    class AccountRemoval internal constructor(
+        val account: AccountEntity,
+        internal val accounts: List<AccountEntity>,
+        internal val transactions: List<TransactionEntity>,
+        internal val transfers: List<TransferEntity>,
+        internal val rules: List<RecurringRuleEntity>,
+        internal val subscriptions: List<SubscriptionEntity>,
+        internal val favorites: List<FavoriteEntity>,
+    )
+
+    /**
+     * Izbriše račun. Z [moveTo] se transakcije, prenosi, začetno stanje, pravila, naročnine in priljubljeni
+     * vnosi prenesejo na drug račun (skupno stanje ostane enako); brez njega se transakcije izbrišejo,
+     * pravila, naročnine in priljubljeni pa gredo na privzeti račun. Prenosi na druge račune ostanejo,
+     * ker so del stanja tistih računov.
+     */
+    suspend fun deleteAccount(uid: String, moveTo: String?): AccountRemoval = db.withTransaction {
+        val now = System.currentTimeMillis()
+        val account = requireNotNull(accounts.byUid(uid))
+        val target = moveTo?.let { accounts.byUid(it) }?.takeIf { !it.deleted && it.uid != uid }
+        val txs = transactions.all().filter { !it.deleted && it.accountUid == uid }
+        val trs = transfers.all().filter { !it.deleted && (it.fromAccountUid == uid || it.toAccountUid == uid) }
+        val rules = recurring.all().filter { !it.deleted && it.accountUid == uid }
+        val subs = subscriptions.all().filter { !it.deleted && it.accountUid == uid }
+        val favs = favorites.all().filter { !it.deleted && it.accountUid == uid }
+        val newUid = target?.uid
+        if (target != null) {
+            transactions.upsertAll(txs.map { it.copy(accountUid = target.uid, updatedAt = now) })
+            transfers.upsertAll(
+                trs.map { t ->
+                    val from = if (t.fromAccountUid == uid) target.uid else t.fromAccountUid
+                    val to = if (t.toAccountUid == uid) target.uid else t.toAccountUid
+                    // Prenos med združenima računoma postane notranji in nima več pomena
+                    t.copy(fromAccountUid = from, toAccountUid = to, deleted = from == to, updatedAt = now)
+                },
+            )
+            accounts.upsert(target.copy(initialBalanceCents = target.initialBalanceCents + account.initialBalanceCents, updatedAt = now))
+        } else {
+            transactions.upsertAll(txs.map { it.copy(deleted = true, updatedAt = now) })
+        }
+        recurring.upsertAll(rules.map { it.copy(accountUid = newUid, updatedAt = now) })
+        subscriptions.upsertAll(subs.map { it.copy(accountUid = newUid, updatedAt = now) })
+        favorites.upsertAll(favs.map { it.copy(accountUid = newUid, updatedAt = now) })
+        accounts.upsert(account.copy(deleted = true, updatedAt = now))
+        AccountRemoval(account, listOfNotNull(account, target), txs, if (target != null) trs else emptyList(), rules, subs, favs)
+    }
+
+    /** Razveljavi [deleteAccount]: vse spremenjeno vrne v stanje pred brisanjem. */
+    suspend fun restoreAccount(removal: AccountRemoval) = db.withTransaction {
+        val now = System.currentTimeMillis()
+        accounts.upsertAll(removal.accounts.map { it.copy(updatedAt = now) })
+        transactions.upsertAll(removal.transactions.map { it.copy(updatedAt = now) })
+        transfers.upsertAll(removal.transfers.map { it.copy(updatedAt = now) })
+        recurring.upsertAll(removal.rules.map { it.copy(updatedAt = now) })
+        subscriptions.upsertAll(removal.subscriptions.map { it.copy(updatedAt = now) })
+        favorites.upsertAll(removal.favorites.map { it.copy(updatedAt = now) })
+    }
     suspend fun saveRecurringRule(rule: RecurringRuleEntity) = recurring.upsert(rule)
 
     suspend fun categoryByUid(uid: String?) = uid?.let { categories.byUid(it) }

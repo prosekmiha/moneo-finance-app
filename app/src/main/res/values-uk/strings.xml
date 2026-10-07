@@ -235,6 +235,16 @@
     <string name="date">Дата</string>
     <string name="default_account">Рахунок за замовчуванням</string>
     <string name="default_account_hint">Нові операції, регулярні платежі та підписки без вибраного рахунку записуються на цей рахунок.</string>
+    <string name="deleted_account">Видалений рахунок</string>
+    <string name="accounts_reorder_hint">Утримуйте та перетягніть картку, щоб змінити порядок.</string>
+    <string name="account_month_change">%1$s цього місяця</string>
+    <string name="delete_account_title">Видалити рахунок «%1$s»?</string>
+    <string name="delete_account_usage">Операції та перекази на цьому рахунку: %1$d. Що з ними зробити?</string>
+    <string name="delete_account_move">Перенести на «%1$s»</string>
+    <string name="delete_account_drop">Видалити разом із рахунком</string>
+    <string name="delete_account_move_hint">Також переносяться початковий залишок, регулярні платежі, підписки та обране, тому загальний баланс не зміниться.</string>
+    <string name="delete_account_drop_hint">Вони більше не враховуватимуться в жодному балансі. Регулярні платежі, підписки та обране перейдуть на рахунок за замовчуванням.</string>
+    <string name="delete_account_currency_note">Операції можна перенести лише на рахунок у тій самій валюті (%1$s).</string>
     <string name="note">Нотатка</string>
     <string name="tags">Мітки</string>
     <string name="source">Джерело</string>

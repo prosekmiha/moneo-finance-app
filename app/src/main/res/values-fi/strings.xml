@@ -235,6 +235,16 @@
     <string name="date">Päivämäärä</string>
     <string name="default_account">Oletustili</string>
     <string name="default_account_hint">Uudet tapahtumat, toistuvat maksut ja tilaukset ilman valittua tiliä kirjataan tälle tilille.</string>
+    <string name="deleted_account">Poistettu tili</string>
+    <string name="accounts_reorder_hint">Pidä korttia painettuna ja vedä muuttaaksesi järjestystä.</string>
+    <string name="account_month_change">%1$s tässä kuussa</string>
+    <string name="delete_account_title">Poistetaanko tili ”%1$s”?</string>
+    <string name="delete_account_usage">Tapahtumia ja siirtoja tilillä: %1$d. Mitä niille tehdään?</string>
+    <string name="delete_account_move">Siirrä tilille ”%1$s”</string>
+    <string name="delete_account_drop">Poista ne tilin mukana</string>
+    <string name="delete_account_move_hint">Myös alkusaldo, toistuvat maksut, tilaukset ja suosikit siirretään, joten kokonaissaldo pysyy samana.</string>
+    <string name="delete_account_drop_hint">Niitä ei enää lasketa mihinkään saldoon. Toistuvat maksut, tilaukset ja suosikit siirtyvät oletustilille.</string>
+    <string name="delete_account_currency_note">Tapahtumat voi siirtää vain samanvaluuttaiselle tilille (%1$s).</string>
     <string name="note">Muistiinpano</string>
     <string name="tags">Tunnisteet</string>
     <string name="source">Lähde</string>

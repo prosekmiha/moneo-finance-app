@@ -235,6 +235,16 @@
     <string name="date">Ημερομηνία</string>
     <string name="default_account">Προεπιλεγμένος λογαριασμός</string>
     <string name="default_account_hint">Νέες συναλλαγές, επαναλαμβανόμενες πληρωμές και συνδρομές χωρίς επιλεγμένο λογαριασμό καταχωρούνται σε αυτόν τον λογαριασμό.</string>
+    <string name="deleted_account">Διαγραμμένος λογαριασμός</string>
+    <string name="accounts_reorder_hint">Πατήστε παρατεταμένα και σύρετε μια κάρτα για να αλλάξετε τη σειρά.</string>
+    <string name="account_month_change">%1$s αυτόν τον μήνα</string>
+    <string name="delete_account_title">Διαγραφή λογαριασμού «%1$s»;</string>
+    <string name="delete_account_usage">Συναλλαγές και μεταφορές σε αυτόν τον λογαριασμό: %1$d. Τι να γίνει με αυτές;</string>
+    <string name="delete_account_move">Μεταφορά σε «%1$s»</string>
+    <string name="delete_account_drop">Διαγραφή μαζί με τον λογαριασμό</string>
+    <string name="delete_account_move_hint">Μεταφέρονται επίσης το αρχικό υπόλοιπο, οι επαναλαμβανόμενες πληρωμές, οι συνδρομές και τα αγαπημένα, οπότε το συνολικό υπόλοιπο μένει ίδιο.</string>
+    <string name="delete_account_drop_hint">Δεν θα υπολογίζονται πλέον σε κανένα υπόλοιπο. Οι επαναλαμβανόμενες πληρωμές, οι συνδρομές και τα αγαπημένα πηγαίνουν στον προεπιλεγμένο λογαριασμό.</string>
+    <string name="delete_account_currency_note">Οι συναλλαγές μπορούν να μεταφερθούν μόνο σε λογαριασμό με το ίδιο νόμισμα (%1$s).</string>
     <string name="note">Σημείωση</string>
     <string name="tags">Ετικέτες</string>
     <string name="source">Πηγή</string>

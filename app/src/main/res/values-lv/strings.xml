@@ -235,6 +235,16 @@
     <string name="date">Datums</string>
     <string name="default_account">Noklusējuma konts</string>
     <string name="default_account_hint">Jaunie darījumi, regulārie maksājumi un abonementi bez izvēlēta konta tiek ierakstīti šajā kontā.</string>
+    <string name="deleted_account">Dzēsts konts</string>
+    <string name="accounts_reorder_hint">Turiet nospiestu un velciet karti, lai mainītu secību.</string>
+    <string name="account_month_change">%1$s šomēnes</string>
+    <string name="delete_account_title">Dzēst kontu “%1$s”?</string>
+    <string name="delete_account_usage">Darījumi un pārskaitījumi šajā kontā: %1$d. Ko ar tiem darīt?</string>
+    <string name="delete_account_move">Pārvietot uz “%1$s”</string>
+    <string name="delete_account_drop">Dzēst tos kopā ar kontu</string>
+    <string name="delete_account_move_hint">Tiek pārvietots arī sākuma atlikums, regulārie maksājumi, abonementi un izlase, tāpēc kopējais atlikums nemainās.</string>
+    <string name="delete_account_drop_hint">Tie vairs netiks ieskaitīti nevienā atlikumā. Regulārie maksājumi, abonementi un izlase pāries uz noklusējuma kontu.</string>
+    <string name="delete_account_currency_note">Darījumus var pārvietot tikai uz kontu tajā pašā valūtā (%1$s).</string>
     <string name="note">Piezīme</string>
     <string name="tags">Birkas</string>
     <string name="source">Avots</string>

@@ -235,6 +235,16 @@
     <string name="date">Datum</string>
     <string name="default_account">Standardkonto</string>
     <string name="default_account_hint">Nya transaktioner, återkommande betalningar och prenumerationer utan valt konto bokförs på detta konto.</string>
+    <string name="deleted_account">Raderat konto</string>
+    <string name="accounts_reorder_hint">Håll in och dra ett kort för att ändra ordningen.</string>
+    <string name="account_month_change">%1$s den här månaden</string>
+    <string name="delete_account_title">Radera kontot ”%1$s”?</string>
+    <string name="delete_account_usage">Transaktioner och överföringar på kontot: %1$d. Vad ska hända med dem?</string>
+    <string name="delete_account_move">Flytta till ”%1$s”</string>
+    <string name="delete_account_drop">Radera dem tillsammans med kontot</string>
+    <string name="delete_account_move_hint">Även ingående saldo, återkommande betalningar, prenumerationer och favoriter flyttas, så totalsaldot är oförändrat.</string>
+    <string name="delete_account_drop_hint">De räknas inte längre in i något saldo. Återkommande betalningar, prenumerationer och favoriter flyttas till standardkontot.</string>
+    <string name="delete_account_currency_note">Transaktioner kan bara flyttas till ett konto i samma valuta (%1$s).</string>
     <string name="note">Anteckning</string>
     <string name="tags">Taggar</string>
     <string name="source">Källa</string>

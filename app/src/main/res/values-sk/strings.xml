@@ -235,6 +235,16 @@
     <string name="date">Dátum</string>
     <string name="default_account">Predvolený účet</string>
     <string name="default_account_hint">Nové transakcie, opakované platby a predplatné bez zvoleného účtu sa zapíšu na tento účet.</string>
+    <string name="deleted_account">Odstránený účet</string>
+    <string name="accounts_reorder_hint">Podržte a potiahnite kartu na zmenu poradia.</string>
+    <string name="account_month_change">%1$s tento mesiac</string>
+    <string name="delete_account_title">Odstrániť účet „%1$s“?</string>
+    <string name="delete_account_usage">Transakcie a prevody na tomto účte: %1$d. Čo s nimi?</string>
+    <string name="delete_account_move">Presunúť na „%1$s“</string>
+    <string name="delete_account_drop">Odstrániť ich spolu s účtom</string>
+    <string name="delete_account_move_hint">Presunie sa aj počiatočný zostatok, opakované platby, predplatné a obľúbené, takže celkový zostatok zostane rovnaký.</string>
+    <string name="delete_account_drop_hint">Už sa nebudú započítavať do žiadneho zostatku. Opakované platby, predplatné a obľúbené prejdú na predvolený účet.</string>
+    <string name="delete_account_currency_note">Transakcie možno presunúť len na účet v rovnakej mene (%1$s).</string>
     <string name="note">Poznámka</string>
     <string name="tags">Štítky</string>
     <string name="source">Zdroj</string>

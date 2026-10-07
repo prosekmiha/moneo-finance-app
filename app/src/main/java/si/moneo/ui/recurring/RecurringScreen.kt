@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import si.moneo.data.db.entity.AccountEntity
+import si.moneo.data.db.entity.defaultAccount
 import si.moneo.data.db.entity.CategoryEntity
 import si.moneo.data.db.entity.RecurrenceFrequency
 import si.moneo.data.db.entity.RecurringRuleEntity
@@ -310,7 +311,7 @@ private fun RuleSheet(
                 )
                 DropdownField(
                     stringResource(R.string.account),
-                    listOf<Pair<String?, String>>(null to stringResource(R.string.default_short)) + accounts.map { it.uid to it.title },
+                    listOf<Pair<String?, String>>(null to stringResource(R.string.default_short) + accounts.defaultAccount()?.let { " (${it.title})" }.orEmpty()) + accounts.map { it.uid to it.title },
                     accountUid, { accountUid = it }, Modifier.weight(1f),
                 )
             }

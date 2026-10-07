@@ -235,6 +235,16 @@
     <string name="date">Kuupäev</string>
     <string name="default_account">Vaikekonto</string>
     <string name="default_account_hint">Uued tehingud, korduvmaksed ja tellimused ilma valitud kontota lähevad sellele kontole.</string>
+    <string name="deleted_account">Kustutatud konto</string>
+    <string name="accounts_reorder_hint">Hoia kaarti all ja lohista, et järjekorda muuta.</string>
+    <string name="account_month_change">%1$s sel kuul</string>
+    <string name="delete_account_title">Kas kustutada konto „%1$s“?</string>
+    <string name="delete_account_usage">Tehinguid ja ülekandeid kontol: %1$d. Mis neist saab?</string>
+    <string name="delete_account_move">Teisalda kontole „%1$s“</string>
+    <string name="delete_account_drop">Kustuta need koos kontoga</string>
+    <string name="delete_account_move_hint">Teisaldatakse ka algsaldo, korduvmaksed, tellimused ja lemmikud, nii et kogusaldo jääb samaks.</string>
+    <string name="delete_account_drop_hint">Neid ei arvestata enam üheski saldos. Korduvmaksed, tellimused ja lemmikud lähevad vaikekontole.</string>
+    <string name="delete_account_currency_note">Tehinguid saab teisaldada ainult sama valuutaga kontole (%1$s).</string>
     <string name="note">Märkus</string>
     <string name="tags">Sildid</string>
     <string name="source">Allikas</string>

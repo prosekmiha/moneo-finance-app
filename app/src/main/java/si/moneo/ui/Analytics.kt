@@ -97,7 +97,8 @@ enum class InsightKind { TOP_CATEGORY, TREND_UP, TREND_DOWN, BIG_EXPENSE, FORECA
 
 data class Insight(val kind: InsightKind, val text: String)
 
-data class AccountBalance(val account: AccountEntity, val balanceCents: Long)
+/** [monthChangeCents] = sprememba stanja v tekočem mesecu (transakcije in prenosi). */
+data class AccountBalance(val account: AccountEntity, val balanceCents: Long, val monthChangeCents: Long = 0)
 
 data class BudgetStatus(val category: CategoryEntity, val spentCents: Long, val budgetCents: Long) {
     val fraction: Float get() = if (budgetCents <= 0) 0f else spentCents.toFloat() / budgetCents
@@ -232,19 +233,26 @@ fun accountBalances(
     accounts: List<AccountEntity>,
     txs: List<TransactionUi>,
     transfers: List<TransferEntity>,
+    monthStart: LocalDate = LocalDate.now().withDayOfMonth(1),
 ): List<AccountBalance> {
     val sums = HashMap<String, Long>()
+    val month = HashMap<String, Long>()
+    fun add(uid: String, cents: Long, date: LocalDate) {
+        sums[uid] = (sums[uid] ?: 0) + cents
+        if (!date.isBefore(monthStart)) month[uid] = (month[uid] ?: 0) + cents
+    }
     val defaultUid = accounts.defaultAccount()?.uid
     txs.forEach { tx ->
         if (!tx.confirmed) return@forEach
         val key = tx.accountUid ?: defaultUid ?: return@forEach
-        sums[key] = (sums[key] ?: 0) + if (tx.type == TransactionType.INCOME) tx.amountCents else -tx.amountCents
+        add(key, if (tx.type == TransactionType.INCOME) tx.amountCents else -tx.amountCents, tx.date)
     }
     transfers.forEach { t ->
-        t.fromAccountUid?.let { sums[it] = (sums[it] ?: 0) - t.fromAmountCents }
-        t.toAccountUid?.let { sums[it] = (sums[it] ?: 0) + (t.toAmountCents ?: t.fromAmountCents) }
+        val date = millisToLocalDate(t.date)
+        t.fromAccountUid?.let { add(it, -t.fromAmountCents, date) }
+        t.toAccountUid?.let { add(it, t.toAmountCents ?: t.fromAmountCents, date) }
     }
-    return accounts.map { AccountBalance(it, it.initialBalanceCents + (sums[it.uid] ?: 0)) }
+    return accounts.map { AccountBalance(it, it.initialBalanceCents + (sums[it.uid] ?: 0), month[it.uid] ?: 0) }
 }
 
 fun budgetStatuses(categories: List<CategoryEntity>, monthTxs: List<TransactionUi>): List<BudgetStatus> {
