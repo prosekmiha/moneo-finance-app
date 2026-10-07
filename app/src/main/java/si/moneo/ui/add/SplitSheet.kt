@@ -45,7 +45,6 @@ import si.moneo.data.db.entity.CategoryEntity
 import si.moneo.ui.components.DropdownField
 import si.moneo.ui.components.PillButton
 import si.moneo.ui.formatCents
-import si.moneo.ui.home.plural
 import si.moneo.ui.parseCents
 import si.moneo.ui.theme.Finance
 import si.moneo.ui.theme.Spacing

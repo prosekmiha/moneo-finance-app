@@ -524,6 +524,8 @@
     <string name="total_spent">Total cheltuit</string>
     <string name="income_amount">venituri %1$s</string>
     <string name="by_category">Pe categorii</string>
+    <string name="by_date">După dată</string>
+    <string name="open_category">Deschide categoria</string>
     <string name="entries">Intrări</string>
     <string name="favorites_intro">Adaugă intrări frecvente cu o atingere: pe Acasă sau cu widgetul „Intrări favorite” de pe ecranul telefonului.</string>
     <string name="no_favorites">Nicio intrare favorită</string>

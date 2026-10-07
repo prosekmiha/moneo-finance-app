@@ -523,6 +523,8 @@
     <string name="total_spent">Insgesamt ausgegeben</string>
     <string name="income_amount">Einnahmen %1$s</string>
     <string name="by_category">Nach Kategorie</string>
+    <string name="by_date">Nach Datum</string>
+    <string name="open_category">Kategorie öffnen</string>
     <string name="entries">Einträge</string>
     <string name="favorites_intro">Häufige Einträge mit einem Tipp hinzufügen: auf der Startseite oder mit dem Widget „Favoriten“ auf dem Startbildschirm.</string>
     <string name="no_favorites">Keine Favoriten</string>

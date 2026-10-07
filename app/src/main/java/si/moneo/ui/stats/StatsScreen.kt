@@ -141,8 +141,11 @@ fun StatsScreen(
     }
 
     val stagger = rememberStagger()
+    val listState = androidx.compose.foundation.lazy.rememberLazyListState()
+    si.moneo.ui.components.ScrollToTopOnReselect(si.moneo.Routes.STATS, listState)
     LazyColumn(
         Modifier.fillMaxSize(),
+        state = listState,
         contentPadding = PaddingValues(
             start = Spacing.screen, end = Spacing.screen,
             bottom = contentPadding.calculateBottomPadding() + 24.dp,

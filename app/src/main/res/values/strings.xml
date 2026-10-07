@@ -531,6 +531,8 @@
     <string name="total_spent">Total spent</string>
     <string name="income_amount">income %1$s</string>
     <string name="by_category">By category</string>
+    <string name="by_date">By date</string>
+    <string name="open_category">Open category</string>
     <string name="entries">Entries</string>
     <string name="favorites_intro">Add frequent entries with one tap: on Home or with the “Favourite entries” widget on your phone’s home screen.</string>
     <string name="no_favorites">No favourite entries</string>

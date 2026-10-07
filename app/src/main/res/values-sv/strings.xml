@@ -524,6 +524,8 @@
     <string name="total_spent">Totalt spenderat</string>
     <string name="income_amount">inkomster %1$s</string>
     <string name="by_category">Per kategori</string>
+    <string name="by_date">Efter datum</string>
+    <string name="open_category">Öppna kategori</string>
     <string name="entries">Poster</string>
     <string name="favorites_intro">Lägg till vanliga poster med ett tryck: på Hem eller med widgeten ”Favoritposter” på telefonens startskärm.</string>
     <string name="no_favorites">Inga favoritposter</string>

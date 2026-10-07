@@ -35,6 +35,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import kotlinx.coroutines.launch
 import si.moneo.data.db.entity.FavoriteEntity
+import si.moneo.data.db.entity.defaultAccount
 import si.moneo.ui.UpcomingKind
 import si.moneo.ui.components.LocalSnackbar
 import si.moneo.ui.favorites.FavoriteEditTarget
@@ -45,6 +46,8 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -62,6 +65,10 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
+import si.moneo.ui.components.DayHeader
+import si.moneo.ui.components.ScrollToTopOnReselect
+import si.moneo.ui.components.SkeletonRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -142,6 +149,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     vm: MainViewModel,
@@ -197,15 +205,26 @@ fun HomeScreen(
     // Razprte kategorije se ob menjavi obdobja, tipa ali računa zaprejo
     var expanded by remember(state.period, state.start, listType, accountFilter) { mutableStateOf(emptySet<String>()) }
     var transfersOpen by remember(state.period, state.start, accountFilter) { mutableStateOf(false) }
+    val byDate by vm.homeListByDate.collectAsStateWithLifecycle()
+    // Kronološki pogled: dnevi padajoče, v dnevu najnovejši vnos najprej
+    val days = remember(state.transactions, listType) {
+        state.transactions.filter { it.type == listType }
+            .sortedWith(compareByDescending<TransactionUi> { it.date }.thenByDescending { it.amountCents })
+            .groupBy { it.date }
+    }
+    val listState = rememberLazyListState()
+    ScrollToTopOnReselect(si.moneo.Routes.HOME, listState)
 
     // Kartice ob odprtju zaslona "pridrsijo" ena za drugo
     val stagger = rememberStagger()
     LazyColumn(
-        Modifier.fillMaxSize(),
+        // Vsebina se konča pod statusno vrstico, da se dnevne glave prilepijo tik pod njo
+        Modifier.fillMaxSize().statusBarsPadding(),
+        state = listState,
         contentPadding = PaddingValues(bottom = contentPadding.calculateBottomPadding() + 24.dp),
     ) {
         stagger.reset()
-        staggerItem(stagger, key = "header") { Header(onSearch) }
+        staggerItem(stagger, key = "header") { Header(accounts.defaultAccount()?.currencyCode ?: "EUR", onSearch) }
         staggerItem(stagger, key = "month") {
             Column(Modifier.padding(horizontal = Spacing.screen)) {
                 SegmentedTabs(
@@ -298,12 +317,31 @@ fun HomeScreen(
                             .clip(CircleShape).background(MaterialTheme.colorScheme.outline),
                     )
                     SectionHeader(
-                        stringResource(if (listType == TransactionType.EXPENSE) R.string.expenses_by_category else R.string.income_by_category),
+                        stringResource(
+                            when {
+                                byDate -> if (listType == TransactionType.EXPENSE) R.string.expenses else R.string.income_plural
+                                listType == TransactionType.EXPENSE -> R.string.expenses_by_category
+                                else -> R.string.income_by_category
+                            },
+                        ),
                         Modifier.padding(horizontal = Spacing.screen, vertical = Spacing.md),
                         action = stringResource(R.string.search),
                         onAction = onSearch,
                     )
+                    SegmentedTabs(
+                        options = listOf(false, true),
+                        selected = byDate,
+                        onSelect = vm::setHomeListByDate,
+                        label = { str(if (it) R.string.by_date else R.string.by_category) },
+                        modifier = Modifier.padding(start = Spacing.screen, end = Spacing.screen, bottom = Spacing.sm),
+                    )
                 }
+            }
+        }
+
+        if (!state.loaded) {
+            items(4, key = { "skeleton-$it" }) {
+                Surface(color = MaterialTheme.colorScheme.surface) { SkeletonRow() }
             }
         }
 
@@ -323,12 +361,31 @@ fun HomeScreen(
             }
         }
 
-        groups.forEach { g ->
+        if (byDate) days.forEach { (date, list) ->
+            stickyHeader(key = "day-$date") {
+                val total = list.filter { it.confirmed }.sumOf { it.amountCents }
+                val income = listType == TransactionType.INCOME
+                DayHeader(
+                    date,
+                    amount = (if (income) "+" else "−") + formatCents(total),
+                    amountColor = if (income) Finance.colors.income else MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            items(list, key = { "tx-" + it.uid }) { tx ->
+                SwipeableTransaction(
+                    tx = tx,
+                    onClick = { onEdit(tx) },
+                    onConfirm = { vm.confirm(tx.uid) },
+                    modifier = Modifier.animateItem(),
+                )
+            }
+        } else groups.forEach { g ->
             val open = g.key in expanded
             item(key = "cat-${g.key}") {
                 CategoryGroupRow(
                     g, open, listType,
                     onClick = { expanded = if (open) expanded - g.key else expanded + g.key },
+                    onOpen = if (g.key == "none") null else ({ onOpenCategory(g.key) }),
                     modifier = Modifier.animateItem(),
                 )
             }
@@ -381,7 +438,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun Header(onSearch: () -> Unit) {
+private fun Header(currencyCode: String, onSearch: () -> Unit) {
     val hour = LocalTime.now().hour
     val greeting = when {
         hour < 11 -> stringResource(R.string.greeting_morning)
@@ -389,13 +446,22 @@ private fun Header(onSearch: () -> Unit) {
         else -> stringResource(R.string.greeting_evening)
     }
     Row(
-        Modifier.fillMaxWidth().statusBarsPadding().padding(start = Spacing.screen, end = 8.dp, top = Spacing.md),
+        Modifier.fillMaxWidth().padding(start = Spacing.screen, end = 8.dp, top = Spacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
             Modifier.size(44.dp).clip(CircleShape).background(Finance.colors.heroGradient),
             contentAlignment = Alignment.Center,
-        ) { Text("€", color = Color.White, style = MaterialTheme.typography.titleLarge) }
+        ) {
+            // Simbol valute privzetega računa (daljši simboli, npr. "CHF", z manjšo pisavo)
+            val symbol = remember(currencyCode) {
+                runCatching { java.util.Currency.getInstance(currencyCode).getSymbol(Locale.getDefault()) }.getOrDefault(currencyCode)
+            }
+            Text(
+                symbol, color = Color.White, maxLines = 1,
+                style = if (symbol.length <= 1) MaterialTheme.typography.titleLarge else MaterialTheme.typography.labelLarge,
+            )
+        }
         Spacer(Modifier.width(Spacing.md))
         Column(Modifier.weight(1f)) {
             Text("$greeting 👋", style = MaterialTheme.typography.titleMedium)
@@ -421,12 +487,6 @@ private fun PeriodSwitcher(
     onNext: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val what = when (period) {
-        StatsPeriod.DAY -> "dan"
-        StatsPeriod.WEEK -> "teden"
-        StatsPeriod.YEAR -> "leto"
-        else -> "mesec"
-    }
     Row(
         modifier.fillMaxWidth().padding(vertical = Spacing.md).monthSwipe(onPrev, onNext, isCurrent),
         verticalAlignment = Alignment.CenterVertically,
@@ -469,11 +529,13 @@ private fun HeroPager(
 ) {
     val pages = 1 + state.accounts.size
     val pager = rememberPagerState { pages }
+    val defaultUid = state.accounts.map { it.account }.defaultAccount()?.uid
     Column {
         HorizontalPager(state = pager) { page ->
             // Navpični odmik, da pager ne odreže sence kartice
             Box(Modifier.padding(horizontal = Spacing.screen, vertical = Spacing.sm)) {
-                if (page == 0) BalanceCard(state, hidden, type, onTypeChange, onToggleHidden) else AccountCard(state.accounts[page - 1], hidden)
+                if (page == 0) BalanceCard(state, hidden, type, onTypeChange, onToggleHidden)
+                else state.accounts[page - 1].let { AccountCard(it, hidden, isDefault = it.account.uid == defaultUid) }
             }
         }
         if (pages > 1) {
@@ -621,16 +683,34 @@ private fun AverageChip(icon: androidx.compose.ui.graphics.vector.ImageVector, t
 }
 
 @Composable
-private fun AccountCard(balance: AccountBalance, hidden: Boolean) {
+private fun AccountCard(balance: AccountBalance, hidden: Boolean, isDefault: Boolean) {
     val base = accentFor(balance.account.title, balance.account.color).underWhiteText()
     HeroSurface(Brush.linearGradient(listOf(base, base.copy(alpha = 0.75f).compositeOverDark())), glow = base) {
-        Text(balance.account.title, color = Color.White.copy(alpha = 0.92f), style = MaterialTheme.typography.labelLarge)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(balance.account.title, color = Color.White.copy(alpha = 0.92f), style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f, fill = false))
+            if (isDefault) {
+                Text(
+                    stringResource(R.string.default_short),
+                    color = Color.White,
+                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.padding(start = Spacing.sm).clip(RoundedCornerShape(Radius.sm))
+                        .background(Color.White.copy(alpha = 0.22f)).padding(horizontal = 8.dp, vertical = 2.dp),
+                )
+            }
+        }
         Spacer(Modifier.height(4.dp))
         AnimatedAmount(balance.balanceCents, style = MaterialTheme.typography.displayMedium, color = Color.White, masked = hidden, currency = balance.account.currencyCode)
         Spacer(Modifier.height(Spacing.xl))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text("•••• ${balance.account.currencyCode}", color = Color.White.copy(alpha = 0.92f), style = MaterialTheme.typography.titleMedium)
-            Spacer(Modifier.weight(1f))
+            // Sprememba stanja v tekočem mesecu (kot na zaslonu Računi)
+            val change = balance.monthChangeCents
+            Text(
+                if (hidden) "•••• ${balance.account.currencyCode}"
+                else stringResource(R.string.account_month_change, (if (change > 0) "+" else "") + formatCents(change, balance.account.currencyCode)),
+                color = Color.White.copy(alpha = 0.92f),
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.weight(1f),
+            )
             Text(stringResource(R.string.account_balance), color = Color.White.copy(alpha = 0.85f), style = MaterialTheme.typography.labelMedium)
         }
     }
@@ -654,14 +734,6 @@ private fun UnconfirmedBanner(count: Int, onConfirmAll: () -> Unit, modifier: Mo
             }
         }
     }
-}
-
-/** Slovenska dvojina/množina. */
-fun plural(n: Int, one: String, two: String, few: String, many: String): String = when {
-    n % 100 == 1 -> one
-    n % 100 == 2 -> two
-    n % 100 in 3..4 -> few
-    else -> many
 }
 
 @Composable
@@ -877,15 +949,35 @@ private fun categoryGroups(txs: List<TransactionUi>, type: TransactionType): Lis
         .sortedByDescending { it.totalCents }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun CategoryGroupRow(g: CategoryGroup, open: Boolean, type: TransactionType, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun CategoryGroupRow(
+    g: CategoryGroup,
+    open: Boolean,
+    type: TransactionType,
+    onClick: () -> Unit,
+    onOpen: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+) {
+    val haptic = LocalHapticFeedback.current
     val accent = accentFor(g.title, g.color)
     val rotation by animateFloatAsState(if (open) 180f else 0f, label = "chevron")
     Surface(color = MaterialTheme.colorScheme.surface, modifier = modifier.fillMaxWidth()) {
         Row(
             Modifier.fillMaxWidth()
                 .background(if (open) accent.copy(alpha = 0.06f) else Color.Transparent)
-                .clickable(onClickLabel = stringResource(if (open) R.string.hide_entries else R.string.show_entries), onClick = onClick)
+                // Tap razpre vnose, dolg pritisk odpre podrobnosti kategorije
+                .combinedClickable(
+                    onClickLabel = stringResource(if (open) R.string.hide_entries else R.string.show_entries),
+                    onClick = onClick,
+                    onLongClickLabel = onOpen?.let { stringResource(R.string.open_category) },
+                    onLongClick = onOpen?.let {
+                        {
+                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                            it()
+                        }
+                    },
+                )
                 .padding(horizontal = Spacing.screen, vertical = Spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {

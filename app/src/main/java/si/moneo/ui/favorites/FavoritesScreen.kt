@@ -25,7 +25,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import si.moneo.ui.components.dragAfterLongPress
+import si.moneo.ui.components.dragHandle
+import si.moneo.ui.components.rememberReorderState
+import si.moneo.ui.components.reorderActions
+import si.moneo.ui.components.reorderableItem
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,11 +42,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Bolt
 import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.KeyboardArrowDown
-import androidx.compose.material.icons.rounded.KeyboardArrowUp
+import androidx.compose.material.icons.rounded.DragIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
@@ -89,11 +94,15 @@ fun FavoritesScreen(vm: MainViewModel, onBack: () -> Unit) {
     val categories by vm.categories.collectAsStateWithLifecycle()
     val accounts by vm.accounts.collectAsStateWithLifecycle()
     var editing by remember { mutableStateOf<FavoriteEditTarget?>(null) }
+    val listState = rememberLazyListState()
+    val reorder = rememberReorderState(listState, keys = favorites.map { it.uid }, onCommit = vm::reorderFavorites)
+    val shown = reorder.arrange(favorites) { it.uid }
 
     Column(Modifier.fillMaxSize()) {
         ScreenTopBar(stringResource(R.string.favorites), onBack)
         LazyColumn(
             Modifier.navigationBarsPadding(),
+            state = listState,
             contentPadding = PaddingValues(start = Spacing.screen, end = Spacing.screen, bottom = 40.dp),
             verticalArrangement = Arrangement.spacedBy(Spacing.md),
         ) {
@@ -107,9 +116,15 @@ fun FavoritesScreen(vm: MainViewModel, onBack: () -> Unit) {
             if (favorites.isEmpty()) {
                 item { EmptyState(Icons.Rounded.Bolt, stringResource(R.string.no_favorites), stringResource(R.string.no_favorites_hint)) }
             }
-            itemsIndexed(favorites, key = { _, f -> f.uid }) { i, f ->
+            items(shown, key = { f -> f.uid }) { f ->
                 val cat = categories.firstOrNull { it.uid == f.categoryUid }
-                SoftCard(Modifier.fillMaxWidth(), onClick = { editing = FavoriteEditTarget(f) }, contentPadding = PaddingValues(start = 14.dp, top = 8.dp, bottom = 8.dp)) {
+                val reorderable = shown.size > 1
+                SoftCard(
+                    Modifier.reorderableItem(reorder, f.uid, this).fillMaxWidth()
+                        .then(if (reorderable) Modifier.dragAfterLongPress(reorder, f.uid).reorderActions(reorder, f.uid) else Modifier),
+                    onClick = { if (reorder.draggingKey == null) editing = FavoriteEditTarget(f) },
+                    contentPadding = PaddingValues(start = 14.dp, top = 8.dp, bottom = 8.dp, end = if (reorderable) 0.dp else 14.dp),
+                ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         CategoryIcon(cat?.title ?: f.title, cat?.color, type = f.type, size = 40.dp)
                         Spacer(Modifier.width(Spacing.md))
@@ -127,12 +142,10 @@ fun FavoritesScreen(vm: MainViewModel, onBack: () -> Unit) {
                             style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold,
                             color = if (f.type == TransactionType.INCOME) Finance.colors.income else MaterialTheme.colorScheme.onSurface,
                         )
-                        Column {
-                            IconButton(onClick = { vm.moveFavorite(f, up = true) }, enabled = i > 0, modifier = Modifier.size(32.dp)) {
-                                Icon(Icons.Rounded.KeyboardArrowUp, stringResource(R.string.move_up))
-                            }
-                            IconButton(onClick = { vm.moveFavorite(f, up = false) }, enabled = i < favorites.lastIndex, modifier = Modifier.size(32.dp)) {
-                                Icon(Icons.Rounded.KeyboardArrowDown, stringResource(R.string.move_down))
+                        // Ročaj: vlečenje takoj, brez dolgega pritiska
+                        if (reorderable) {
+                            Box(Modifier.size(48.dp).dragHandle(reorder, f.uid), contentAlignment = Alignment.Center) {
+                                Icon(Icons.Rounded.DragIndicator, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
                     }

@@ -524,6 +524,8 @@
     <string name="total_spent">Spolu minuté</string>
     <string name="income_amount">príjmy %1$s</string>
     <string name="by_category">Podľa kategórií</string>
+    <string name="by_date">Podľa dátumu</string>
+    <string name="open_category">Otvoriť kategóriu</string>
     <string name="entries">Záznamy</string>
     <string name="favorites_intro">Časté záznamy pridáte jedným ťuknutím: na Domov alebo widgetom „Obľúbené záznamy“ na domovskej obrazovke telefónu.</string>
     <string name="no_favorites">Žiadne obľúbené záznamy</string>

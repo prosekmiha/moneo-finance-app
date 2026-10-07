@@ -46,6 +46,21 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.NavigationRailItemDefaults
+import kotlinx.coroutines.flow.MutableSharedFlow
+import si.moneo.ui.components.LocalTabReselect
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -332,6 +347,12 @@ private fun App(
     val route = backStack?.destination?.route
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+    // Ponoven tap na izbran zavihek: zaslon se pomakne na vrh
+    val reselect = remember { MutableSharedFlow<String>(extraBufferCapacity = 1) }
+    // Pot beremo ob kliku: zajeta `route` bi bila v zapomnjenih lambdah zastarela
+    fun onTab(target: String) {
+        if (target == nav.currentDestination?.route) reselect.tryEmit(target) else nav.navigateTop(target)
+    }
 
     var showAdd by rememberSaveable { mutableStateOf(false) }
     var quickMenu by remember { mutableStateOf(false) }
@@ -379,9 +400,24 @@ private fun App(
         }
     }
 
-    CompositionLocalProvider(LocalSnackbar provides snackbar) {
-        Box(Modifier.fillMaxSize()) {
+    CompositionLocalProvider(LocalSnackbar provides snackbar, LocalTabReselect provides reselect) {
+        BoxWithConstraints(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+            // Tablica / ležeče: navigacija ob strani, vsebina omejene širine
+            val wide = maxWidth >= 600.dp
+            Row(Modifier.fillMaxSize()) {
+            if (wide) {
+                AppNavigationRail(
+                    current = route,
+                    onNavigate = ::onTab,
+                    onAdd = { openAdd(TransactionType.EXPENSE) },
+                    onAddLong = { quickMenu = true },
+                    menuOpen = quickMenu,
+                )
+            }
             Scaffold(
+                // Ležeče: sistemska navigacija / izrez sta lahko ob desnem robu
+                modifier = Modifier.weight(1f)
+                    .windowInsetsPadding(WindowInsets.navigationBars.union(WindowInsets.displayCutout).only(WindowInsetsSides.End)),
                 containerColor = MaterialTheme.colorScheme.background,
                 contentWindowInsets = WindowInsets(0),
                 snackbarHost = {
@@ -390,14 +426,16 @@ private fun App(
                     }
                 },
                 bottomBar = {
-                    AnimatedVisibility(
+                    // Brez spodnje vrstice naj vsebina vseeno ne sega pod sistemsko navigacijo
+                    if (wide) Spacer(Modifier.navigationBarsPadding())
+                    else AnimatedVisibility(
                         route in Routes.topLevel || route == null,
                         enter = slideInVertically { it } + fadeIn(),
                         exit = slideOutVertically { it } + fadeOut(),
                     ) {
                         BottomBar(
                             current = route,
-                            onNavigate = { nav.navigateTop(it) },
+                            onNavigate = ::onTab,
                             onAdd = { openAdd(TransactionType.EXPENSE) },
                             onAddLong = { quickMenu = true },
                             menuOpen = quickMenu,
@@ -408,9 +446,12 @@ private fun App(
                 // Skupni prehodi (ikona kategorije / obroč cilja "zleti" v podrobnosti)
                 SharedTransitionLayout {
                 CompositionLocalProvider(LocalSharedScope provides this) {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
                 NavHost(
                     navController = nav,
                     startDestination = Routes.HOME,
+                    // Na širokih zaslonih kartice niso raztegnjene čez ves zaslon
+                    modifier = Modifier.fillMaxHeight().widthIn(max = 840.dp).fillMaxWidth(),
                     enterTransition = {
                         // Med zavihki "fade through" (rahel zoom), podzasloni zdrsnejo z desne
                         if (targetState.destination.route in Routes.topLevel) fadeIn(tween(220, delayMillis = 60)) + scaleIn(tween(280, delayMillis = 60), initialScale = 0.97f)
@@ -528,6 +569,8 @@ private fun App(
                 }
                 }
                 }
+                }
+            }
             }
 
             // Pas pod statusno vrstico, da drseča vsebina ne prekriva ure in ikon
@@ -544,7 +587,7 @@ private fun App(
             }
             LaunchedEffect(quickMenu) { if (quickMenu) hideHint() }
             AnimatedVisibility(
-                showHint && route == Routes.HOME && !quickMenu,
+                showHint && !wide && route == Routes.HOME && !quickMenu,
                 enter = fadeIn() + slideInVertically { it / 2 },
                 exit = fadeOut(),
                 modifier = Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(bottom = 88.dp),
@@ -554,6 +597,7 @@ private fun App(
 
             QuickAddMenu(
                 visible = quickMenu,
+                besideRail = wide,
                 onDismiss = { quickMenu = false },
                 onExpense = { quickMenu = false; openAdd(TransactionType.EXPENSE) },
                 onIncome = { quickMenu = false; openAdd(TransactionType.INCOME) },
@@ -661,7 +705,6 @@ private fun BottomBar(
     onAddLong: () -> Unit,
     menuOpen: Boolean,
 ) {
-    val haptic = LocalHapticFeedback.current
     Surface(
         color = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(topStart = Radius.xl, topEnd = Radius.xl),
@@ -673,31 +716,80 @@ private fun BottomBar(
             horizontalArrangement = Arrangement.SpaceAround,
         ) {
             navItems.take(2).forEach { NavButton(it, current == it.route) { onNavigate(it.route) } }
-            val rotation by animateFloatAsState(if (menuOpen) 45f else 0f, spring(dampingRatio = 0.6f), label = "rot")
-            val glow = Finance.colors.heroStart
-            val addInteraction = remember { MutableInteractionSource() }
-            Box(
-                Modifier.size(54.dp)
-                    .pressScale(addInteraction, 0.9f)
-                    .shadow(10.dp, CircleShape, ambientColor = glow, spotColor = glow)
-                    .clip(CircleShape)
-                    .background(Finance.colors.heroGradient)
-                    .combinedClickable(
-                        interactionSource = addInteraction,
-                        indication = LocalIndication.current,
-                        onClick = onAdd,
-                        onLongClick = {
-                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                            onAddLong()
-                        },
-                        onClickLabel = stringResource(R.string.add_transaction),
-                        onLongClickLabel = stringResource(R.string.quick_menu),
-                    ),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(Icons.Rounded.Add, stringResource(R.string.add), tint = Color.White, modifier = Modifier.size(30.dp).rotate(rotation))
-            }
+            AddFab(onAdd, onAddLong, menuOpen)
             navItems.drop(2).forEach { NavButton(it, current == it.route) { onNavigate(it.route) } }
+        }
+    }
+}
+
+/** Okrogel gumb "+" (tap = nov strošek, dolg pritisk = hiter meni). */
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun AddFab(onAdd: () -> Unit, onAddLong: () -> Unit, menuOpen: Boolean) {
+    val haptic = LocalHapticFeedback.current
+    val rotation by animateFloatAsState(if (menuOpen) 45f else 0f, spring(dampingRatio = 0.6f), label = "rot")
+    val glow = Finance.colors.heroStart
+    val addInteraction = remember { MutableInteractionSource() }
+    Box(
+        Modifier.size(54.dp)
+            .pressScale(addInteraction, 0.9f)
+            .shadow(10.dp, CircleShape, ambientColor = glow, spotColor = glow)
+            .clip(CircleShape)
+            .background(Finance.colors.heroGradient)
+            .combinedClickable(
+                interactionSource = addInteraction,
+                indication = LocalIndication.current,
+                onClick = onAdd,
+                onLongClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onAddLong()
+                },
+                onClickLabel = stringResource(R.string.add_transaction),
+                onLongClickLabel = stringResource(R.string.quick_menu),
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(Icons.Rounded.Add, stringResource(R.string.add), tint = Color.White, modifier = Modifier.size(30.dp).rotate(rotation))
+    }
+}
+
+/** Stranska navigacija za široke zaslone: "+" na vrhu, zavihki pod njim. */
+@Composable
+private fun AppNavigationRail(
+    current: String?,
+    onNavigate: (String) -> Unit,
+    onAdd: () -> Unit,
+    onAddLong: () -> Unit,
+    menuOpen: Boolean,
+) {
+    val haptic = LocalHapticFeedback.current
+    val scheme = MaterialTheme.colorScheme
+    NavigationRail(
+        containerColor = scheme.surface,
+        header = {
+            Spacer(Modifier.height(Spacing.sm))
+            AddFab(onAdd, onAddLong, menuOpen)
+            Spacer(Modifier.height(Spacing.lg))
+        },
+    ) {
+        navItems.forEach { item ->
+            val selected = current == item.route
+            NavigationRailItem(
+                selected = selected,
+                onClick = {
+                    if (!selected) haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    onNavigate(item.route)
+                },
+                icon = { Icon(item.icon, null) },
+                label = { Text(item.label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
+                colors = NavigationRailItemDefaults.colors(
+                    selectedIconColor = scheme.onPrimaryContainer,
+                    indicatorColor = scheme.primaryContainer,
+                    selectedTextColor = scheme.onSurface,
+                    unselectedIconColor = scheme.onSurfaceVariant,
+                    unselectedTextColor = scheme.onSurfaceVariant,
+                ),
+            )
         }
     }
 }
@@ -739,6 +831,7 @@ private fun NavButton(item: NavItem, selected: Boolean, onClick: () -> Unit) {
 @Composable
 private fun QuickAddMenu(
     visible: Boolean,
+    besideRail: Boolean,
     onDismiss: () -> Unit,
     onExpense: () -> Unit,
     onIncome: () -> Unit,
@@ -748,21 +841,53 @@ private fun QuickAddMenu(
     AnimatedVisibility(visible, enter = fadeIn(), exit = fadeOut()) {
         Box(
             Modifier.fillMaxSize()
-                .background(Brush.verticalGradient(listOf(Color.Black.copy(alpha = 0.15f), Color.Black.copy(alpha = 0.55f))))
+                // Ob strani je meni na vrhu zaslona, zato enakomerno temnejša zatemnitev
+                .background(
+                    if (besideRail) Brush.horizontalGradient(listOf(Color.Black.copy(alpha = 0.65f), Color.Black.copy(alpha = 0.35f)))
+                    else Brush.verticalGradient(listOf(Color.Black.copy(alpha = 0.15f), Color.Black.copy(alpha = 0.55f))),
+                )
                 .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onDismiss),
         )
     }
+    val actions = listOf(
+        Triple(Icons.Rounded.RemoveCircleOutline, stringResource(R.string.entry_expense), colors.expense) to onExpense,
+        Triple(Icons.Rounded.AddCircleOutline, stringResource(R.string.entry_income), colors.income) to onIncome,
+        Triple(Icons.Rounded.Mic, stringResource(R.string.quick_voice), MaterialTheme.colorScheme.primary) to {
+            onDismiss(); context.startActivity(Intent(context, VoiceInputActivity::class.java))
+        },
+        Triple(Icons.Rounded.DocumentScanner, stringResource(R.string.quick_receipt), colors.warning) to {
+            onDismiss(); context.startActivity(Intent(context, ReceiptScanActivity::class.java))
+        },
+    )
+    if (besideRail) {
+        // Ob stranski navigaciji: navpičen seznam desno od gumba "+"
+        Column(
+            Modifier.statusBarsPadding().padding(start = 96.dp, top = Spacing.sm),
+            verticalArrangement = Arrangement.spacedBy(Spacing.md),
+        ) {
+            actions.forEachIndexed { i, (meta, action) ->
+                val (icon, label, tint) = meta
+                AnimatedVisibility(
+                    visible,
+                    enter = scaleIn(spring(dampingRatio = 0.55f, stiffness = 400f - i * 40f)) + fadeIn(),
+                    exit = scaleOut() + fadeOut(),
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Surface(onClick = action, shape = CircleShape, color = MaterialTheme.colorScheme.surface, shadowElevation = 6.dp, modifier = Modifier.size(56.dp)) {
+                            Box(contentAlignment = Alignment.Center) { Icon(icon, label, tint = tint, modifier = Modifier.size(26.dp)) }
+                        }
+                        Spacer(Modifier.width(Spacing.md))
+                        // Na podlagi, ker je pod oznako vsebina zaslona (glava, zavihki)
+                        Surface(shape = CircleShape, color = MaterialTheme.colorScheme.surface, shadowElevation = 4.dp) {
+                            Text(label, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp))
+                        }
+                    }
+                }
+            }
+        }
+        return
+    }
     Box(Modifier.fillMaxSize().navigationBarsPadding(), contentAlignment = Alignment.BottomCenter) {
-        val actions = listOf(
-            Triple(Icons.Rounded.RemoveCircleOutline, stringResource(R.string.entry_expense), colors.expense) to onExpense,
-            Triple(Icons.Rounded.AddCircleOutline, stringResource(R.string.entry_income), colors.income) to onIncome,
-            Triple(Icons.Rounded.Mic, stringResource(R.string.quick_voice), MaterialTheme.colorScheme.primary) to {
-                onDismiss(); context.startActivity(Intent(context, VoiceInputActivity::class.java))
-            },
-            Triple(Icons.Rounded.DocumentScanner, stringResource(R.string.quick_receipt), colors.warning) to {
-                onDismiss(); context.startActivity(Intent(context, ReceiptScanActivity::class.java))
-            },
-        )
         // Pahljača nad gumbom "+"
         val offsets = listOf(-132 to -84, -48 to -150, 48 to -150, 132 to -84)
         actions.forEachIndexed { i, (meta, action) ->

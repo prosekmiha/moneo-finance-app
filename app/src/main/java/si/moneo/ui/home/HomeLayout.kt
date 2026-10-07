@@ -3,7 +3,19 @@ package si.moneo.ui.home
 import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
+import si.moneo.ui.components.dragAfterLongPress
+import si.moneo.ui.components.dragHandle
+import si.moneo.ui.components.rememberReorderState
+import si.moneo.ui.components.reorderActions
+import si.moneo.ui.components.reorderableItem
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,12 +26,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.KeyboardArrowDown
-import androidx.compose.material.icons.rounded.KeyboardArrowUp
+import androidx.compose.material.icons.rounded.DragIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Switch
@@ -66,7 +76,7 @@ fun parseHomeLayout(raw: String?): List<HomeSectionState> {
 fun serializeHomeLayout(layout: List<HomeSectionState>): String =
     layout.joinToString(",") { (if (it.visible) "" else "-") + it.section.name }
 
-/** Urejanje domače strani: vklop/izklop kartic in vrstni red. */
+/** Urejanje domače strani: vklop/izklop kartic in vrstni red (vlečenje za ročaj ali dolg pritisk). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeLayoutSheet(
@@ -74,51 +84,65 @@ fun HomeLayoutSheet(
     onChange: (List<HomeSectionState>) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    fun move(i: Int, delta: Int) {
-        val j = i + delta
-        if (j !in layout.indices) return
-        onChange(layout.toMutableList().apply { add(j, removeAt(i)) })
+    val listState = rememberLazyListState()
+    val currentLayout by rememberUpdatedState(layout)
+    val reorder = rememberReorderState(listState, keys = layout.map { it.section.name }) { order ->
+        val bySection = currentLayout.associateBy { it.section.name }
+        onChange(order.mapNotNull(bySection::get))
     }
+    val shown = reorder.arrange(layout) { it.section.name }
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         containerColor = MaterialTheme.colorScheme.surface,
     ) {
-        Column(Modifier.padding(horizontal = Spacing.screen).navigationBarsPadding()) {
-            Text(stringResource(R.string.home_screen), style = MaterialTheme.typography.titleLarge)
-            Text(
-                stringResource(R.string.home_layout_hint),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(top = 4.dp, bottom = Spacing.md),
-            )
-            layout.forEachIndexed { i, item ->
-                if (i > 0) HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                Row(Modifier.fillMaxWidth().padding(vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Column {
-                        IconButton(onClick = { move(i, -1) }, enabled = i > 0, modifier = Modifier.size(32.dp)) {
-                            Icon(Icons.Rounded.KeyboardArrowUp, stringResource(R.string.move_up))
-                        }
-                        IconButton(onClick = { move(i, 1) }, enabled = i < layout.lastIndex, modifier = Modifier.size(32.dp)) {
-                            Icon(Icons.Rounded.KeyboardArrowDown, stringResource(R.string.move_down))
-                        }
-                    }
-                    Spacer(Modifier.width(Spacing.sm))
-                    Column(Modifier.weight(1f)) {
-                        Text(item.section.label, style = MaterialTheme.typography.bodyLarge)
-                        Text(item.section.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                    Switch(
-                        checked = item.visible,
-                        onCheckedChange = { v -> onChange(layout.map { if (it.section == item.section) it.copy(visible = v) else it }) },
+        LazyColumn(Modifier.padding(horizontal = Spacing.screen).navigationBarsPadding(), state = listState) {
+            item(key = "title") {
+                Column {
+                    Text(stringResource(R.string.home_screen), style = MaterialTheme.typography.titleLarge)
+                    Text(
+                        stringResource(R.string.home_layout_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 4.dp, bottom = Spacing.md),
                     )
                 }
             }
-            Row(Modifier.fillMaxWidth().padding(vertical = Spacing.md), horizontalArrangement = Arrangement.SpaceBetween) {
-                TextButton(onClick = { onChange(DEFAULT_HOME_LAYOUT) }) { Text(stringResource(R.string.reset)) }
-                TextButton(onClick = onDismiss) { Text(stringResource(R.string.done)) }
+            itemsIndexed(shown, key = { _, it -> it.section.name }) { i, item ->
+                val key = item.section.name
+                Column(
+                    Modifier.reorderableItem(reorder, key, this)
+                        .background(MaterialTheme.colorScheme.surface)
+                        .dragAfterLongPress(reorder, key)
+                        .reorderActions(reorder, key),
+                ) {
+                    if (i > 0) HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                    Row(Modifier.fillMaxWidth().padding(vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+                        // Ročaj: vlečenje takoj, brez dolgega pritiska
+                        Box(Modifier.size(48.dp).dragHandle(reorder, key), contentAlignment = Alignment.Center) {
+                            Icon(Icons.Rounded.DragIndicator, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                        Spacer(Modifier.width(Spacing.xs))
+                        Column(Modifier.weight(1f)) {
+                            Text(item.section.label, style = MaterialTheme.typography.bodyLarge)
+                            Text(item.section.description, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                        Switch(
+                            checked = item.visible,
+                            onCheckedChange = { v -> onChange(currentLayout.map { if (it.section == item.section) it.copy(visible = v) else it }) },
+                        )
+                    }
+                }
             }
-            Spacer(Modifier.height(Spacing.sm))
+            item(key = "actions") {
+                Column {
+                    Row(Modifier.fillMaxWidth().padding(vertical = Spacing.md), horizontalArrangement = Arrangement.SpaceBetween) {
+                        TextButton(onClick = { onChange(DEFAULT_HOME_LAYOUT) }) { Text(stringResource(R.string.reset)) }
+                        TextButton(onClick = onDismiss) { Text(stringResource(R.string.done)) }
+                    }
+                    Spacer(Modifier.height(Spacing.sm))
+                }
+            }
         }
     }
 }

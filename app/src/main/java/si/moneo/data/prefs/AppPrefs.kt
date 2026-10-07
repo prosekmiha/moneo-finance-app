@@ -65,6 +65,11 @@ class AppPrefs(context: Context) {
         get() = sp.getString("home_layout", null)
         set(v) = sp.edit { putString("home_layout", v) }
 
+    /** Seznam transakcij na Domov je razvrščen po datumu (sicer po kategorijah). */
+    var homeListByDate: Boolean
+        get() = sp.getBoolean("home_list_by_date", false)
+        set(v) = sp.edit { putBoolean("home_list_by_date", v) }
+
     /** Večerni opomnik, če tisti dan ni bilo vnosa. */
     var dailyReminder: Boolean
         get() = sp.getBoolean("daily_reminder", false)

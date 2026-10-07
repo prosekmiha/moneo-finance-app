@@ -30,8 +30,9 @@ object L10n {
         this.context = if (context is Activity) app.createConfigurationContext(context.resources.configuration) else app
     }
 
+    // Brez argumentov niz ne gre skozi String.format (nizi s formatted="false" lahko vsebujejo "%")
     fun string(@StringRes id: Int, args: Array<out Any>): String =
-        context?.getString(id, *args) ?: fallback(id, args)
+        context?.let { if (args.isEmpty()) it.getString(id) else it.getString(id, *args) } ?: fallback(id, args)
 
     fun plural(@PluralsRes id: Int, count: Int, args: Array<out Any>): String =
         context?.resources?.getQuantityString(id, count, *args) ?: fallback(id, args)

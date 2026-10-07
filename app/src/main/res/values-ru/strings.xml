@@ -524,6 +524,8 @@
     <string name="total_spent">Всего потрачено</string>
     <string name="income_amount">доходы %1$s</string>
     <string name="by_category">По категориям</string>
+    <string name="by_date">По дате</string>
+    <string name="open_category">Открыть категорию</string>
     <string name="entries">Записи</string>
     <string name="favorites_intro">Добавляйте частые записи одним нажатием: на Главной или с помощью виджета «Избранные записи» на главном экране телефона.</string>
     <string name="no_favorites">Нет избранных записей</string>
