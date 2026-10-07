@@ -238,6 +238,12 @@ class MainActivity : FragmentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         si.moneo.ui.L10n.init(this)
+        // Aktivnost se ob menjavi jezika ustvari znova - glavni račun in privzete kategorije naj sledijo jeziku
+        val localized = createConfigurationContext(resources.configuration)
+        val language = resources.configuration.locales[0].toLanguageTag()
+        if (prefs.localizedDefaultsFor != language) lifecycleScope.launch(kotlinx.coroutines.Dispatchers.IO) {
+            if (si.moneo.data.db.localizeDefaults((application as MoneoApp).container.database, localized)) prefs.localizedDefaultsFor = language
+        }
         // Vstop iz widgeta / tile-a s prednastavljenim tipom -> takoj odpri vnos
         val entryType = if (savedInstanceState == null) intent?.getStringExtra(EXTRA_ENTRY_TYPE) else null
         if (savedInstanceState == null) locked = prefs.appLock && biometricAvailable

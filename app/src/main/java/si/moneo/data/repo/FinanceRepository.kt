@@ -88,6 +88,9 @@ class FinanceRepository(private val db: AppDatabase) {
         accounts.upsert(account)
         if (account.isDefault) accounts.clearDefaultExcept(account.uid, System.currentTimeMillis())
     }
+
+    /** Nov vrstni red računov naenkrat, da seznami ne utripajo skozi vmesna stanja. */
+    suspend fun saveAccountOrder(changed: List<AccountEntity>) = accounts.upsertAll(changed)
     suspend fun saveRecurringRule(rule: RecurringRuleEntity) = recurring.upsert(rule)
 
     suspend fun categoryByUid(uid: String?) = uid?.let { categories.byUid(it) }

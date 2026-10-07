@@ -104,6 +104,11 @@ class AppPrefs(context: Context) {
         get() = sp.getLong("widget_last_add_at", 0)
         set(v) = sp.edit { putLong("widget_last_add_at", v) }
 
+    /** Jezik, v katerega so bili nazadnje prevedeni glavni račun in privzete kategorije. */
+    var localizedDefaultsFor: String?
+        get() = sp.getString("localized_defaults_for", null)
+        set(v) = sp.edit { putString("localized_defaults_for", v) }
+
     /** Zadnji mesec (yyyy-MM), za katerega je bil poslan povzetek. */
     var lastSummaryMonth: String?
         get() = sp.getString("last_summary_month", null)
