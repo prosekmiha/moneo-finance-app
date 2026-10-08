@@ -609,6 +609,10 @@
     <string name="app_notifications_sub">Påminnelser, månadssammanfattning</string>
     <string name="bank_notifications">Läsa bankaviseringar</string>
     <string name="bank_notifications_sub">Valfritt — öppnar systeminställningarna</string>
+    <string name="notif_access_text">För att kunna föreslå betalningar att bekräfta behöver Moneo åtkomst till aviseringar. Android ger åtkomst till alla aviseringar, så appen kan se deras rubrik och text. Moneo letar bara efter bankbetalningar (belopp och butik), sparar dem som obekräftade poster på den här enheten och ignorerar allt annat. Innehållet i aviseringar lämnar aldrig enheten och delas inte med någon. Du kan när som helst återkalla åtkomsten i systeminställningarna.</string>
+    <string name="open_settings">Öppna inställningar</string>
+    <string name="privacy_policy">Integritetspolicy</string>
+    <string name="privacy_policy_sub">Vilka data appen använder och var de lagras</string>
     <string name="allowed">Aktiverat</string>
     <string name="allow">Aktivera</string>
     <string name="choose_look">Välj utseende</string>

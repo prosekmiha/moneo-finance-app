@@ -609,6 +609,10 @@
     <string name="app_notifications_sub">Herinneringen, maandoverzicht</string>
     <string name="bank_notifications">Bankmeldingen lezen</string>
     <string name="bank_notifications_sub">Optioneel — opent de systeeminstellingen</string>
+    <string name="notif_access_text">Om je betalingen ter bevestiging aan te bieden, heeft Moneo toegang tot meldingen nodig. Android geeft die toegang voor alle meldingen, dus de app ziet hun titel en tekst. Moneo zoekt alleen naar bankbetalingen (bedrag en winkel), slaat ze op als onbevestigde invoer op dit apparaat en negeert al het andere. De inhoud van meldingen verlaat het apparaat nooit en wordt met niemand gedeeld. Je kunt de toegang altijd intrekken in de systeeminstellingen.</string>
+    <string name="open_settings">Instellingen openen</string>
+    <string name="privacy_policy">Privacybeleid</string>
+    <string name="privacy_policy_sub">Welke gegevens de app gebruikt en waar ze worden bewaard</string>
     <string name="allowed">Ingeschakeld</string>
     <string name="allow">Inschakelen</string>
     <string name="choose_look">Kies de weergave</string>

@@ -67,6 +67,7 @@ import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Mic
 import androidx.compose.material.icons.rounded.NotificationsActive
 import androidx.compose.material.icons.rounded.Palette
+import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.material.icons.rounded.Restore
 import androidx.compose.material.icons.rounded.Subscriptions
 import androidx.compose.material.icons.rounded.Summarize
@@ -131,6 +132,7 @@ import si.moneo.feature.ocr.ReceiptScanActivity
 import si.moneo.feature.voice.VoiceInputActivity
 import si.moneo.ui.MainViewModel
 import si.moneo.ui.SubscriptionSuggestion
+import si.moneo.ui.components.NotificationAccessDialog
 import si.moneo.ui.components.CategoryIcon
 import si.moneo.ui.components.DateField
 import si.moneo.ui.components.LocalSnackbar
@@ -176,6 +178,7 @@ fun MoreScreen(
     val hideBalance by vm.hideBalance.collectAsStateWithLifecycle()
     var showQuickHelp by remember { mutableStateOf(false) }
     var listenerEnabled by remember { mutableStateOf(false) }
+    var showNotifDisclosure by remember { mutableStateOf(false) }
     var backupFolder by remember { mutableStateOf(prefs.backupFolder) }
     var lastBackup by remember { mutableLongStateOf(prefs.lastBackupAt) }
     var monthlySummary by remember { mutableStateOf(prefs.monthlySummary) }
@@ -347,7 +350,11 @@ fun MoreScreen(
                 if (listenerEnabled) colors.income else colors.warning,
                 stringResource(if (listenerEnabled) R.string.bank_reading_on else R.string.bank_reading_off),
                 stringResource(R.string.bank_reading_sub),
-                onClick = { context.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)) },
+                // Izklop gre naravnost v nastavitve, vklop šele po razkritju
+                onClick = {
+                    if (listenerEnabled) context.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+                    else showNotifDisclosure = true
+                },
             )
         }
 
@@ -419,8 +426,14 @@ fun MoreScreen(
 
         Group(stringResource(R.string.group_about), query, stringResource(R.string.group_about_kw)) {
             SettingsRow(Icons.Rounded.Info, MaterialTheme.colorScheme.onSurfaceVariant, stringResource(R.string.app_name), stringResource(R.string.about_sub))
+            Divider()
+            SettingsRow(Icons.Rounded.PrivacyTip, MaterialTheme.colorScheme.onSurfaceVariant, stringResource(R.string.privacy_policy), stringResource(R.string.privacy_policy_sub)) {
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PRIVACY_POLICY_URL)))
+            }
         }
     }
+
+    if (showNotifDisclosure) NotificationAccessDialog(onDismiss = { showNotifDisclosure = false })
 
     if (editHomeLayout) {
         HomeLayoutSheet(homeLayout, onChange = vm::setHomeLayout, onDismiss = { editHomeLayout = false })
@@ -482,6 +495,9 @@ private fun LanguageDialog(selected: String?, onDismiss: () -> Unit, onSelect: (
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
     )
 }
+
+/** Objavljeno prek GitHub Pages iz mape docs/ na veji main. */
+private const val PRIVACY_POLICY_URL = "https://prosekmiha.github.io/moneo-finance-app/privacy-policy.html"
 
 private fun formatMinutes(m: Int) = "%d:%02d".format(m / 60, m % 60)
 

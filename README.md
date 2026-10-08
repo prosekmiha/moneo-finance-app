@@ -1,11 +1,11 @@
-# Moje Finance
+# Moneo
 
 Android aplikacija za beleženje osebnih financ (Kotlin + Jetpack Compose + Room).
 
 ## Zagon
 
 1. Odpri mapo v **Android Studio** (Hedgehog ali novejši).
-2. Pusti, da Gradle sinhronizira (wrapper se generira ob prvem zagonu, ali poženi `gradle wrapper`).
+2. Pusti, da Gradle sinhronizira (ali v terminalu `./gradlew assembleDebug`).
 3. Zaženi na napravi/emulatorju (minSdk 26).
 
 ## Funkcije
@@ -18,7 +18,6 @@ Android aplikacija za beleženje osebnih financ (Kotlin + Jetpack Compose + Room
 | Branje bančnih obvestil | `feature/notifications/` | Ustvari nepotrjene transakcije; vzorce prilagodi svoji banki |
 | OCR računov | `feature/ocr/` | ML Kit, najde skupni znesek |
 | Ponavljajoče transakcije | `feature/recurring/` | Dnevni WorkManager; avtomatski zapis ali opomnik |
-| Uvoz mmbackup | `data/import/` | Mapira račune, kategorije, transakcije, transferje |
 | Statistika po kategorijah | `ui/stats/` | Mesečni pregled |
 
 ## Glasovni ukazi (fiksna gramatika)
@@ -36,21 +35,6 @@ Primeri: „malica 4,50" · „bencin 30 evrov včeraj" · „dohodek plača 120
 
 Parser je pokrit s testi (10 slovenskih primerov). Ključne besede kategorij urejaš v podatkih kategorije (`keywords`).
 
-## Uvoz iz mmbackup
-
-`.mmbackup` = ZIP (z 8 bajti glave) z `MyFinance.db` (SQLite). Mapiranje:
-
-| mmbackup | Moje Finance |
-|---|---|
-| `account` | `accounts` (prazen title → „Glavni račun") |
-| `category` (type Expense/Income) | `categories` (EXPENSE/INCOME) |
-| `transaction` + `sync_link` | `transactions` (zneski v centih, veza na kategorijo/račun) |
-| `transfer` | `transfers` |
-| `isRemoved=1` | preskočeno |
-| `reminding` | (se ne uvaža — ponavljajoča pravila ustvariš ročno) |
-
-Originalni `uid`-ji se ohranijo → **ponovni uvoz je idempotenten** (upsert, brez dvojnikov).
-
 ## Arhitektura
 
 - **Lokalna baza**: Room (SQLite). Vse entitete so sync-ready: `uid` (UUID), `createdAt`/`updatedAt`, `deleted` (soft delete).
@@ -67,3 +51,17 @@ Ker so ključi že UUID-ji, migracija ne zahteva sprememb sheme.
 
 - **Bančna obvestila**: regex vzorci v `BankNotificationListenerService.PATTERNS` — prilagodi besedilu obvestil tvoje banke.
 - **Dovoljenja**: mikrofon (glas), kamera (OCR), dostop do obvestil (Nastavitve → posebni dostop).
+
+## Objava (Play Store)
+
+- Podpis: v korenu projekta ustvari `keystore.properties` (ni v gitu):
+  ```
+  storeFile=../moneo-upload.jks
+  storePassword=…
+  keyAlias=upload
+  keyPassword=…
+  ```
+  Brez te datoteke se release zgradi nepodpisan.
+- Paket za Play: `./gradlew bundleRelease` → `app/build/outputs/bundle/release/app-release.aab`.
+- Pred vsako novo objavo povečaj `versionCode` v `app/build.gradle.kts`.
+- Politika zasebnosti je v `docs/privacy-policy.html` (GitHub Pages iz mape `docs/` na veji `main`).

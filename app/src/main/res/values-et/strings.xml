@@ -610,6 +610,10 @@
     <string name="app_notifications_sub">Meeldetuletused, kuu kokkuvõte</string>
     <string name="bank_notifications">Pangateavituste lugemine</string>
     <string name="bank_notifications_sub">Valikuline — avab süsteemi seaded</string>
+    <string name="notif_access_text">Et pakkuda sulle makseid kinnitamiseks, vajab Moneo juurdepääsu teavitustele. Android annab selle kõigile teavitustele, seega näeb rakendus nende pealkirja ja teksti. Moneo otsib ainult pangamakseid (summa ja kaupmees), salvestab need kinnitamata kirjetena selles seadmes ja eirab kõike muud. Teavituste sisu ei lahku kunagi seadmest ega jagata kellegagi. Juurdepääsu saad igal ajal tühistada süsteemi seadetes.</string>
+    <string name="open_settings">Ava seaded</string>
+    <string name="privacy_policy">Privaatsuspoliitika</string>
+    <string name="privacy_policy_sub">Milliseid andmeid rakendus kasutab ja kus neid hoitakse</string>
     <string name="allowed">Lubatud</string>
     <string name="allow">Luba</string>
     <string name="choose_look">Vali välimus</string>

@@ -609,6 +609,10 @@
     <string name="app_notifications_sub">Mementouri, rezumat lunar</string>
     <string name="bank_notifications">Citirea notificărilor bancare</string>
     <string name="bank_notifications_sub">Opțional — deschide setările sistemului</string>
+    <string name="notif_access_text">Pentru a-ți propune plăți de confirmat, Moneo are nevoie de acces la notificări. Android îl acordă pentru toate notificările, așa că aplicația vede titlul și textul lor. Moneo caută doar plăți bancare (sumă și comerciant), le salvează ca înregistrări neconfirmate pe acest dispozitiv și ignoră restul. Conținutul notificărilor nu părăsește niciodată dispozitivul și nu este partajat cu nimeni. Poți revoca accesul oricând din setările sistemului.</string>
+    <string name="open_settings">Deschide setările</string>
+    <string name="privacy_policy">Politica de confidențialitate</string>
+    <string name="privacy_policy_sub">Ce date folosește aplicația și unde sunt păstrate</string>
     <string name="allowed">Activat</string>
     <string name="allow">Activează</string>
     <string name="choose_look">Alege aspectul</string>

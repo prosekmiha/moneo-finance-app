@@ -5,10 +5,8 @@ import si.moneo.R
 import si.moneo.ui.str
 import androidx.compose.ui.res.stringResource
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -70,6 +68,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import si.moneo.ui.MainViewModel
 import si.moneo.ui.components.IconBadge
+import si.moneo.ui.components.NotificationAccessDialog
 import si.moneo.ui.components.PillButton
 import si.moneo.ui.components.SegmentedTabs
 import si.moneo.ui.components.centsToInput
@@ -239,9 +238,11 @@ private fun NotificationsStep(onAsked: () -> Unit) {
         if (Build.VERSION.SDK_INT >= 33) launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
     }
     Spacer(Modifier.height(Spacing.md))
+    var showDisclosure by remember { mutableStateOf(false) }
     PermissionRow(stringResource(R.string.bank_notifications), stringResource(R.string.bank_notifications_sub), false) {
-        context.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+        showDisclosure = true
     }
+    if (showDisclosure) NotificationAccessDialog(onDismiss = { showDisclosure = false })
 }
 
 @Composable

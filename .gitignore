@@ -33,3 +33,4 @@ Thumbs.db
 .env
 *.pem
 secrets.properties
+keystore.properties
