@@ -611,6 +611,10 @@
     <string name="app_notifications_sub">Emlékeztetők, havi összesítő</string>
     <string name="bank_notifications">Banki értesítések olvasása</string>
     <string name="bank_notifications_sub">Nem kötelező — megnyitja a rendszerbeállításokat</string>
+    <string name="notif_access_text">Hogy jóváhagyásra kínálhassa a fizetéseket, a Moneónak hozzáférés kell az értesítésekhez. Az Android ezt az összes értesítésre megadja, így az alkalmazás látja azok címét és szövegét. A Moneo csak banki fizetéseket keres (összeg és kereskedő), ezeket jóváhagyatlan tételként menti ezen az eszközön, minden mást figyelmen kívül hagy. Az értesítések tartalma soha nem hagyja el az eszközt, és senkivel nem osztja meg. A hozzáférést bármikor visszavonhatod a rendszerbeállításokban.</string>
+    <string name="open_settings">Beállítások megnyitása</string>
+    <string name="privacy_policy">Adatvédelmi irányelvek</string>
+    <string name="privacy_policy_sub">Milyen adatokat használ az alkalmazás, és hol tárolja őket</string>
     <string name="allowed">Engedélyezve</string>
     <string name="allow">Engedélyezés</string>
     <string name="choose_look">Válassz megjelenést</string>

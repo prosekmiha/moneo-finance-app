@@ -617,6 +617,10 @@
     <string name="app_notifications_sub">Reminders, monthly summary</string>
     <string name="bank_notifications">Reading bank notifications</string>
     <string name="bank_notifications_sub">Optional — opens system settings</string>
+    <string name="notif_access_text">To offer payments for confirmation, Moneo needs notification access. Android grants it for all notifications, so the app can see their title and text. Moneo only looks for bank payments (amount and merchant), saves them as unconfirmed entries on this device and ignores everything else. Notification content never leaves the device and is not shared with anyone. You can revoke access anytime in system settings.</string>
+    <string name="open_settings">Open settings</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="privacy_policy_sub">What data the app uses and where it is kept</string>
     <string name="allowed">Enabled</string>
     <string name="allow">Enable</string>
     <string name="choose_look">Choose the look</string>

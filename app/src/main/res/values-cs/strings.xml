@@ -610,6 +610,10 @@
     <string name="app_notifications_sub">Připomínky, měsíční přehled</string>
     <string name="bank_notifications">Čtení bankovních oznámení</string>
     <string name="bank_notifications_sub">Volitelné — otevře systémové nastavení</string>
+    <string name="notif_access_text">Aby vám Moneo mohlo nabízet platby k potvrzení, potřebuje přístup k oznámením. Android ho povoluje pro všechna oznámení, takže aplikace vidí jejich název a text. Moneo hledá pouze bankovní platby (částku a obchodníka), ukládá je jako nepotvrzené záznamy v tomto zařízení a vše ostatní ignoruje. Obsah oznámení zařízení neopouští a s nikým se nesdílí. Přístup můžete kdykoli odvolat v nastavení systému.</string>
+    <string name="open_settings">Otevřít nastavení</string>
+    <string name="privacy_policy">Zásady ochrany soukromí</string>
+    <string name="privacy_policy_sub">Jaká data aplikace používá a kde jsou uložena</string>
     <string name="allowed">Povoleno</string>
     <string name="allow">Povolit</string>
     <string name="choose_look">Vyberte vzhled</string>

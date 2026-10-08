@@ -609,6 +609,10 @@
     <string name="app_notifications_sub">Нагадування, підсумок місяця</string>
     <string name="bank_notifications">Читання банківських сповіщень</string>
     <string name="bank_notifications_sub">Необов\'язково — відкриє системні налаштування</string>
+    <string name="notif_access_text">Щоб пропонувати платежі для підтвердження, Moneo потрібен доступ до сповіщень. Android надає його до всіх сповіщень, тому застосунок бачить їхній заголовок і текст. Moneo шукає лише банківські платежі (суму й продавця), зберігає їх як непідтверджені записи на цьому пристрої та ігнорує все інше. Вміст сповіщень ніколи не залишає пристрій і нікому не передається. Доступ можна відкликати будь-коли в системних налаштуваннях.</string>
+    <string name="open_settings">Відкрити налаштування</string>
+    <string name="privacy_policy">Політика конфіденційності</string>
+    <string name="privacy_policy_sub">Які дані використовує застосунок і де вони зберігаються</string>
     <string name="allowed">Дозволено</string>
     <string name="allow">Дозволити</string>
     <string name="choose_look">Виберіть вигляд</string>

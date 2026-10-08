@@ -610,6 +610,10 @@
     <string name="app_notifications_sub">Priminimai, mėnesio suvestinė</string>
     <string name="bank_notifications">Banko pranešimų skaitymas</string>
     <string name="bank_notifications_sub">Neprivaloma — atidaro sistemos nustatymus</string>
+    <string name="notif_access_text">Kad galėtų siūlyti mokėjimus patvirtinti, Moneo reikia prieigos prie pranešimų. Android ją suteikia visiems pranešimams, todėl programėlė mato jų pavadinimą ir tekstą. Moneo ieško tik banko mokėjimų (sumos ir prekybininko), išsaugo juos kaip nepatvirtintus įrašus šiame įrenginyje ir ignoruoja visa kita. Pranešimų turinys niekada nepalieka įrenginio ir niekam neperduodamas. Prieigą bet kada galite atšaukti sistemos nustatymuose.</string>
+    <string name="open_settings">Atidaryti nustatymus</string>
+    <string name="privacy_policy">Privatumo politika</string>
+    <string name="privacy_policy_sub">Kokius duomenis naudoja programėlė ir kur jie saugomi</string>
     <string name="allowed">Įjungta</string>
     <string name="allow">Įjungti</string>
     <string name="choose_look">Pasirinkite išvaizdą</string>

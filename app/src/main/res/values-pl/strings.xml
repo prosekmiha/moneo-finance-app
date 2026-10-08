@@ -609,6 +609,10 @@
     <string name="app_notifications_sub">Przypomnienia, podsumowanie miesiąca</string>
     <string name="bank_notifications">Odczyt powiadomień bankowych</string>
     <string name="bank_notifications_sub">Opcjonalnie — otwiera ustawienia systemu</string>
+    <string name="notif_access_text">Aby proponować płatności do potwierdzenia, Moneo potrzebuje dostępu do powiadomień. Android przyznaje go dla wszystkich powiadomień, więc aplikacja widzi ich tytuł i treść. Moneo szuka tylko płatności bankowych (kwoty i sprzedawcy), zapisuje je jako niepotwierdzone wpisy na tym urządzeniu, a resztę ignoruje. Treść powiadomień nie opuszcza urządzenia i nie jest nikomu udostępniana. Dostęp możesz cofnąć w dowolnej chwili w ustawieniach systemu.</string>
+    <string name="open_settings">Otwórz ustawienia</string>
+    <string name="privacy_policy">Polityka prywatności</string>
+    <string name="privacy_policy_sub">Jakich danych używa aplikacja i gdzie są przechowywane</string>
     <string name="allowed">Włączone</string>
     <string name="allow">Włącz</string>
     <string name="choose_look">Wybierz wygląd</string>

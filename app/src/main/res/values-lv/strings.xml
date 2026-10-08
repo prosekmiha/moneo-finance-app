@@ -610,6 +610,10 @@
     <string name="app_notifications_sub">Atgādinājumi, mēneša kopsavilkums</string>
     <string name="bank_notifications">Bankas paziņojumu lasīšana</string>
     <string name="bank_notifications_sub">Neobligāti — atver sistēmas iestatījumus</string>
+    <string name="notif_access_text">Lai piedāvātu maksājumus apstiprināšanai, Moneo nepieciešama piekļuve paziņojumiem. Android to piešķir visiem paziņojumiem, tāpēc lietotne redz to virsrakstu un tekstu. Moneo meklē tikai bankas maksājumus (summu un tirgotāju), saglabā tos kā neapstiprinātus ierakstus šajā ierīcē un ignorē visu pārējo. Paziņojumu saturs nekad neatstāj ierīci un netiek nevienam kopīgots. Piekļuvi jebkurā laikā var atsaukt sistēmas iestatījumos.</string>
+    <string name="open_settings">Atvērt iestatījumus</string>
+    <string name="privacy_policy">Privātuma politika</string>
+    <string name="privacy_policy_sub">Kādus datus lietotne izmanto un kur tie tiek glabāti</string>
     <string name="allowed">Iespējots</string>
     <string name="allow">Iespējot</string>
     <string name="choose_look">Izvēlieties izskatu</string>

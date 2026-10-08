@@ -610,6 +610,10 @@
     <string name="app_notifications_sub">Påmindelser, månedsoversigt</string>
     <string name="bank_notifications">Læsning af banknotifikationer</string>
     <string name="bank_notifications_sub">Valgfrit — åbner systemindstillingerne</string>
+    <string name="notif_access_text">For at kunne foreslå betalinger til bekræftelse skal Moneo have adgang til notifikationer. Android giver adgang til alle notifikationer, så appen kan se deres titel og tekst. Moneo leder kun efter bankbetalinger (beløb og forretning), gemmer dem som ubekræftede posteringer på denne enhed og ignorerer alt andet. Indholdet af notifikationer forlader aldrig enheden og deles ikke med nogen. Du kan når som helst tilbagekalde adgangen i systemindstillingerne.</string>
+    <string name="open_settings">Åbn indstillinger</string>
+    <string name="privacy_policy">Privatlivspolitik</string>
+    <string name="privacy_policy_sub">Hvilke data appen bruger, og hvor de opbevares</string>
     <string name="allowed">Aktiveret</string>
     <string name="allow">Aktivér</string>
     <string name="choose_look">Vælg udseende</string>

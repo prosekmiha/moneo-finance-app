@@ -610,6 +610,10 @@
     <string name="app_notifications_sub">Muistutukset, kuukausiyhteenveto</string>
     <string name="bank_notifications">Pankki-ilmoitusten lukeminen</string>
     <string name="bank_notifications_sub">Valinnainen — avaa järjestelmäasetukset</string>
+    <string name="notif_access_text">Jotta Moneo voi ehdottaa maksuja vahvistettavaksi, se tarvitsee pääsyn ilmoituksiin. Android myöntää pääsyn kaikkiin ilmoituksiin, joten sovellus näkee niiden otsikon ja tekstin. Moneo etsii vain pankkimaksuja (summan ja kauppiaan), tallentaa ne vahvistamattomina merkintöinä tälle laitteelle ja ohittaa kaiken muun. Ilmoitusten sisältö ei koskaan poistu laitteelta, eikä sitä jaeta kenellekään. Voit perua pääsyn milloin tahansa järjestelmän asetuksista.</string>
+    <string name="open_settings">Avaa asetukset</string>
+    <string name="privacy_policy">Tietosuojakäytäntö</string>
+    <string name="privacy_policy_sub">Mitä tietoja sovellus käyttää ja missä ne säilytetään</string>
     <string name="allowed">Käytössä</string>
     <string name="allow">Ota käyttöön</string>
     <string name="choose_look">Valitse ulkoasu</string>

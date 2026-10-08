@@ -617,6 +617,10 @@
     <string name="app_notifications_sub">Opomniki, mesečni povzetek</string>
     <string name="bank_notifications">Branje bančnih obvestil</string>
     <string name="bank_notifications_sub">Neobvezno — odpre sistemske nastavitve</string>
+    <string name="notif_access_text">Da ti lahko ponudi plačila v potrditev, Moneo potrebuje dostop do obvestil. Android ga dovoli za vsa obvestila, zato aplikacija vidi njihov naslov in besedilo. Moneo išče le bančna plačila (znesek in trgovca), jih shrani kot nepotrjene vnose na tej napravi, vse drugo pa prezre. Vsebina obvestil ne zapusti naprave in je ne deli z nikomer. Dostop lahko kadar koli prekličeš v sistemskih nastavitvah.</string>
+    <string name="open_settings">Odpri nastavitve</string>
+    <string name="privacy_policy">Politika zasebnosti</string>
+    <string name="privacy_policy_sub">Katere podatke aplikacija uporablja in kje so shranjeni</string>
     <string name="allowed">Omogočeno</string>
     <string name="allow">Omogoči</string>
     <string name="choose_look">Izberi videz</string>

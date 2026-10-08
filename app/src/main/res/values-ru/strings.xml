@@ -609,6 +609,10 @@
     <string name="app_notifications_sub">Напоминания, итоги месяца</string>
     <string name="bank_notifications">Чтение банковских уведомлений</string>
     <string name="bank_notifications_sub">Необязательно — откроет системные настройки</string>
+    <string name="notif_access_text">Чтобы предлагать платежи для подтверждения, Moneo нужен доступ к уведомлениям. Android предоставляет его ко всем уведомлениям, поэтому приложение видит их заголовок и текст. Moneo ищет только банковские платежи (сумму и продавца), сохраняет их как неподтверждённые записи на этом устройстве и игнорирует всё остальное. Содержимое уведомлений никогда не покидает устройство и никому не передаётся. Доступ можно отозвать в любой момент в системных настройках.</string>
+    <string name="open_settings">Открыть настройки</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="privacy_policy_sub">Какие данные использует приложение и где они хранятся</string>
     <string name="allowed">Разрешено</string>
     <string name="allow">Разрешить</string>
     <string name="choose_look">Выберите оформление</string>
