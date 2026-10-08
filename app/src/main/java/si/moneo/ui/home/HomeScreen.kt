@@ -814,7 +814,8 @@ private fun GoalsStrip(
             ) {
                 items(goals, key = { it.goal.uid }) { g ->
                     Column(
-                        Modifier.width(64.dp).clip(RoundedCornerShape(Radius.md)).clickable { onOpenGoal(g.goal.uid) },
+                        // Majhna zaobljenost in spodnji odmik: večji kot bi odrezal začetek oznake
+                        Modifier.width(64.dp).clip(RoundedCornerShape(Radius.xs)).clickable { onOpenGoal(g.goal.uid) }.padding(bottom = 4.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         ProgressRing(
@@ -826,7 +827,7 @@ private fun GoalsStrip(
                             Text(g.goal.emoji, style = MaterialTheme.typography.titleLarge)
                         }
                         Spacer(Modifier.height(4.dp))
-                        Text(g.goal.title, style = MaterialTheme.typography.labelSmall, maxLines = 1)
+                        Text(g.goal.title, style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
                 item(key = "add-goal") {

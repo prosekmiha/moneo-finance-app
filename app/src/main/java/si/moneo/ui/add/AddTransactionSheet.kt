@@ -21,6 +21,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -142,6 +147,9 @@ fun AddTransactionSheet(
         sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(topStart = Radius.xl, topEnd = Radius.xl),
+        // List naj ne seže pod statusno vrstico/izrez kamere, kjer dotike prestreže sistem;
+        // če vsebina ne gre na zaslon, zgornji del zdrsi (tipkovnica in Shrani ostaneta pritrjena)
+        modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top)),
         // Nižji ročaj od privzetega (48dp), da gre celoten vnos na zaslon brez drsenja
         dragHandle = {
             Box(
@@ -244,14 +252,13 @@ private fun AddTransactionContent(vm: MainViewModel, onDone: () -> Unit) {
     }
     // Mreža kategorij: vidni sta dve vrsti, ostale so dosegljive z drsenjem navzdol
     val categoryGrid = rememberLazyGridState()
-    // Pri urejanju (ali menjavi tipa) pokaži izbrano kategorijo
-    LaunchedEffect(draft.type, categories.isNotEmpty()) {
+    // Ob vsaki preureditvi (prihod statistike uporabe, predlog, nova kategorija) mrežo postavi
+    // na izbrano kategorijo oz. na vrh — sicer bi LazyGrid sledil prej vidnemu elementu po ključu.
+    // Predlagana kategorija se uvrsti na začetek, zato takrat vedno na vrh.
+    val categoryOrder = remember(categories) { categories.map { it.uid } }
+    LaunchedEffect(draft.type, categoryOrder) {
         val i = categories.indexOfFirst { it.uid == draft.categoryUid }
-        categoryGrid.scrollToItem(if (i >= 0) i else 0)
-    }
-    // Predlagana kategorija se uvrsti na začetek — pomakni mrežo na vrh, da je vidna
-    LaunchedEffect(suggestedUid) {
-        if (suggestedUid != null) categoryGrid.animateScrollToItem(0)
+        categoryGrid.scrollToItem(if (suggestedUid == null && i >= 0) i else 0)
     }
     val categoryTileHeight = 64.dp + with(LocalDensity.current) { MaterialTheme.typography.labelSmall.lineHeight.toDp() }
 
